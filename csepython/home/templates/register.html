@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Registration Form</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+    }
+    body { display: flex; min-height: 100vh; }
+    .sidebar {
+      background-color: #000;
+      color: #ffd700;
+      width: 180px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      border-right: 1px solid #333;
+    }
+    .sidebar img {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    .sidebar a {
+      color: #ffd700;
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      transition: background-color 0.2s;
+    }
+    .sidebar a:hover { background-color: #1a1a1a; }
+    .main-wrapper {
+      margin-left: 180px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100vh;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .form-section {
+      background-color: #fff;
+      color: #000;
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    .form-section h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #000;
+      font-size: 32px;
+      font-weight: bold;
+    }
+    label {
+      display: block;
+      color: #000;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #000;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .btn-black {
+      margin: 25px auto 0 auto;
+      display: block;
+      background-color: #000;
+      color: #ffd700;
+      font-size: 16px;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .btn-black:hover { background-color: #222; }
+    footer {
+      background-color: #000;
+      color: #ffd700;
+      text-align: center;
+      padding: 15px 0;
+      width: 100%;
+      margin-top: auto;
+    }
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid #333;
+      }
+      .main-wrapper { margin-left: 0; }
+      .form-section { width: 90%; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- sidebar -->
+  <div class="sidebar">
+    <img src="{% static 'images/logo2.jpg' %}" alt="Logo" />
+    
+    <nav class="flex flex-col w-full">
+      
+      <a href="/dashboard">Dashboard</a>
+      <a href="/stock/">Add Stock</a>
+      <a href="/sales/">Add Sale</a>
+      <a href="/register/">Add Staff</a>
+      <a href="/allstock/">All Stock</a>
+      <a href="/allsales/">All Sales</a>
+      <a href="/allusers/">All Staffs</a>
+      <a href="{% url 'home' %}">Logout</a>
+    </nav>
+    
+  </div>
+
+   
+  <div class="main-wrapper">
+    <div class="main-content">
+      <div class="form-section">
+        <h1>Registration Form</h1>
+
+        <form action="/register/" method="post">
+          {% csrf_token %}
+
+          <!-- username -->
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username"
+                 value="{{ form_data.username|default:'' }}"
+                 placeholder="Enter username" />
+          {% if errors.username %}
+            <p class="error">{{ errors.username }}</p>
+          {% endif %}
+
+          <!-- email -->
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email"
+                 value="{{ form_data.email|default:'' }}"
+                 placeholder="Enter email" />
+          {% if errors.email %}
+            <p class="error">{{ errors.email }}</p>
+          {% endif %}
+
+          <!-- password -->
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" placeholder="Enter password" />
+          {% if errors.password %}
+            <p class="error">{{ errors.password }}</p>
+          {% endif %}
+
+          <!-- confirm password -->
+          <label for="repeat_password">Confirm Password</label>
+          <input type="password" name="repeat_password" id="repeat_password" placeholder="Confirm password" />
+          {% if errors.repeat_password %}
+            <p class="error">{{ errors.repeat_password }}</p>
+          {% endif %}
+
+          <!-- show password -->
+      <div class="flex items-center justify-start mb-6">
+        <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
+          <input type="checkbox" id="show-password" class="w-4 h-4">
+          Show Password
+        </label>
+      </div>
+          
+          <!-- role -->
+          <label for="role">Role</label>
+          <select name="role" id="role">
+            <option value="">Select Role</option>
+            <option value="manager" {% if form_data.role == 'manager' %}selected{% endif %}>Manager</option>
+            <option value="salesagent" {% if form_data.role == 'salesagent' %}selected{% endif %}>Sales Agent</option>
+          </select>
+          {% if errors.role %}
+            <p class="error">{{ errors.role }}</p>
+          {% endif %}
+
+          <button type="submit" class="btn-black">Sign Up</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer>
+      © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
+    </footer>
+  </div>
+  <!--show password -->
+  <script>
+    const showPassword = document.getElementById("show-password");
+    const passwordField = document.getElementById("password");
+
+    showPassword.addEventListener("change", function () {
+      passwordField.type = this.checked ? "text" : "password";
+    });
+  </script>
+</body>
+</html>

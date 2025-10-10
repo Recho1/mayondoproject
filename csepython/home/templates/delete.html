@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Confirmation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+    }
+    .card h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #b91c1c; /* red for warning */
+      margin-bottom: 15px;
+    }
+    .card p {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .btn-delete {
+      background-color: #b91c1c;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.2s;
+    }
+    .btn-delete:hover {
+      background-color: #991b1b;
+    }
+    .btn-cancel {
+      background-color: #e5e7eb; /* gray */
+      color: #111827;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.2s;
+      margin-left: 10px;
+    }
+    .btn-cancel:hover {
+      background-color: #d1d5db;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Are you sure?</h2>
+    <p>
+      Are you sure you want to move this to the recycle bin: <strong>"{{ selected.id }}"</strong>?
+    </p>
+    <p class="text-sm text-gray-600">
+      Once deleted, stock cannot be recovered.
+    </p>
+
+    <form action="/register/delete/{{ selected.id }}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn-delete">Delete</button>
+      <a href="/{{ path_url }}" class="btn-cancel">Cancel</a>
+    </form>
+  </div>
+
+
+  
+</body>
+</html>

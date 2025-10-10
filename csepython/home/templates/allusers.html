@@ -1,0 +1,200 @@
+{% load static %}
+{% load math_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>All Users</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Main content wrapper */
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: #000000;
+      color: #ffd700;
+      width: 200px;
+      flex-shrink: 0;
+    }
+    .sidebar a {
+      color: #ffd700;
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #1a1a1a;
+    }
+    .sidebar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 10px auto;
+      display: block;
+    }
+
+    /* Table container */
+    .table-container {
+      flex: 1;
+      overflow-x: auto;
+      padding: 20px;
+    }
+
+    table {
+      width: 90%;
+      margin: auto;
+      border-collapse: collapse;
+      font-size: 14px;
+      background-color: #fdfdff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+    thead {
+      background-color: #000000;
+      color: #ffd700;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #dcdcdc;
+      text-align: left;
+    }
+    tbody tr:nth-child(even) { background-color: whitesmoke; }
+    tbody tr:nth-child(odd) { background-color: #ffffff; }
+    tbody tr:hover { background-color: #f0f8ff; }
+
+    /* Action buttons */
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+      text-decoration: none;
+    }
+    .action-btn svg { width: 16px; height: 16px; }
+    .text-green-500 { color: #2e8b57; }
+    .text-green-500:hover { background-color: #e0f2e9; }
+    .text-red-500 { color: #b22222; }
+    .text-red-500:hover { background-color: #fbeaea; }
+    .text-gray-700 { color: #4b4b4b; }
+    .text-gray-700:hover { background-color: #f2f2f2; }
+
+    /* Add User button */
+    .btn-gold {
+      margin: 10px 0 15px 0;
+      padding: 6px 12px;
+      background-color: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .btn-gold:hover { background-color: #e6c200; }
+
+    /* Footer */
+    footer {
+      background-color: #000000;
+      color: #ffffff;
+      text-align: center;
+      padding: 15px 0;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="content-wrapper">
+  <!-- sidebar -->
+  <div class="sidebar flex-shrink-0">
+    <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
+    
+    <nav class="flex flex-col gap-2 p-2">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/stock/">Add Stock</a>
+      <a href="/sales/">Add Sale</a>
+      <a href="/register/">Add Staff</a>
+      <a href="/allstock/">All Stock</a>
+      <a href="/allsales/">All Sales</a>
+      <a href="/allusers/">All Staff</a>
+      <a href="{% url 'logout' %}" class="mt-auto">Logout</a>
+    </nav>
+    
+  </div>
+
+  
+  <div class="table-container">
+    <a href="/register/">
+      <button class="btn-gold">Add Staff</button>
+    </a>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in all_users_details %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.password }}</td>
+          <td>{{ user.role }}</td>
+          <td class="flex gap-1">
+            <!-- view -->
+            <a href="/view/user/{{user.id}}" class="action-btn text-green-500" title="View">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
+              </svg>
+            </a>
+            <!-- edit -->
+            <a href="{% url 'update_user' user.id %}" class="action-btn text-red-500" title="Edit">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M11 4h6v6m-6 0l-6 6v6h6l6-6V4h-6z"/>
+              </svg>
+            </a>
+            <!-- delete -->
+            <a href="{% url 'delete_user' user.id %}" class="action-btn text-gray-700" title="Delete">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5-4h4a2 2 0 0 1 2 2v1H8V5a2 2 0 0 1 2-2z"/>
+              </svg>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<footer class="text-yellow-500">
+  © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

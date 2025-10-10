@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Registration</title>
+  <style>
+    html, body {
+      height: 140%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-section {
+      background-color: #fff;
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-section h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #000;
+      font-size: 32px;
+      font-weight: bold;
+      font-style: italic;
+    }
+
+    label {
+      display: block;
+      color: #000;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      color: #000;
+    }
+
+    /* Centered button with black background and gold text */
+    .btn-black-gold {
+      display: block;
+      margin: 25px auto 0 auto;
+      background-color: #000;
+      color: #ffd700;
+      font-size: 16px;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-black-gold:hover {
+      background-color: #111; /* slightly lighter on hover */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-section">
+    <form action="/register/update/{{ selected.id }}" method="post">
+      {% csrf_token %}
+      <h1>Registration Form</h1>
+
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" value="{{ selected.username }}" required />
+
+      <label for="email">Email address</label>
+      <input type="email" name="email" id="email" value="{{ selected.email }}" required />
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" value="{{ selected.password }}" required />
+
+      <label for="repeat_password">Confirm Password</label>
+      <input type="password" name="repeat_password" id="repeat_password" value="{{ selected.repeat_password }}" required />
+
+      <label for="role">Role</label>
+      <select name="role" id="role">
+        <option value="manager" {% if selected.role == "manager" %}selected{% endif %}>Manager</option>
+        <option value="salesagent" {% if selected.role == "salesagent" %}selected{% endif %}>Sales Agent</option>
+      </select>
+
+      <button type="submit" class="btn-black-gold">Update Sale</button>
+    </form>
+  </div>
+
+</body>
+</html>

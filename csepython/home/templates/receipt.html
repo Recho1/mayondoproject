@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Sale Receipt</title>
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #receipt, #receipt * {
+        visibility: visible;
+      }
+      #receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      #printButton {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 p-4">
+
+  <!-- Print Button -->
+  <div class="flex justify-end mb-4">
+    <button id="printButton" onclick="window.print()" class="px-4 py-2 bg-blue-500 text-white rounded">Print Receipt</button>
+  </div>
+
+  <!-- Receipt -->
+  <div id="receipt" class="mx-auto max-w-[400px] p-6 shadow-lg bg-white border border-gray-300">
+    
+    <!-- Company Info -->
+    <div class="text-center mb-4">
+      <img src="{% static 'images/logo2.jpg' %}" alt="Company Logo" class="mx-auto h-12 mb-2">
+      <h1 class="text-2xl font-bold">Mayondo Wood And Furniture.</h1>
+      <p class="text-sm text-gray-500">123 Main Street, Kampala, Uganda</p>
+      <p class="text-sm text-gray-500">Tel: +256 700 000 000</p>
+    </div>
+
+    <!-- Receipt Info -->
+    <div class="flex justify-between mb-2">
+      <span class="font-semibold">Receipt #:</span>
+      <span>{{ selected.id }}</span>
+    </div>
+    <div class="flex justify-between mb-2">
+      <span class="font-semibold">Date:</span>
+      <span>{{ selected.date }}</span>
+    </div>
+    <div class="flex justify-between mb-2">
+      <span class="font-semibold">Sales Agent:</span>
+      <span>{{ selected.salesagentname }}</span>
+    </div>
+
+    <hr class="my-2">
+
+    <!-- Customer Info -->
+    <div class="flex justify-between mb-2">
+      <span class="font-semibold">Customer Name:</span>
+      <span>{{ selected.customername }}</span>
+    </div>
+    <div class="flex justify-between mb-2">
+      <span class="font-semibold">Payment Method:</span>
+      <span>{{ selected.paymentmethod }}</span>
+    </div>
+
+    <hr class="my-2">
+
+    <!-- Product Info -->
+    <div class="divide-y divide-gray-200">
+      <div class="flex justify-between py-1">
+        <span>Product:</span>
+        <span>{{ selected.productname }}</span>
+      </div>
+      <div class="flex justify-between py-1">
+        <span>Type:</span>
+        <span>{{ selected.producttype }}</span>
+      </div>
+      {% comment %} <div class="flex justify-between py-1">
+        <span>Quality:</span>
+        <span>{{ selected.quality }}</span>
+      </div> {% endcomment %}
+      <div class="flex justify-between py-1">
+        <span>Quantity:</span>
+        <span>{{ selected.quantity }}</span>
+      </div>
+      <div class="flex justify-between py-1">
+        <span>Unit Cost:</span>
+        <span>{{ selected.sellingprice_unitcost }}</span>
+      </div>
+      <div class="flex justify-between py-1">
+        <span>Selling Price:</span>
+        <span>{{ selected.sellingprice }}</span>
+      </div>
+    </div>
+
+    <hr class="my-2">
+
+    <!-- Fees & Total -->
+    <div class="flex justify-between py-1">
+      <span>Transport Fee:</span>
+      <span>{{ selected.transportfare }}</span>
+    </div>
+    <div class="flex justify-between py-2 font-bold text-lg">
+      <span>Total:</span>
+      <span>
+        {% with total=selected.sellingprice|floatformat:2|floatformat:"0" %}
+          {% with total_amount=total|floatformat:"0" %}
+            {{ selected.quantity|floatformat:"0"|floatformat:"0"|add:selected.transportfare }}
+          {% endwith %}
+        {% endwith %}
+      </span>
+    </div>
+
+    <hr class="my-2">
+
+    <!-- Footer / Notes -->
+    <div class="text-center mt-4 text-sm text-gray-500">
+      Thank you for your purchase!<br>
+      Goods once sold are not refundable.<br>
+      Contact support@example.com for inquiries.
+    </div>
+
+    <!-- Optional QR Code -->
+    <div class="text-center mt-4">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.build_absolute_uri }}&size=100x100" alt="QR Code">
+    </div>
+
+  </div>
+
+</body>
+</html>

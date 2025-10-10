@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex: 1;
+      gap: 20px;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    .form-section {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      margin-left: 200px;
+    }
+
+    .form-section h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #000;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      color: #000;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      border: 1px solid #cccccc;
+      background-color: #fff;
+      color: #000;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="form-section">
+    <h2>Stock Records</h2>
+    <form action="{% url 'update_stock' selected.id %}" method="post">
+      {% csrf_token %}
+      <label for="productname">Product Name</label>
+      <input id="productname" name="productname" placeholder="productname" value="{{selected.productname}}" required>
+
+      <label for="origin">Origin</label>
+      <input type="text" id="origin" name="origin" value="{{selected.origin}}" required>
+
+      <label for="contact">Contact details</label>
+      <input type="text" id="contact" name="contact" value="{{selected.contact}}" required>
+
+      <label for="quality">Quality</label>
+      <input type="text" id="quality" name="quality" value="{{selected.quality}}" required>
+
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" min="1" name="quantity" value="{{selected.quantity}}" required >
+
+      <label for="costprice_unitcost">Unit cost</label>
+      <input type="costprice_unitcost" id="costprice_unitcost" name="costprice_unitcost" value="{{selected.costprice_unitcost}}" required>
+
+      <label for="costprice">Cost price</label>
+      <input type="costprice" id="costprice" name="costprice" value="{{selected.costprice}}" required>
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" value="{{selected.date | date:'Y-m-d'}}" required>
+
+      <br><br>
+
+      <label for="Warehouse">Warehouse</label>
+      <input type="warehouse" id="warehouse" name="warehouse" value="{{selected.warehouse}}" required>
+       <br><br>
+
+      <div class="flex justify-center mt-4">
+  <button type="submit" class="bg-black text-yellow-500 px-6 py-2 rounded">
+    Update Sale
+  </button>
+</div>
+    </form>
+  </div>
+</body>
+</html>

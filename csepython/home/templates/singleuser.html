@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="flex flex-col gap-2 mx-auto max-w-[400px] p-4 shadow-lg my-8 bg-white">
+      <div class="flex gap-2">
+         <a href="/update/{{ selected.id }}" class="px-2 py-1 bg-green-500 text-white rounded">Update</a>
+        <a href="/delete/{{ selected.id }}" class="px-2 py-1 bg-red-500 text-white rounded">Delete</a>
+      </div>
+  <div>
+    <p class="text-gray-500 text-xs">Username</p>
+    <h1 class="text-lg font-semibold">{{ selected.username }}</h1>
+  </div>
+  <div>
+    <p class="text-gray-500 text-xs">Email</p>
+    <h1 class="text-lg font-semibold">{{ selected.email }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Password</p>
+    <h1 class="text-lg font-semibold">{{ selected.password }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Confirm password</p>
+    <h1 class="text-lg font-semibold">{{ selected.repeat_password }}</h1>
+
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Role</p>
+    <h1 class="text-lg font-semibold">{{ selected.role }}</h1>
+    
+  </div> 
+  
+</body>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+    
+
+<style>
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+
+  /* Form Section */
+  .form-section {
+    background-color: #fff;
+    color: #000;
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    margin-left: 200px;
+  }
+
+  .form-section h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #000;
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  label {
+    display: block;
+    color: #000;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    border: 1px solid #cccccc;
+    background-color: #fff;
+    color: #000;
+  }
+
+  .checkbox-inline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+
+  .checkbox-inline input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #ffd700;
+    cursor: pointer;
+  }
+
+  .checkbox-inline label {
+    color: #000;
+    font-weight: bold;
+  }
+
+  .btn-black {
+    margin: 25px auto 0 auto;
+    display: block;
+    background-color: #000;
+    color: #ffd700;
+    font-size: 16px;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-black:hover {
+    background-color: #1a1a1a;
+  }
+
+  </style>
+
+</head>
+<body>
+
+
+    <div class="form-section">
+    <h2>Transaction Records</h2>
+    <form action="/sales/update/{{ selected.id }}" method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      {{ error }}
+      <label for="customername">Customer Name</label>
+      <input id="customername" name="customername" value="{{selected.customername}}" required>
+
+      <label for="producttype">Product type</label>
+      <input type="text" id="producttype" name="producttype"  value="{{selected.producttype}}" required>
+      <label for="productname">Product Name</label>
+       <select name='productname'>
+        {% for product in products %}
+        <option value='{{product.id}}' {% if product.id == product.productname %}selected {% endif %}>{{ product.productname }}</option>
+        {% endfor %}
+      
+       </select>
+
+      
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" min="1" name="quantity" value="{{selected.quantity}}" required >
+
+      <label for="sellingprice_unitcost">Unit cost</label>
+      <input type="number" id="sellingprice_unitcost" name="sellingprice_unitcost"  value="{{selected.sellingprice_unitcost}}" required>
+
+      
+       
+       <label for="paymentmethod">Payment Method</label>
+      <input type="text" id="paymentmethod" name="paymentmethod" value="{{selected.paymentmethod}}">
+
+
+       <label for="is_paid">Payment Received</label>
+       <select name="is_paid">      
+      <option value="True" {% if selected.is_paid %}selected{% endif %}>Completed</option>
+      <option value="False" {% if not selected.is_paid %}selected{% endif %}>Pending</option>
+       </select>
+      <div class="mb-4">
+
+            <div class="mb-4">
+            <label for="transportfare" class="block text-gray-700 font-medium mb-2">Transportfare</label>
+            <select id="transportfare" name="transportfare"
+                class="border border-gray"  required>
+                <option value="">Select </option>
+                <option value="True"{% if selected.transport_offered %}selected{% endif %}>Transport offered</option>
+                <option value="False" {% if not selected.transport_offered %}selected{% endif %}>Transport not offered</option>
+                
+                
+            </select>
+        </div>
+
+   
+    
+    
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" value = "{{selected.date | date:'Y-m-d'}}">
+
+      <br><br>
+     
+      <label for="salesagentname">Sales Agent Name:</label>
+      <select name='salesagentname'>
+        {% for agent in all_agents %}
+        <option value='{{agent.id}}' {% if agent.id == selected.salesagentname.id %}selected{% endif %}>{{agent.username}}</option>
+        {% endfor %}
+      
+       </select>
+
+       <br><br>
+        
+
+      <div class="flex justify-center mt-4">
+  <button type="submit" class="bg-black text-yellow-500 px-6 py-2 rounded">
+    Update Sale
+  </button>
+</div>
+
+      <br>
+      
+    </form>
+  
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+ 
+
+</body>
+</html>

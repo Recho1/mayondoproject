@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+     <div class="flex flex-col gap-2 mx-auto max-w-[400px] p-4 shadow-lg my-8 bg-white"> 
+       <div class="flex gap-2">
+         <a href="/allstock/" class="px-2 py-1 bg-blue-500 text-white rounded">Back to view</a>
+        
+      </div> 
+  <div>
+    <p class="text-gray-500 text-xs"> Product Name</p>
+    <h1 class="text-lg font-semibold">{{ selected.productname }}</h1>
+  </div>
+  <div>
+    <p class="text-gray-500 text-xs">Origin</p>
+    <h1 class="text-lg font-semibold">{{ selected.origin }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Contact details</p>
+    <h1 class="text-lg font-semibold">{{ selected.contact }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Quality</p>
+    <h1 class="text-lg font-semibold">{{ selected.quality }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Quantity</p>
+    <h1 class="text-lg font-semibold">{{ selected.quantity }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Unitcost</p>
+    <h1 class="text-lg font-semibold">{{ selected.costprice_unitcost }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Costprice</p>
+    <h1 class="text-lg font-semibold">{{ selected.costprice }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Date</p>
+    <h1 class="text-lg font-semibold">{{ selected.date }}</h1>
+  </div> 
+  <div>
+    <p class="text-gray-500 text-xs">Warehouse</p>
+    <h1 class="text-lg font-semibold">{{ selected.warehouse }}</h1>
+  </div> 
+</body>
+</html>
