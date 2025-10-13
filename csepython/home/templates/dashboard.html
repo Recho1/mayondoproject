@@ -6,129 +6,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-  >
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <title>Dashboard</title>
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+      margin: 0;
+    }
+    .header {
+      background-color: #000;
+      color: #ffd700;
+      height: 50px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0 1rem;
+      z-index: 10;
+    }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      color: #ffd700;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .logout-btn svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+    }
+    .logout-btn:hover { color: #e6c200; }
+
+    .sidebar {
+      width: 200px; /* reduced from 256px */
+      background-color: #000;
+      color: #ffd700;
+      flex-shrink: 0;
+    }
+    main {
+      padding: 2rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .dash-card {
+      background-color: #000;
+      color: #ffd700;
+      text-align: center;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .dash-card h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .dash-card p {
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+  </style>
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-100">
-
   
+  <!-- Header -->
+  <div class="header">
+    <a href="{% url 'logout' %}" class="logout-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
+           viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+      </svg>
+      Logout
+    </a>
+  </div>
+
   <div class="flex flex-1">
 
-    <!-- sidebar -->
-    <div class="hidden md:flex flex-col w-64 bg-black">
-      <nav class="flex flex-col flex-1 bg-black p-4 text-yellow-400">
-        
+    <!-- Sidebar -->
+    <div class="hidden md:flex flex-col sidebar">
+      <nav class="flex flex-col flex-1 p-4 text-yellow-400">
         <div class="flex justify-center mb-8">
-          <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-32 h-32 rounded-full object-cover shadow-lg">
+          <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-28 h-28 rounded-full object-cover shadow-lg">
         </div>
 
-        <div class="flex flex-col gap-3">
-          <a href="/dashboard" class="flex items-center px-4 py-2 hover:bg-gray-600 rounded-lg">
-            Dashboard
-          </a>
-          
-          <a href="/stock/" class="flex items-center px-4 py-2 hover:bg-gray-600 rounded-lg">Add Stock</a>
-          <a href="/sales/" class="flex items-center px-4 py-2 hover:bg-gray-600 rounded-lg">Add Sale</a>
-          <a href="/register/" class="flex items-center px-4 py-2 hover:bg-gray-600 rounded-lg">Add Staff</a>
-          
-         
-          <!-- logout -->
-          <a href="{% url 'logout' %}" class="flex items-center mt-auto px-4 py-2 hover:bg-gray-600 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="mr-2">
-              <path d="M5 11h8v2H5v3l-5-4 5-4zm-1 7h2.708a8 8 0 1 0 0-12H4a9.985 9.985 0 0 1 8-4c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.985 9.985 0 0 1-8-4z"/>
-            </svg>
-            Logout
-          </a>
-        </div>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+        <a href="/dashboard" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yello-500">
+          <i class="fa-solid fa-gauge"></i> Dashboard
+        </a>
+        <a href="/stock/" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yellow-500">
+          <i class="fa-solid fa-boxes-stacked"></i> Add Stock
+        </a>
+        <a href="/sales/" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yellow-500">
+          <i class="fa-solid fa-cart-plus"></i> Add Sale
+        </a>
+        <a href="/register/" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yellow-500">
+          <i class="fa-solid fa-user-plus"></i> Add Staff
+        </a>
       </nav>
     </div>
 
-    <!-- dashboard Cards -->
-    <main class="flex-1 p-8 overflow-y-auto">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Dashboard Cards -->
+    <main>
+      <div class="card-grid">
 
-        <!-- static Cards -->
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ total_stock|intcomma }}</h1>
-          <p class="text-sm">Total Stock</p>
+        <div class="dash-card">
+          <h1>{{ total_stock|intcomma }}</h1>
+          <p>Total Stock</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ total_sales|intcomma }}</h1>
-          <p class="text-sm">Total Sales</p>
+        <div class="dash-card">
+          <h1>{{ total_sales|intcomma }}</h1>
+          <p>Total Sales</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ daily_sales|intcomma }}</h1>
-          <p class="text-sm">Daily Sales</p>
+        <div class="dash-card">
+          <h1>{{ daily_sales|intcomma }}</h1>
+          <p>Daily Sales</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ top_selling_product }}</h1>
-          <p class="text-sm">Top Selling Product</p>
+        <div class="dash-card">
+          <h1>{{ top_selling_product }}</h1>
+          <p>Top Selling Product</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ low_selling_product }}</h1>
-          <p class="text-sm">Low Selling Product</p>
+        <div class="dash-card">
+          <h1>{{ low_selling_product }}</h1>
+          <p>Low Selling Product</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
+        <div class="dash-card">
           {% for stock in stock_threshold %}
-          <h1 class="text-2xl font-bold">{{ stock.productname }}</h1>
+          <h1>{{ stock.productname }}</h1>
           {% endfor %}
-          <p class="text-sm">Stock Threshold</p>
-
+          <p>Stock Threshold</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ total_profit|intcomma }}</h1>
-          <p class="text-sm">{% if total_profit > 0 %}Profit{% else %}Loss{% endif %}</p>
+        <div class="dash-card">
+          <h1>{{ total_profit|intcomma }}</h1>
+          <p>{% if total_profit > 0 %}Profit{% else %}Loss{% endif %}</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ total_users }}</h1>
-          <p class="text-sm">Total Staff</p>
+        <div class="dash-card">
+          <h1>{{ total_users }}</h1>
+          <p>Total Staff</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ pending_sales }}</h1>
-          <p class="text-sm">Pending</p>
+        <div class="dash-card">
+          <h1>{{ pending_sales }}</h1>
+          <p>Pending</p>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
-          <h1 class="text-2xl font-bold">{{ completed_sales }}</h1>
-          <p class="text-sm">Completed</p>
+        <div class="dash-card">
+          <h1>{{ completed_sales }}</h1>
+          <p>Completed</p>
         </div>
 
-        <!-- action cards -->
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
+        <div class="dash-card">
           <h5 class="font-semibold mb-2">View All Stock</h5>
           <a href="/allstock" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">Check Out</a>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
+        <div class="dash-card">
           <h5 class="font-semibold mb-2">View All Sales</h5>
           <a href="/allsales" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">Check Out</a>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
+        <div class="dash-card">
           <h5 class="font-semibold mb-2">View All Staff</h5>
           <a href="/allusers" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">Check Out</a>
         </div>
 
-
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
+        <div class="dash-card">
           <h5 class="font-semibold mb-2">Monthly Sales Report</h5>
           <a href="/salesreport" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">View</a>
         </div>
 
-        <div class="text-center p-6 rounded-2xl shadow bg-black text-yellow-400">
+        <div class="dash-card">
           <h5 class="font-semibold mb-2">Monthly Stock Report</h5>
           <a href="/monthlyreport" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">View</a>
         </div>
@@ -137,12 +203,12 @@
     </main>
   </div>
 
- <!-- footer -->
-<footer class="bg-black py-4 mt-auto">
-  <div class="container mx-auto text-center text-sm px-4 text-yellow-400">
-    <p>© 2025 Mayondo Wood and Furniture. All Rights Reserved. Designed by Racheal Acio.</p>
-  </div>
-</footer>    
+  <!-- Footer -->
+  <footer class="bg-black py-4 mt-auto">
+    <div class="container mx-auto text-center text-sm px-4 text-yellow-400">
+      <p>© 2025 Mayondo Wood and Furniture. All Rights Reserved. Designed by Racheal Acio.</p>
+    </div>
+  </footer>    
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

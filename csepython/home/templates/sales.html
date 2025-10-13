@@ -1,279 +1,14 @@
-{% comment %} {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sales Form</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-  }
-
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  /* Wrapper */
-  .content-wrapper {
-    display: flex;
-    flex: 1;
-    gap: 20px;
-    padding: 20px;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  /* Sidebar */
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background-color: #000;
-    color: #ffd700;
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-  }
-
-  .sidebar img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-  }
-
-  .sidebar a {
-    color: #ffd700;
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    transition: background-color 0.2s;
-  }
-
-  .sidebar a:hover {
-    background-color: #1a1a1a;
-  }
-
-  /* Form Section */
-  .form-section {
-    background-color: #fff;
-    color: #000;
-    width: 100%;
-    max-width: 500px;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    margin-left: 200px;
-  }
-
-  .form-section h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #000;
-    font-size: 32px;
-    font-weight: bold;
-  }
-
-  label {
-    display: block;
-    color: #000;
-    font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 5px;
-  }
-
-  input, textarea, select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    border: 1px solid #cccccc;
-    background-color: #fff;
-    color: #000;
-  }
-
-  /* Checkbox Centered */
-  .checkbox-inline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-    margin-bottom: 15px;
-  }
-
-  .checkbox-inline input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #ffd700;
-    cursor: pointer;
-  }
-
-  .checkbox-inline label {
-    color: #000;
-    font-weight: bold;
-  }
-
-  /* Submit button */
-  .btn-black {
-    margin: 25px auto 0 auto;
-    display: block;
-    background-color: #000;
-    color: #ffd700;
-    font-size: 16px;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-black:hover {
-    background-color: #1a1a1a;
-  }
-
-  /* Footer */
-  footer {
-    background-color: #000;
-    color: #ffd700;
-    text-align: center;
-    padding: 15px 0;
-    margin-top: auto;
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .content-wrapper {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .sidebar {
-      position: relative;
-      width: 90%;
-      flex-direction: row;
-      justify-content: space-around;
-      padding: 10px;
-    }
-
-    .form-section {
-      margin-left: 0;
-      width: 90%;
-      padding: 20px;
-    }
-  }
-</style>
-</head>
-<body>
-
-<div class="content-wrapper">
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-    <nav class="flex flex-col w-full">
-      <a href="/dashboard">Dashboard</a>
-      <a href="/stock/">Add Stock</a>
-      <a href="/sales/">Add Sale</a>
-      <a href="/register/">Add User</a>
-      <a href="/allstock/">All Stock</a>
-      <a href="/allsales/">All Sales</a>
-      <a href="/allusers/">All Users</a>
-      <a href="{% url 'home' %}">Logout</a>
-    </nav>
-  </div>
-
-  <!-- Form Section -->
-  <div class="form-section">
-    <h2>Transaction Records</h2>
-    <form action="/sales/" method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      {{ error }}
-
-      <label for="customername">Customer Name</label>
-      <input id="customername" name="customername" placeholder="Customer Name" 
-      value="{{ form_data.customername|default:'' }}" required>
-      {% if errors.customername %}
-      <div class="error">{{ errors.customername }}</div>
-      {% endif %}
-
-      <label for="producttype">Product Type</label>
-      <input type="text" id="producttype" name="producttype" placeholder="Product Type" required>
-
-      <label for="productname">Product Name</label>
-      <select name="productname">
-        {% for product in all_products %}
-          <option value="{{ product.id }}">{{ product.productname }}</option>
-        {% endfor %}
-      </select>
-
-      <label for="quantity">Quantity</label>
-      <input type="number" id="quantity" min="1" name="quantity" required>
-
-      <label for="sellingprice_unitcost">Unit Cost</label>
-      <input type="sellingprice_unitcost" id="sellingprice_unitcost" name="sellingprice_unitcost" required>
-
-      <label for="paymentmethod">Payment Method</label>
-      <input type="text" id="paymentmethod" name="paymentmethod" placeholder="Payment Method">
-
-      <label for="is_paid">Payment Received</label>
-      <select name="is_paid">
-        <option value="True">Completed</option>
-        <option value="False">Pending</option>
-      </select>
-
-      <!-- Centered Checkbox -->
-      <div class="checkbox-inline">
-        <label for="transport_offered">Transport Offered</label>
-        <input type="checkbox" id="transport_offered" name="transport_offered" value="1">
-      </div>
-
-      <label for="date">Date</label>
-      <input type="date" id="date" name="date">
-
-      <label for="salesagentname">Sales Agent Name</label>
-      <select name="salesagentname">
-        {% for agent in all_agents %}
-          <option value="{{ agent.id }}">{{ agent.username }}</option>
-        {% endfor %}
-      </select>
-
-      <button type="submit" class="btn-black">Submit</button>
-    </form>
-  </div>
-</div>
-
-<footer>
-  © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
-</footer>
-
-</body>
-</html> {% endcomment %}
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sales Form</title>
 <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Sales Form</title>
+
+
 <style>
   html, body {
     height: 100%;
@@ -288,29 +23,59 @@
     min-height: 100vh;
   }
 
-  /* Wrapper */
-  .content-wrapper {
+  /* ✅ Unified Header + Sidebar Layout */
+  .layout {
     display: flex;
-    flex: 1;
-    gap: 20px;
-    padding: 20px;
-    align-items: flex-start;
-    justify-content: center;
+    min-height: 100vh;
+    flex-direction: column;
   }
 
-  /* Sidebar */
-  .sidebar {
+  .header {
     position: fixed;
     top: 0;
-    left: 0;
-    bottom: 0;
+    left: 180px; /* same width as sidebar */
+    right: 0;
+    height: 60px;
     background-color: #000;
     color: #ffd700;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 100;
+  }
+
+  .logout-btn {
+    display: flex;
+    align-items: center;
+    color: #ffd700;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .logout-btn svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+
+  .logout-btn:hover { color: #e6c200; }
+
+  /* ✅ Sidebar (touches header + footer) */
+  .sidebar {
+    position: fixed;
+    top: 0; /* now starts at very top, connected to header */
+    left: 0;
+    bottom: 0;
     width: 180px;
+    background-color: #000;
+    color: #ffd700;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;
+    padding-top: 80px; /* push content below header visually */
+    overflow-y: auto;
   }
 
   .sidebar img {
@@ -333,8 +98,15 @@
     transition: background-color 0.2s;
   }
 
-  .sidebar a:hover {
-    background-color: #1a1a1a;
+  .sidebar a:hover { background-color: #1a1a1a; }
+
+  /* Main content wrapper */
+  .content-wrapper {
+    display: flex;
+    flex: 1;
+    margin-left: 180px; /* leave room for sidebar */
+    margin-top: 80px; /* leave room for fixed header */
+    padding: 20px;
   }
 
   /* Form Section */
@@ -346,7 +118,7 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    margin-left: 200px;
+    margin: 0 auto;
   }
 
   .form-section h2 {
@@ -391,10 +163,7 @@
     cursor: pointer;
   }
 
-  .checkbox-inline label {
-    color: #000;
-    font-weight: bold;
-  }
+  .checkbox-inline label { color: #000; font-weight: bold; }
 
   .btn-black {
     margin: 25px auto 0 auto;
@@ -409,15 +178,9 @@
     transition: background-color 0.3s ease;
   }
 
-  .btn-black:hover {
-    background-color: #1a1a1a;
-  }
+  .btn-black:hover { background-color: #1a1a1a; }
 
-  .error {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 5px;
-  }
+  .error { color: red; font-size: 0.9em; margin-top: 5px; }
 
   footer {
     background-color: #000;
@@ -429,165 +192,158 @@
 
   /* Responsive */
   @media (max-width: 768px) {
-    .content-wrapper {
-      flex-direction: column;
-      align-items: center;
+    .header {
+      left: 0;
+      width: 100%;
     }
-
     .sidebar {
-      position: relative;
-      width: 90%;
+      position: static;
       flex-direction: row;
+      width: 100%;
       justify-content: space-around;
       padding: 10px;
+      height: auto;
     }
-
+    .content-wrapper {
+      margin: 0;
+      padding-top: 100px;
+    }
     .form-section {
       margin-left: 0;
       width: 90%;
       padding: 20px;
+      margin-top: 0;
     }
   }
 </style>
 </head>
+
 <body>
 
+<!-- Sidebar -->
+<div class="sidebar">
+  <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
+  {% if role == "manager" %}
+    
+    <!-- Include Font Awesome in your <head> -->
+
+
+<nav class="flex flex-col gap-2">
+  <a href="/dashboard" class="flex items-center gap-2">
+    <i class="fa-solid fa-gauge"></i> Dashboard
+  </a>
+  <a href="/stock/" class="flex items-center gap-2">
+    <i class="fa-solid fa-boxes-stacked"></i> Add Stock
+  </a>
+  <a href="/sales/" class="flex items-center gap-2">
+    <i class="fa-solid fa-cart-plus"></i> Add Sale
+  </a>
+  <a href="/register/" class="flex items-center gap-2">
+    <i class="fa-solid fa-user-plus"></i> Add Staff
+  </a>
+  <a href="/allstock/" class="flex items-center gap-2">
+    <i class="fa-solid fa-box"></i> All Stock
+  </a>
+  <a href="/allsales/" class="flex items-center gap-2">
+    <i class="fa-solid fa-receipt"></i> All Sales
+  </a>
+  <a href="/allusers/" class="flex items-center gap-2">
+    <i class="fa-solid fa-users"></i> All Staff
+  </a>
+</nav>
+
+  {% endif %}
+  {% if role == "salesagent" %}
+    <nav class="flex flex-col gap-2 text-gray-800">
+  <a href="/sales/" class="flex items-center gap-2 hover:text-white">
+    <i class="fa-solid fa-cart-plus"></i>
+    <span>Add Sale</span>
+  </a>
+
+  <a href="/allsales/" class="flex items-center gap-2 hover:text-white">
+    <i class="fa-solid fa-list"></i>
+    <span>All Sales</span>
+  </a>
+</nav>
+  {% endif %}
+</div>
+
+<!-- Header (connected to sidebar) -->
+<div class="header">
+  <a href="{% url 'logout' %}" class="logout-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
+         viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+    </svg>
+    Logout
+  </a>
+</div>
+
+<!-- Main Content -->
 <div class="content-wrapper">
-
-  <div>
-      {% if role == "manager" %}
-  <a href="/dashboard" class="btn btn-primary ml-[]">Back to Dashboard</a>
-{% endif %}
-  </div>
-
-  <!-- sidebar -->
-  <div class="sidebar">
-    <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-    {% if role == "manager" %}
-            <nav class="flex flex-col gap-2">
-                <a href="/dashboard">Dashboard</a>
-                <a href="/stock/">Add Stock</a>
-                <a href="/sales/">Add Sale</a>
-                <a href="/register/">Add User</a>
-                <a href="/allstock/">All Stock</a>
-                <a href="/allsales/">All Sales</a>
-                <a href="/allusers/">All Users</a>
-                <a href="{% url 'logout' %}" class="mt-auto">Logout</a>
-            </nav>
-            {% endif %}
-
-            {% if role == "salesagent" %}
-            <nav class="flex flex-col gap-2">
-                <a href="/sales/">Add Sale</a>
-                <a href="/allsales/">All Sales</a>
-                <a href="{% url 'logout' %}" class="mt-auto">Logout</a>
-                
-            </nav>
-            {% endif %}
-  </div>
-  
-  <!--form-->
   <div class="form-section">
     <h2>Transaction Records</h2>
     <form action="/sales/" method="post">
       {% csrf_token %}
-
-      <!-- customer name -->
       <label for="customername">Customer Name</label>
-      <input id="customername" name="customername" placeholder="Customer Name" 
-             value="{{ form_data.customername|default:'' }}">
-      {% if errors.customername %}
-        <div class="error">{{ errors.customername }}</div>
-      {% endif %}
+      <input id="customername" name="customername" value="{{ form_data.customername|default:'' }}">
+      {% if errors.customername %}<div class="error">{{ errors.customername }}</div>{% endif %}
 
-      <!-- product type -->
       <label for="producttype">Product Type</label>
-      <input type="text" id="producttype" name="producttype" placeholder="Product Type" 
-             value="{{ form_data.producttype|default:'' }}">
-      {% if errors.producttype %}
-        <div class="error">{{ errors.producttype }}</div>
-      {% endif %}
+      <input type="text" id="producttype" name="producttype" value="{{ form_data.producttype|default:'' }}">
+      {% if errors.producttype %}<div class="error">{{ errors.producttype }}</div>{% endif %}
 
-      <!-- product name -->
       <label for="productname">Product Name</label>
       <select name="productname">
         <option value="">Select a product</option>
         {% for product in all_products %}
-          <option value="{{ product.id }}" 
-            {% if form_data.productname == product.id|stringformat:"s" %}selected{% endif %}>
+          <option value="{{ product.id }}" {% if form_data.productname == product.id|stringformat:"s" %}selected{% endif %}>
             {{ product.productname }}
           </option>
         {% endfor %}
       </select>
-      {% if errors.productname %}
-        <div class="error">{{ errors.productname }}</div>
-      {% endif %}
+      {% if errors.productname %}<div class="error">{{ errors.productname }}</div>{% endif %}
 
-      <!-- quantity -->
       <label for="quantity">Quantity</label>
-      <input type="number" id="quantity" min="1" name="quantity" 
-             value="{{ form_data.quantity|default:'' }}">
-      {% if errors.quantity %}
-        <div class="error">{{ errors.quantity }}</div>
-      {% endif %}
+      <input type="number" id="quantity" min="1" name="quantity" value="{{ form_data.quantity|default:'' }}">
+      {% if errors.quantity %}<div class="error">{{ errors.quantity }}</div>{% endif %}
 
-      <!-- unit cost -->
       <label for="sellingprice_unitcost">Unit Cost</label>
-      <input type="number" id="sellingprice_unitcost" name="sellingprice_unitcost" 
-             value="{{ form_data.sellingprice_unitcost|default:'' }}">
-      {% if errors.sellingprice_unitcost %}
-        <div class="error">{{ errors.sellingprice_unitcost }}</div>
-      {% endif %}
+      <input type="number" id="sellingprice_unitcost" name="sellingprice_unitcost" value="{{ form_data.sellingprice_unitcost|default:'' }}">
+      {% if errors.sellingprice_unitcost %}<div class="error">{{ errors.sellingprice_unitcost }}</div>{% endif %}
 
-      <!-- payment method -->
       <label for="paymentmethod">Payment Method</label>
-      <input type="text" id="paymentmethod" name="paymentmethod" 
-             value="{{ form_data.paymentmethod|default:'' }}" placeholder="Payment Method">
-      {% if errors.paymentmethod %}
-        <div class="error">{{ errors.paymentmethod }}</div>
-      {% endif %}
+      <input type="text" id="paymentmethod" name="paymentmethod" value="{{ form_data.paymentmethod|default:'' }}">
+      {% if errors.paymentmethod %}<div class="error">{{ errors.paymentmethod }}</div>{% endif %}
 
-      <!-- payment received -->
       <label for="is_paid">Payment Received</label>
       <select name="is_paid">
         <option value="True" {% if form_data.is_paid == "True" %}selected{% endif %}>Completed</option>
         <option value="False" {% if form_data.is_paid == "False" %}selected{% endif %}>Pending</option>
       </select>
-      {% if errors.is_paid %}
-        <div class="error">{{ errors.is_paid }}</div>
-      {% endif %}
+      {% if errors.is_paid %}<div class="error">{{ errors.is_paid }}</div>{% endif %}
 
-      <!-- transport offered -->
       <div class="checkbox-inline">
-        <label for="transport_offered">Transport Offered</label>
-        <input type="checkbox" id="transport_offered" name="transport_offered" value="1"
-          {% if form_data.transport_offered %}checked{% endif %}>
+        <label for="transport_offered mr-[32rem]">Transport Offered</label>
+        <input type="checkbox" id="transport_offered" name="transport_offered" value="1" {% if form_data.transport_offered %}checked{% endif %}>
       </div>
-      {% if errors.transport_offered %}
-        <div class="error">{{ errors.transport_offered }}</div>
-      {% endif %}
+      {% if errors.transport_offered %}<div class="error">{{ errors.transport_offered }}</div>{% endif %}
 
-      <!-- date -->
       <label for="date">Date</label>
       <input type="date" id="date" name="date" value="{{ form_data.date|default:'' }}">
-      {% if errors.date %}
-        <div class="error">{{ errors.date }}</div>
-      {% endif %}
+      {% if errors.date %}<div class="error">{{ errors.date }}</div>{% endif %}
 
-      <!-- sales agent -->
       <label for="salesagentname">Sales Agent Name</label>
       <select name="salesagentname">
         <option value="">Select an agent</option>
         {% for agent in all_agents %}
-          <option value="{{ agent.id }}" 
-            {% if form_data.salesagentname == agent.id|stringformat:"s" %}selected{% endif %}>
+          <option value="{{ agent.id }}" {% if form_data.salesagentname == agent.id|stringformat:"s" %}selected{% endif %}>
             {{ agent.username }}
           </option>
         {% endfor %}
       </select>
-      {% if errors.salesagentname %}
-        <div class="error">{{ errors.salesagentname }}</div>
-      {% endif %}
+      {% if errors.salesagentname %}<div class="error">{{ errors.salesagentname }}</div>{% endif %}
 
       <button type="submit" class="btn-black">Submit</button>
     </form>

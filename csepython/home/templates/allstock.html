@@ -6,19 +6,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>Stock Table</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>All Stock</title>
 
   <style>
     html, body {
       height: 100%;
       margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
       display: flex;
       flex-direction: column;
+      background-color: #f3f4f6;
     }
 
+    /* Sticky Header */
+    .header {
+      background-color: #000;
+      color: #ffd700;
+      padding: 0.8rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header h1 {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: color 0.2s;
+      margin-top: -4px;
+    }
+
+    .logout-btn svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 6px;
+    }
+
+    .logout-btn:hover {
+      color: #e6c200;
+    }
+
+    /* Layout */
     .main-wrapper {
       display: flex;
       flex: 1;
@@ -26,19 +72,20 @@
       overflow: hidden;
     }
 
-    /* Sidebar */
+    /* Reduced Sidebar without scrolling */
     .sidebar {
-      width: 16rem;
+      width: 13rem; /* reduced from 16rem */
       background-color: #000000;
+      color: #ffd700;
       display: flex;
       flex-direction: column;
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-      color: #ffd700; /* Gold text for sidebar */
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
+      /* removed overflow-y: auto; */
     }
 
     .sidebar a {
-      color: #ffd700; /* Gold link text */
+      color: #ffd700;
       padding: 0.5rem 1rem;
       text-decoration: none;
       display: block;
@@ -46,16 +93,16 @@
     }
 
     .sidebar a:hover {
-      background-color: #1a1a1a; /* Slightly darker on hover */
+      background-color: #1a1a1a;
     }
 
     main {
       flex: 1;
       padding: 2rem;
       overflow-y: auto;
-      background-color: #f3f4f6;
     }
 
+    /* Table */
     .table-custom {
       width: 100%;
       border-collapse: collapse;
@@ -81,6 +128,7 @@
     .table-custom tbody tr:nth-child(odd) { background-color: #ffffff; }
     .table-custom tbody tr:hover { background-color: #f0f8ff; }
 
+    /* Buttons */
     .action-btn {
       display: inline-flex;
       align-items: center;
@@ -101,46 +149,69 @@
     .btn-gold {
       background-color: #ffd700;
       color: #000000;
-    }
-    .btn-gold:hover {
-      background-color: #e6c200;
-      color: #000000;
+      border-radius: 4px;
+      font-weight: 600;
+      padding: 6px 14px;
     }
 
+    .btn-gold:hover {
+      background-color: #e6c200;
+    }
+
+    /* Footer */
     footer {
       background-color: #000000;
-      color: #ffd700; /* Gold footer text */
+      color: #ffd700;
       text-align: center;
       padding: 1rem;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
-  <div class="main-wrapper">
+  <!-- Sticky Header -->
+  <div class="header">
+    <a href="{% url 'logout' %}" class="logout-btn ml-[57rem]">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+      </svg>
+      Logout
+    </a>
+  </div>
 
+  <!-- Page Layout -->
+  <div class="main-wrapper">
+    
     <!-- Sidebar -->
-    <div class="sidebar w-36">
-      <div class="flex justify-center mb-8">
-        <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-32 h-32 rounded-full object-cover shadow-lg">
-      </div>
-      
-      <a href="/dashboard">Dashboard</a>
+    <div class="sidebar">
+      <div class="flex justify-center mt-1">
+    <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-20 h-20 rounded-full object-cover shadow-lg">
+</div>
+<a href="/dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+<a href="/stock/"><i class="fa-solid fa-boxes-stacked"></i> Add Stock</a>
+<a href="/sales/"><i class="fa-solid fa-cart-plus"></i> Add Sale</a>
+<a href="/register/"><i class="fa-solid fa-user-plus"></i> Add Staff</a>
+<a href="/allstock/"><i class="fa-solid fa-box"></i> All Stock</a>
+<a href="/allsales/"><i class="fa-solid fa-receipt"></i> All Sales</a>
+<a href="/allusers/"><i class="fa-solid fa-users"></i> All Staff</a>
+
+      {% comment %} <a href="/dashboard">Dashboard</a>
       <a href="/stock/">Add Stock</a>
       <a href="/sales/">Add Sale</a>
       <a href="/register/">Add Staff</a>
       <a href="/allstock/">All Stock</a>
       <a href="/allsales/">All Sales</a>
-      <a href="/allusers/">All Staff</a>
-      <a href="{% url 'logout' %}">Logout</a>
-      
+      <a href="/allusers/">All Staff</a> {% endcomment %}
     </div>
 
     <!-- Main Content -->
     <main>
       <div class="mb-4">
-        <a href="/stock/" class="inline-block px-4 py-2 btn-gold rounded hover:bg-yellow-600">Add Stock</a>
+        <a href="/stock/" class="btn-gold">Add Stock</a>
       </div>
+
       <div class="overflow-x-auto">
         <table class="table-custom w-full">
           <thead>
@@ -164,10 +235,22 @@
               <td>{{ stock.costprice }}</td>
               <td>{{ stock.date }}</td>
               <td class="flex gap-1">
-                <a href="/stock/view/{{stock.id}}" class="action-btn btn-view">View</a>
-                <a href="/stock/update/{{ stock.id }}" class="action-btn btn-edit">Edit</a>
-                <a href="/stock/delete/{{stock.id}}" class="action-btn btn-delete">Delete</a>
+                <a href="/stock/view/{{ stock.id }}" class="action-btn btn-view">
+  <i class="fa-solid fa-eye"></i> 
+</a>
+<a href="/stock/update/{{ stock.id }}" class="icon-link text-blue-500">
+  <i class="fa-solid fa-pen-to-square"></i>
+</a>
+
+
+
+{% comment %} <a href="/stock/delete/{{ stock.id }}" class="action-btn btn-delete">
+  <i class="fa-solid fa-trash"></i>
+</a> {% endcomment %}
+
+                
               </td>
+              
             </tr>
             {% endfor %}
           </tbody>

@@ -3,233 +3,329 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>All Sales</title>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        /* Footer always at bottom */
-        .main-content {
-            display: flex;
-            flex: 1 0 auto;
-            min-height: 0;
-        }
-        footer {
-            background-color: #000000;
-            color: #ffd700; /* Gold footer text */
-            text-align: center;
-            padding: 15px 0;
-            flex-shrink: 0;
-            width: 100%;
-        }
+  <title>All Sales</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+    }
 
-        /* Sidebar */
-        .sidebar {
-            background-color: #000000;
-            color: #ffd700; /* Gold sidebar text */
-            width: 180px;
-            flex-shrink: 0;
-        }
-        .sidebar a {
-            color: #ffd700; /* Gold text for links */
-            display: block;
-            padding: 10px 12px;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            background-color: #1a1a1a; /* Slightly darker on hover */
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* Table */
-        .table-container {
-            flex: 1;
-            overflow-x-auto;
-            padding: 20px;
-        }
-        .table-responsive {
-            width: 95%; 
-            margin: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            background-color: #fdfdff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-        table thead {
-            background-color: #000000;
-            color: #ffd700;
-        }
-        table th,
-        table td {
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid #dcdcdc;
-        }
-        table tbody tr:nth-child(even) {
-            background-color: whitesmoke;
-        }
-        table tbody tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-        table tbody tr:hover {
-            background-color: #f0f8ff;
-        }
+    /* Header Section */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #000;
+      color: #ffd700;
+      padding: 12px 25px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
 
-        /* Action links with icons */
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            text-decoration: none;
-        }
-        .action-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-        .text-green-500 { color: #2e8b57; }
-        .text-green-500:hover { background-color: #e0f2e9; }
-        .text-red-500 { color: #b22222; }
-        .text-red-500:hover { background-color: #fbeaea; }
-        .text-gray-700 { color: #4b4b4b; }
-        .text-gray-700:hover { background-color: #f2f2f2; }
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-        /* Add Sale button */
-        .btn-gold {
-            margin-bottom: 15px;
-            padding: 6px 12px;
-            background-color: #ffd700;
-            color: #000;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-gold:hover { background-color: #e6c200; }
-    </style>
+    /* Logout button (back in original position, not sticky) */
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      background-color: #000;
+      color: #ffd700;
+      border: 1px solid #ffd700;
+      border-radius: 6px;
+      padding: 6px 12px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .logout-btn:hover {
+      background-color: #1a1a1a;
+    }
+
+    .logout-btn svg {
+      margin-right: 5px;
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Layout */
+    .main-content {
+      display: flex;
+      flex: 1 0 auto;
+      min-height: 0;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background-color: #000;
+      color: #ffd700;
+      width: 180px;
+      flex-shrink: 0;
+    }
+    .sidebar a {
+      color: #ffd700;
+      display: block;
+      padding: 10px 12px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #1a1a1a;
+    }
+
+    /* Table Styling */
+    .table-container {
+      flex: 1;
+      overflow-x: auto;
+      padding: 20px;
+    }
+
+    .table-responsive {
+      width: 95%;
+      margin: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background-color: #fdfdff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    table thead {
+      background-color: #000000;
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    table th,
+    table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #dcdcdc;
+    }
+
+    table tbody tr:nth-child(even) {
+      background-color: whitesmoke;
+    }
+
+    table tbody tr:nth-child(odd) {
+      background-color: #ffffff;
+    }
+
+    table tbody tr:hover {
+      background-color: #f0f8ff;
+    }
+
+    /* Action icons */
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .action-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .text-green-500 { color: #2e8b57; }
+    .text-red-500 { color: #b22222; }
+    .text-gray-700 { color: #4b4b4b; }
+
+    /* Buttons */
+    .btn-gold {
+      margin-bottom: 15px;
+      padding: 6px 12px;
+      background-color: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-gold:hover {
+      background-color: #e6c200;
+    }
+
+    .btn-black {
+      background-color: #000;
+      color: #ffd700;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .btn-black:hover {
+      background-color: #1a1a1a;
+    }
+
+    footer {
+      background-color: #000;
+      color: #ffd700;
+      text-align: center;
+      padding: 15px 0;
+      flex-shrink: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
 
+<!-- Header Section -->
+<div class="header">
+  
+  <a href="{% url 'logout' %}" class="logout-btn ml-[57rem]">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
+         viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+    </svg>
+    Logout
+  </a>
+</div>
+
 <div class="main-content">
-    <!-- Sidebar -->
-    <div class="sidebar flex-shrink-0">
-        <div class="flex flex-col flex-1 p-3">
-            <div class="flex justify-center mb-6">
-                <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-28 h-28 rounded-full object-cover shadow-lg">
-            </div>
-            {% if role == "manager" %}
-            <nav class="flex flex-col gap-2">
-                <a href="/dashboard">Dashboard</a>
-                <a href="/stock/">Add Stock</a>
-                <a href="/sales/">Add Sale</a>
-                <a href="/register/">Add User</a>
-                <a href="/allstock/">All Stock</a>
-                <a href="/allsales/">All Sales</a>
-                <a href="/allusers/">All Users</a>
-                <a href="{% url 'logout' %}" class="mt-auto">Logout</a>
-            </nav>
-            {% endif %}
-            {% if role == "salesagent" %}
-            <nav class="flex flex-col gap-2">
-                
-                
-                <a href="/sales/">Add Sale</a>
-                <a href="/allsales/">All Sales</a>
-                <a href="{% url 'logout' %}" class="mt-auto">Logout</a>
-                
-            </nav>
-            {% endif %}
-        </div>
+  <!-- Sidebar -->
+  <div class="sidebar flex-shrink-0">
+    <div class="flex flex-col flex-1 p-3">
+      <div class="flex justify-center mb-6">
+        <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-28 h-28 rounded-full object-cover shadow-lg">
+      </div>
+
+      {% if role == "manager" %}
+      <nav class="flex flex-col gap-2">
+  <a href="/dashboard" class="flex items-center gap-2">
+    <i class="fa-solid fa-gauge"></i> Dashboard
+  </a>
+  <a href="/stock/" class="flex items-center gap-2">
+    <i class="fa-solid fa-boxes-stacked"></i> Add Stock
+  </a>
+  <a href="/sales/" class="flex items-center gap-2">
+    <i class="fa-solid fa-cart-plus"></i> Add Sale
+  </a>
+  <a href="/register/" class="flex items-center gap-2">
+    <i class="fa-solid fa-user-plus"></i> Add Staff
+  </a>
+  <a href="/allstock/" class="flex items-center gap-2">
+    <i class="fa-solid fa-box"></i> All Stock
+  </a>
+  <a href="/allsales/" class="flex items-center gap-2">
+    <i class="fa-solid fa-receipt"></i> All Sales
+  </a>
+  <a href="/allusers/" class="flex items-center gap-2">
+    <i class="fa-solid fa-users"></i> All Staff
+  </a>
+</nav>
+      {% endif %}
+
+      {% if role == "salesagent" %}
+
+      <nav class="flex flex-col gap-2 text-gray-800">
+  <a href="/sales/" class="flex items-center gap-2 hover:text-white">
+    <i class="fa-solid fa-cart-plus"></i>
+    <span>Add Sale</span>
+  </a>
+
+  <a href="/allsales/" class="flex items-center gap-2 hover:text-white">
+    <i class="fa-solid fa-list"></i>
+    <span>All Sales</span>
+  </a>
+</nav>
+
+      
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <div class="mb-3">
+      <a href="/sales/"><button class="btn-gold">Add Sale</button></a>
+      {% if role == "manager" %}
+        <a href="/dashboard"><button class="btn-black">Dashboard</button></a>
+      {% endif %}
     </div>
 
-    <!-- Main content -->
-    <div class="table-container">
-        <a href="/sales/">
-            <button class="btn-gold" type="submit">Add Sale</button>
-        </a>
-        {% if role == "manager" %}
-  <a href="/dashboard" class="btn btn-primary">Back to Dashboard</a>
-{% endif %}
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Product type</th>
+            <th>Product name</th>
+            <th>Qty</th>
+            <th>Unitcost</th>
+            <th>Selling price</th>
+            <th>Payment method</th>
+            <th>Transport</th>
+            <th>Agent</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sale in all_sales_details %}
+          <tr>
+            <td>{{ sale.customername }}</td>
+            <td>{{ sale.producttype }}</td>
+            <td>{{ sale.productname }}</td>
+            <td>{{ sale.quantity }}</td>
+            <td>{{ sale.sellingprice_unitcost }}</td>
+            <td>{{ sale.sellingprice }}</td>
+            <td>{{ sale.paymentmethod }}</td>
+            <td>{% if sale.transport_offered %} Transport Offered {{ sale.transportfare }} {% else %} Not offered {% endif %}</td>
+            <td>{{ sale.salesagentname }}</td>
+            <td>{{ sale.date }}</td>
+            <td>{{ sale.totalprice }}</td>
+            <td class="flex gap-1">
+              <!-- View -->
+<a href="/sales/view/{{ sale.id }}" class="action-btn text-green-500" title="View">
+  <i class="fa-solid fa-eye"></i>
+</a>
 
-        <div class="table-responsive">
-            <table class="table-table-striped mt-2">
-                <thead>
-                    <tr>
-                        <th>Customer</th>
-                        <th>Product type</th>
-                        <th>Product name</th>
-                        <th>Qty</th>
-                        <th>Unitcost</th>
-                        <th>Selling price</th>
-                        <th>Payment method</th>
-                        <th>Transport</th>
-                        <th>Agent</th>
-                        <th>Date</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for sale in all_sales_details %}
-                    <tr>
-                        <td>{{ sale.customername }}</td>
-                        <td>{{ sale.producttype }}</td>
-                        <td>{{ sale.productname }}</td>
-                        <td>{{ sale.quantity }}</td>
-                        <td>{{ sale.sellingprice_unitcost }}</td>
-                        <td>{{ sale.sellingprice }}</td>
-                        <td>{{ sale.paymentmethod }}</td>
-                        <td>{% if sale.transport_offered %} Transport Offered {{ sale.transportfare }} {% else %} Not offered {% endif %}</td>
-                        <td>{{ sale.salesagentname }}</td>
-                        <td>{{ sale.date }}</td>
-                        <td>{{ sale.totalprice }}</td>
-                        <td class="flex gap-1">
-                            <!-- View -->
-                            <a href="/sales/view/{{sale.id}}" class="action-btn text-green-500" title="View">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
-                                </svg>
-                            </a>
-                            <!-- Edit -->
-                            <a href="/sales/update/{{sale.id}}" class="action-btn text-red-500" title="Edit">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M11 4h6v6m-6 0l-6 6v6h6l6-6V4h-6z"/>
-                                </svg>
-                            </a>
-                            <!-- Delete -->
-                            <a href="/sales/delete/{{sale.id}}" class="action-btn text-gray-700" title="Delete">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5-4h4a2 2 0 0 1 2 2v1H8V5a2 2 0 0 1 2-2z"/>
-                                </svg>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<!-- Edit -->
+<a href="/sales/update/{{ sale.id }}" class="action-btn text-blue-500" title="Edit">
+  <i class="fa-solid fa-pen-to-square"></i>
+</a>
+
+{% comment %} <!-- Delete -->
+<a href="/sales/delete/{{ sale.id }}" class="action-btn text-red-700" title="Delete">
+  <i class="fa-solid fa-trash"></i>
+</a> {% endcomment %}
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
 <footer>
-    © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
+  © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

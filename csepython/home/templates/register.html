@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <title>Registration Form</title>
   <style>
     html, body {
@@ -13,7 +14,37 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f0f2f5;
     }
-    body { display: flex; min-height: 100vh; }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background-color: #000;
+      color: #ffd700;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      color: #ffd700;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .logout-btn svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+    }
+    .logout-btn:hover { color: #e6c200; }
+
+    /* Sidebar */
     .sidebar {
       background-color: #000;
       color: #ffd700;
@@ -45,6 +76,8 @@
       transition: background-color 0.2s;
     }
     .sidebar a:hover { background-color: #1a1a1a; }
+
+    /* Main wrapper */
     .main-wrapper {
       margin-left: 180px;
       display: flex;
@@ -59,6 +92,8 @@
       align-items: center;
       padding: 20px;
     }
+
+    /* Form section */
     .form-section {
       background-color: #fff;
       color: #000;
@@ -109,14 +144,16 @@
       transition: background-color 0.3s ease;
     }
     .btn-black:hover { background-color: #222; }
+
+    /* Footer */
     footer {
       background-color: #000;
       color: #ffd700;
       text-align: center;
       padding: 15px 0;
-      width: 100%;
       margin-top: auto;
     }
+
     @media (max-width: 768px) {
       .sidebar {
         position: relative;
@@ -134,26 +171,60 @@
   </style>
 </head>
 <body>
-
-  <!-- sidebar -->
-  <div class="sidebar">
-    <img src="{% static 'images/logo2.jpg' %}" alt="Logo" />
-    
-    <nav class="flex flex-col w-full">
-      
-      <a href="/dashboard">Dashboard</a>
-      <a href="/stock/">Add Stock</a>
-      <a href="/sales/">Add Sale</a>
-      <a href="/register/">Add Staff</a>
-      <a href="/allstock/">All Stock</a>
-      <a href="/allsales/">All Sales</a>
-      <a href="/allusers/">All Staffs</a>
-      <a href="{% url 'home' %}">Logout</a>
-    </nav>
-    
+  <!-- Header Section -->
+  <div class="header">
+    <a href="{% url 'logout' %}" class="logout-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
+           viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+      </svg>
+      Logout
+    </a>
   </div>
 
-   
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img src="{% static 'images/logo2.jpg' %}" alt="Logo" />
+    <!-- Add this in your <head> if not already included -->
+
+
+<div class="h-screen w-64 bg-black text-yellow-400 flex flex-col">
+  <nav class="flex flex-col flex-1 p-4 gap-2 overflow-y-auto">
+    <a href="/dashboard" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-gauge"></i> Dashboard
+    </a>
+
+    <a href="/stock/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-boxes-stacked"></i> Add Stock
+    </a>
+
+    <a href="/sales/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-cart-plus"></i> Add Sale
+    </a>
+
+    <a href="/register/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-user-plus"></i> Add Staff
+    </a>
+
+    <a href="/allstock/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-box"></i> All Stock
+    </a>
+
+    <a href="/allsales/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-money-bill-wave"></i> All Sales
+    </a>
+
+    <a href="/allusers/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
+      <i class="fa-solid fa-users"></i> All Staffs
+    </a>
+  </nav>
+</div>
+
+
+  
+
+  <!-- Main content -->
   <div class="main-wrapper">
     <div class="main-content">
       <div class="form-section">
@@ -161,73 +232,50 @@
 
         <form action="/register/" method="post">
           {% csrf_token %}
-
-          <!-- username -->
           <label for="username">Username</label>
-          <input type="text" name="username" id="username"
-                 value="{{ form_data.username|default:'' }}"
-                 placeholder="Enter username" />
-          {% if errors.username %}
-            <p class="error">{{ errors.username }}</p>
-          {% endif %}
+          <input type="text" name="username" id="username" value="{{ form_data.username|default:'' }}" placeholder="Enter username" />
+          {% if errors.username %}<p class="error">{{ errors.username }}</p>{% endif %}
 
-          <!-- email -->
           <label for="email">Email</label>
-          <input type="email" name="email" id="email"
-                 value="{{ form_data.email|default:'' }}"
-                 placeholder="Enter email" />
-          {% if errors.email %}
-            <p class="error">{{ errors.email }}</p>
-          {% endif %}
+          <input type="email" name="email" id="email" value="{{ form_data.email|default:'' }}" placeholder="Enter email" />
+          {% if errors.email %}<p class="error">{{ errors.email }}</p>{% endif %}
 
-          <!-- password -->
           <label for="password">Password</label>
           <input type="password" name="password" id="password" placeholder="Enter password" />
-          {% if errors.password %}
-            <p class="error">{{ errors.password }}</p>
-          {% endif %}
+          {% if errors.password %}<p class="error">{{ errors.password }}</p>{% endif %}
 
-          <!-- confirm password -->
           <label for="repeat_password">Confirm Password</label>
           <input type="password" name="repeat_password" id="repeat_password" placeholder="Confirm password" />
-          {% if errors.repeat_password %}
-            <p class="error">{{ errors.repeat_password }}</p>
-          {% endif %}
+          {% if errors.repeat_password %}<p class="error">{{ errors.repeat_password }}</p>{% endif %}
 
-          <!-- show password -->
-      <div class="flex items-center justify-start mb-6">
-        <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
-          <input type="checkbox" id="show-password" class="w-4 h-4">
-          Show Password
-        </label>
-      </div>
-          
-          <!-- role -->
+          <div class="flex items-center justify-start mb-6">
+            <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
+              <input type="checkbox" id="show-password" class="w-4 h-4"> Show Password
+            </label>
+          </div>
+
           <label for="role">Role</label>
           <select name="role" id="role">
             <option value="">Select Role</option>
             <option value="manager" {% if form_data.role == 'manager' %}selected{% endif %}>Manager</option>
             <option value="salesagent" {% if form_data.role == 'salesagent' %}selected{% endif %}>Sales Agent</option>
           </select>
-          {% if errors.role %}
-            <p class="error">{{ errors.role }}</p>
-          {% endif %}
+          {% if errors.role %}<p class="error">{{ errors.role }}</p>{% endif %}
 
           <button type="submit" class="btn-black">Sign Up</button>
         </form>
       </div>
     </div>
 
-    <!-- footer -->
+    <!-- Footer -->
     <footer>
       © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
     </footer>
   </div>
-  <!--show password -->
+
   <script>
     const showPassword = document.getElementById("show-password");
     const passwordField = document.getElementById("password");
-
     showPassword.addEventListener("change", function () {
       passwordField.type = this.checked ? "text" : "password";
     });

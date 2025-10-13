@@ -29,9 +29,24 @@
 <body class="bg-gray-100 p-4">
 
   <!-- Print Button -->
-  <div class="flex justify-end mb-4">
-    <button id="printButton" onclick="window.print()" class="px-4 py-2 bg-blue-500 text-white rounded">Print Receipt</button>
-  </div>
+  <div class="flex justify-end items-start gap-3 mb-6">
+  <!-- Print Button -->
+  <button id="printButton"
+          onclick="window.print()"
+          class="px-4 py-2 bg-yellow-400 text-black font-semibold rounded hover:bg-yellow-500 transition">
+    Print Receipt
+  </button>
+
+  <!-- Cancel Button -->
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" name="cancel"
+            class="px-4 py-2 bg-black text-yellow-400 font-semibold rounded hover:bg-gray-800 transition">
+      Cancel
+    </button>
+  </form>
+</div>
+
 
   <!-- Receipt -->
   <div id="receipt" class="mx-auto max-w-[400px] p-6 shadow-lg bg-white border border-gray-300">
@@ -124,13 +139,10 @@
     <div class="text-center mt-4 text-sm text-gray-500">
       Thank you for your purchase!<br>
       Goods once sold are not refundable.<br>
-      Contact support@example.com for inquiries.
+      Contact mayondo11@gmail.com for inquiries.
     </div>
 
-    <!-- Optional QR Code -->
-    <div class="text-center mt-4">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ request.build_absolute_uri }}&size=100x100" alt="QR Code">
-    </div>
+    
 
   </div>
 

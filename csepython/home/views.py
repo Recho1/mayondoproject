@@ -66,7 +66,7 @@ def stockpage(request):
                 if sent_unitcost <= 20000:
                     errors['costprice_unitcost'] = "Unit cost must be positive and above 20000."
             except ValueError:
-                errors['costprice_unitcost'] = "Unit cost must be a number."
+                errors['costprice_unitcost'] = "Unit cost  is must be a number."
 
         if not sent_date:
             errors['date'] = "Please enter a date."
@@ -407,7 +407,12 @@ def viewSingleUser(request,user_id):
     return render(request,"singleuser.html",context)
 
 
-# update sale
+
+
+        
+        
+
+#update sale
 def updatesale(request,sale_id):
     sale_to_update = Sales.objects.get(id=sale_id)
     if request.method == "POST":
@@ -424,8 +429,7 @@ def updatesale(request,sale_id):
         sent_transportfare = form_data.get('transportfare')
         sent_is_paid = form_data.get('is_paid')
         
-
-
+        
         if sent_transport_offered == '1':
             sent_transportfare = int(0.05 * sent_sellingprice)
         else:
@@ -474,6 +478,7 @@ def updatesale(request,sale_id):
             "products": Stock.objects.all(),
             "all_agents": SignUp.objects.all(),
             
+            
         
         }
 
@@ -481,33 +486,33 @@ def updatesale(request,sale_id):
 
 
 # deleting stock
-def deletestock(request,stock_id):
-    stock_to_delete = Stock.objects.get(id=stock_id)
-    context = {
-            'selected':stock_to_delete,
-            'path_url':"allstock"
-    } 
-    if request.method == 'POST':
-        stock_to_delete.delete()
+# def deletestock(request,stock_id):
+#     stock_to_delete = Stock.objects.get(id=stock_id)
+#     context = {
+#             'selected':stock_to_delete,
+#             'path_url':"allstock"
+#     } 
+#     if request.method == 'POST':
+#         stock_to_delete.delete()
         
 
-        return redirect('/allstock')
-    return render(request,'delete.html',context)
+#         return redirect('/allstock')
+#     return render(request,'delete.html',context)
 
-# delete sale
-def deletesale(request,sale_id):
-    sale_to_delete = Sales.objects.get(id=sale_id)
-    context = {
-            'selected':sale_to_delete,
-            'path_url':"allsales"
+# # delete sale
+# def deletesale(request,sale_id):
+#     sale_to_delete = Sales.objects.get(id=sale_id)
+#     context = {
+#             'selected':sale_to_delete,
+#             'path_url':"allsales"
 
-    } 
-    if request.method == 'POST':
-        sale_to_delete.delete()
+#     } 
+#     if request.method == 'POST':
+#         sale_to_delete.delete()
         
 
-        return redirect('/allsales')
-    return render(request,'delete.html',context)
+#         return redirect('/allsales')
+#     return render(request,'delete.html',context)
 
 
 def updateuser(request,user_id):
@@ -546,19 +551,19 @@ def updateuser(request,user_id):
         
     return render (request,"updateuser.html",context)
 
-def deleteuser(request,user_id):
-    user_to_delete = SignUp.objects.get(id=user_id)
-    context = {
-            'selected':user_to_delete,
-            'path_url':"allusers"
+# def deleteuser(request,user_id):
+#     user_to_delete = SignUp.objects.get(id=user_id)
+#     context = {
+#             'selected':user_to_delete,
+#             'path_url':"allusers"
 
-    } 
-    if request.method == 'POST':
-        user_to_delete.delete()
+#     } 
+#     if request.method == 'POST':
+#         user_to_delete.delete()
         
 
-        return redirect('/allusers')
-    return render(request,'delete.html',context)
+#         return redirect('/allusers')
+#     return render(request,'delete.html',context)
 
 
 
@@ -600,7 +605,7 @@ def updatestock(request,stock_id):
 
 
 # dashboard
-# @login_required
+
 def dashboardpage(request):
     
     if request.session.get('role') != 'manager':
@@ -661,12 +666,27 @@ def dashboardpage(request):
     }
     return render(request, 'dashboard.html', context)
 
+
+
 def sale_receipt(request, sale_id):
-    
     selected = get_object_or_404(Sales, id=sale_id)
-    
-    
+
+    # If the user clicked "Cancel", redirect back to All Sales
+    if request.method == 'POST' and 'cancel' in request.POST:
+        return redirect('/allsales/')
+
+    # Otherwise, show the receipt page
     return render(request, 'receipt.html', {'selected': selected})
+
+
+# def sale_receipt(request, sale_id):
+    
+#     selected = get_object_or_404(Sales, id=sale_id)
+
+#     return redirect('/allsales')
+    
+    
+#     return render(request, 'receipt.html', {'selected': selected})
 
 # logout
 def logoutpage(request):

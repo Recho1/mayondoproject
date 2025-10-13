@@ -88,16 +88,26 @@
 
       <label for="repeat_password">Confirm Password</label>
       <input type="password" name="repeat_password" id="repeat_password" value="{{ selected.repeat_password }}" required />
-
+      <div class="flex items-center justify-start mb-6">
+            <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
+              <input type="checkbox" id="show-password" class="w-4 h-4"> Show Password
+            </label>
+          </div>
       <label for="role">Role</label>
       <select name="role" id="role">
         <option value="manager" {% if selected.role == "manager" %}selected{% endif %}>Manager</option>
         <option value="salesagent" {% if selected.role == "salesagent" %}selected{% endif %}>Sales Agent</option>
       </select>
 
-      <button type="submit" class="btn-black-gold">Update Sale</button>
+      <button type="submit" class="btn-black-gold">Update Staff</button>
     </form>
   </div>
-
+<script>
+    const showPassword = document.getElementById("show-password");
+    const passwordField = document.getElementById("password");
+    showPassword.addEventListener("change", function () {
+      passwordField.type = this.checked ? "text" : "password";
+    });
+  </script>
 </body>
 </html>

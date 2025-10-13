@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from home.views import indexpage,stockpage,loginpage,registerpage,salespage,allsalespage,allstockpage,alluserspage,viewSingleSale,viewSingleStock,viewSingleUser,updatesale,deletestock,updatestock,deletesale,dashboardpage,updateuser,deleteuser,sale_receipt,logoutpage,monthly_stock_report,allsalesreport
+from home.views import indexpage,stockpage,loginpage,registerpage,salespage,allsalespage,allstockpage,alluserspage,viewSingleSale,viewSingleStock,viewSingleUser,updatesale,updatestock,dashboardpage,updateuser,sale_receipt,logoutpage,monthly_stock_report,allsalesreport
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,11 +40,11 @@ urlpatterns = [
     path('sales/view/<str:sale_id>',viewSingleSale,name="view_sale"),
     path('view/user/<str:user_id>',viewSingleUser),
     path('sales/update/<str:sale_id>',updatesale),
-    path('sales/delete/<str:sale_id>',deletesale),
-    path('stock/delete/<str:stock_id>',deletestock),
+    # path('sales/delete/<str:sale_id>',deletesale),
+    # path('stock/delete/<str:stock_id>',deletestock),
     path('stock/update/<str:stock_id>',updatestock,name="update_stock"),
     path('register/update/<int:user_id>',updateuser,name="update_user"),
-    path('register/delete/<str:user_id>',deleteuser,name="delete_user"),
+    # path('register/delete/<str:user_id>',deleteuser,name="delete_user"),
     path('sales/receipt/<int:sale_id>/', sale_receipt, name='sale_receipt'),
     
 

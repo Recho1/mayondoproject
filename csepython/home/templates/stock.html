@@ -1,230 +1,13 @@
-{% comment %} {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Stock</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Wrapper */
-    .content-wrapper {
-      display: flex;
-      flex: 1;
-      gap: 20px;
-      padding: 20px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      background-color: #000;
-      color: #ffd700;
-      width: 180px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 0;
-    }
-
-    .sidebar img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 20px;
-    }
-
-    .sidebar a {
-      color: #ffd700;
-      text-decoration: none;
-      display: block;
-      padding: 10px;
-      width: 100%;
-      text-align: center;
-      border-radius: 5px;
-      margin-bottom: 5px;
-      transition: background-color 0.2s;
-    }
-
-    .sidebar a:hover {
-      background-color: #1a1a1a;
-    }
-
-    /* Form Section */
-    .form-section {
-      background-color: #ffffff; /* white background */
-      width: 100%;
-      max-width: 500px;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      margin-left: 200px;
-    }
-
-    .form-section h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #000;
-      font-size: 32px;
-      font-weight: bold;
-    }
-
-    label {
-      display: block;
-      color: #000;
-      font-weight: bold;
-      margin-top: 15px;
-      margin-bottom: 5px;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      border: 1px solid #cccccc;
-      background-color: #fff;
-      color: #000;
-    }
-
-    /* Submit Button */
-    .btn-black {
-      margin: 25px auto 0 auto;
-      display: block;
-      background-color: #000;
-      color: #ffd700;
-      font-size: 16px;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-black:hover {
-      background-color: #222;
-    }
-
-    /* Footer */
-    footer {
-      background-color: #000;
-      color: #ffd700;
-      text-align: center;
-      padding: 15px 0;
-      width: 100%;
-      margin-top: auto;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .content-wrapper {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .sidebar {
-        position: relative;
-        width: 90%;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 10px;
-      }
-
-      .form-section {
-        margin-left: 0;
-        width: 90%;
-        padding: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="content-wrapper">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-      <nav class="flex flex-col w-full">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/stock/">Add Stock</a>
-        <a href="/sales/">Add Sale</a>
-        <a href="/register/">Add User</a>
-        <a href="/allstock/">All Stock</a>
-        <a href="/allsales/">All Sales</a>
-        <a href="/allusers/">All Users</a>
-        <a href="{% url 'home' %}">Logout</a>
-      </nav>
-    </div>
-
-    <!-- Form Section -->
-    <div class="form-section">
-      <h2>Stock Records</h2>
-      <form action="/stock/" method="post">
-        {% csrf_token %}
-        <label for="productname">Product Name</label>
-        <input id="productname" name="productname" placeholder="Product Name" required>
-
-        <label for="origin">Origin</label>
-        <input type="text" id="origin" name="origin" required>
-
-        <label for="contact">Contact Details</label>
-        <input type="contact" id="contact" name="contact" required>
-
-        <label for="quality">Quality</label>
-        <input type="text" id="quality" name="quality" required>
-
-        <label for="quantity">Quantity</label>
-        <input type="number" id="quantity" min="1" name="quantity" required>
-
-        <label for="costprice_unitcost">Unit Cost</label>
-        <input type="text" id="costprice_unitcost" name="costprice_unitcost" required>
-
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date">
-
-        <label for="warehouse">Warehouse</label>
-        <input type="text" id="warehouse" name="warehouse">
-
-        <button type="submit" class="btn-black">Add Stock</button>
-      </form>
-    </div>
-  </div>
-
-  <footer>
-    © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
-  </footer>
-
-</body>
-</html> {% endcomment %}
-
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Stock</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
+  <title>Add Stock</title>
+  
   <style>
     html, body {
       height: 100%;
@@ -237,6 +20,41 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background-color: #000;
+      color: #ffd700;
+      padding: 0.8rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: color 0.2s;
+      margin-top: -4px;
+    }
+
+    .logout-btn svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 6px;
+    }
+
+    .logout-btn:hover {
+      color: #e6c200;
     }
 
     .content-wrapper {
@@ -378,86 +196,113 @@
 </head>
 <body>
 
-  <div class="content-wrapper">
-    <!-- sidebar -->
-    <div class="sidebar">
-      <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-      <nav class="flex flex-col w-full">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/stock/">Add Stock</a>
-        <a href="/sales/">Add Sale</a>
-        <a href="/register/">Add Staff</a>
-        <a href="/allstock/">All Stock</a>
-        <a href="/allsales/">All Sales</a>
-        <a href="/allusers/">All Staff</a>
-        <a href="{% url 'logout' %}">Logout</a>
-      </nav>
-    </div>
+<!-- Header Section -->
+<div class="header bg-black text-yellow-400 flex justify-end items-center shadow-md sticky top-0 z-50 h-10 px-4">
+  <a href="{% url 'logout' %}" class="flex items-center text-yellow-400 font-semibold text-sm hover:text-yellow-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
+         viewBox="0 0 24 24" class="w-5 h-5 mr-1">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+    </svg>
+    Logout
+  </a>
+</div>
 
-    <!-- Form -->
-    <div class="form-section">
-      <h2>Stock Records</h2>
 
-      <form action="/stock/" method="post">
-        {% csrf_token %}
+<div class="content-wrapper">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-20 h-20 rounded-full object-cover shadow-lg mt-5">
+    <!-- Include Font Awesome in your <head> -->
 
-        <label for="productname">Product Name</label>
-        <input id="productname" name="productname" value="{{ form_data.productname }}" placeholder="Product Name">
-        {% if errors.productname %}
-          <p class="error">{{ errors.productname }}</p>
-        {% endif %}
 
-        <label for="origin">Origin</label>
-        <input type="text" id="origin" name="origin" value="{{ form_data.origin }}">
-        {% if errors.origin %}
-          <p class="error">{{ errors.origin }}</p>
-        {% endif %}
+<nav class="flex flex-col w-full gap-2 p-2">
+  <a href="/dashboard" class="flex items-center gap-2">
+    <i class="fa-solid fa-gauge"></i> Dashboard
+  </a>
+  <a href="/stock/" class="flex items-center gap-2">
+    <i class="fa-solid fa-boxes-stacked"></i> Add Stock
+  </a>
+  <a href="/sales/" class="flex items-center gap-2">
+    <i class="fa-solid fa-cart-plus"></i> Add Sale
+  </a>
+  <a href="/register/" class="flex items-center gap-2">
+    <i class="fa-solid fa-user-plus"></i> Add Staff
+  </a>
+  <a href="/allstock/" class="flex items-center gap-2">
+    <i class="fa-solid fa-box"></i> All Stock
+  </a>
+  <a href="/allsales/" class="flex items-center gap-2">
+    <i class="fa-solid fa-receipt"></i> All Sales
+  </a>
+  <a href="/allusers/" class="flex items-center gap-2">
+    <i class="fa-solid fa-users"></i> All Staff
+  </a>
+</nav>
 
-        <label for="contact">Contact Details</label>
-        <input type="text" id="contact" name="contact" value="{{ form_data.contact }}">
-        {% if errors.contact %}
-          <p class="error">{{ errors.contact }}</p>
-        {% endif %}
-
-        <label for="quality">Quality</label>
-        <input type="text" id="quality" name="quality" value="{{ form_data.quality }}">
-        {% if errors.quality %}
-          <p class="error">{{ errors.quality }}</p>
-        {% endif %}
-
-        <label for="quantity">Quantity</label>
-        <input type="number" id="quantity" name="quantity" min="1" value="{{ form_data.quantity }}">
-        {% if errors.quantity %}
-          <p class="error">{{ errors.quantity }}</p>
-        {% endif %}
-
-        <label for="costprice_unitcost">Unit Cost</label>
-        <input type="text" id="costprice_unitcost" name="costprice_unitcost" value="{{ form_data.costprice_unitcost }}">
-        {% if errors.costprice_unitcost %}
-          <p class="error">{{ errors.costprice_unitcost }}</p>
-        {% endif %}
-
-        <label for="date">Date</label>
-        <input type="date" id="date" name="date" value="{{ form_data.date }}">
-        {% if errors.date %}
-          <p class="error">{{ errors.date }}</p>
-        {% endif %}
-
-        <label for="warehouse">Warehouse</label>
-        <input type="text" id="warehouse" name="warehouse" value="{{ form_data.warehouse }}">
-        {% if errors.warehouse %}
-          <p class="error">{{ errors.warehouse }}</p>
-        {% endif %}
-
-        <button type="submit" class="btn-black">Add Stock</button>
-      </form>
-    </div>
   </div>
 
-  <footer>
-    © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
-  </footer>
+  <!-- Form Section -->
+  <div class="form-section">
+    <h2>Stock Records</h2>
+    <form action="/stock/" method="post">
+      {% csrf_token %}
+      <label for="productname">Product Name</label>
+      <input id="productname" name="productname" value="{{ form_data.productname }}" placeholder="Product Name">
+      {% if errors.productname %}
+        <p class="error">{{ errors.productname }}</p>
+      {% endif %}
+
+      <label for="origin">Origin</label>
+      <input type="text" id="origin" name="origin" value="{{ form_data.origin }}">
+      {% if errors.origin %}
+        <p class="error">{{ errors.origin }}</p>
+      {% endif %}
+
+      <label for="contact">Contact Details</label>
+      <input type="text" id="contact" name="contact" value="{{ form_data.contact }}">
+      {% if errors.contact %}
+        <p class="error">{{ errors.contact }}</p>
+      {% endif %}
+
+      <label for="quality">Quality</label>
+      <input type="text" id="quality" name="quality" value="{{ form_data.quality }}">
+      {% if errors.quality %}
+        <p class="error">{{ errors.quality }}</p>
+      {% endif %}
+
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" name="quantity" min="1" value="{{ form_data.quantity }}">
+      {% if errors.quantity %}
+        <p class="error">{{ errors.quantity }}</p>
+      {% endif %}
+
+      <label for="costprice_unitcost">Unit Cost</label>
+      <input type="text" id="costprice_unitcost" name="costprice_unitcost" value="{{ form_data.costprice_unitcost }}">
+      {% if errors.costprice_unitcost %}
+        <p class="error">{{ errors.costprice_unitcost }}</p>
+      {% endif %}
+
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" value="{{ form_data.date }}">
+      {% if errors.date %}
+        <p class="error">{{ errors.date }}</p>
+      {% endif %}
+
+      <label for="warehouse">Warehouse</label>
+      <input type="text" id="warehouse" name="warehouse" value="{{ form_data.warehouse }}">
+      {% if errors.warehouse %}
+        <p class="error">{{ errors.warehouse }}</p>
+      {% endif %}
+
+      <button type="submit" class="btn-black">Add Stock</button>
+    </form>
+  </div>
+</div>
+
+<footer>
+  © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
+</footer>
 
 </body>
 </html>
-
