@@ -4,50 +4,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
   <title>Registration Form</title>
+
   <style>
     html, body {
       height: 100%;
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
+      background-color: #f5f1eb;
     }
+
     body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* Header */
+    /* HEADER */
     .header {
-      background-color: #000;
-      color: #ffd700;
+      background-color: #6f4e37;
+      color: #f4d06f;
       padding: 0.5rem 1rem;
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
+
     .logout-btn {
       display: flex;
       align-items: center;
-      color: #ffd700;
+      color: #f4d06f;
       font-weight: 600;
       text-decoration: none;
       font-size: 14px;
+      transition: 0.3s ease;
     }
+
     .logout-btn svg {
       width: 20px;
       height: 20px;
       margin-right: 6px;
     }
-    .logout-btn:hover { color: #e6c200; }
 
-    /* Sidebar */
+    .logout-btn:hover {
+      color: #fff3c4;
+    }
+
+    /* SIDEBAR */
     .sidebar {
-      background-color: #000;
-      color: #ffd700;
+      background-color: #6f4e37;
+      color: #f4d06f;
       width: 180px;
       flex-shrink: 0;
       display: flex;
@@ -55,17 +67,23 @@
       align-items: center;
       padding: 20px 0;
       position: fixed;
-      top: 0; left: 0; bottom: 0;
-      border-right: 1px solid #333;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      border-right: 1px solid #8b5e3c;
     }
+
     .sidebar img {
-      width: 100px; height: 100px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       object-fit: cover;
       margin-bottom: 20px;
+      border: 3px solid #d4af37;
     }
+
     .sidebar a {
-      color: #ffd700;
+      color: #f4d06f;
       text-decoration: none;
       display: block;
       padding: 10px;
@@ -73,11 +91,14 @@
       text-align: center;
       border-radius: 5px;
       margin-bottom: 5px;
-      transition: background-color 0.2s;
+      transition: background-color 0.3s ease;
     }
-    .sidebar a:hover { background-color: #1a1a1a; }
 
-    /* Main wrapper */
+    .sidebar a:hover {
+      background-color: #8b5e3c;
+    }
+
+    /* MAIN WRAPPER */
     .main-wrapper {
       margin-left: 180px;
       display: flex;
@@ -85,6 +106,7 @@
       flex: 1;
       min-height: 100vh;
     }
+
     .main-content {
       flex: 1;
       display: flex;
@@ -93,49 +115,64 @@
       padding: 20px;
     }
 
-    /* Form section */
+    /* FORM SECTION */
     .form-section {
-      background-color: #fff;
-      color: #000;
+      background-color: #ffffff;
+      color: #5c4033;
       width: 100%;
       max-width: 500px;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 10px 25px rgba(111, 78, 55, 0.2);
+      border: 1px solid #e2d4c5;
     }
+
     .form-section h1 {
       text-align: center;
       margin-bottom: 25px;
-      color: #000;
+      color: #6f4e37;
       font-size: 32px;
       font-weight: bold;
     }
+
     label {
       display: block;
-      color: #000;
+      color: #6f4e37;
       font-weight: bold;
       margin-top: 15px;
       margin-bottom: 5px;
     }
-    input, select {
+
+    input,
+    select {
       width: 100%;
       padding: 10px;
       border-radius: 5px;
       font-size: 14px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      color: #000;
+      border: 1px solid #d8c3a5;
+      background-color: #fffdf9;
+      color: #5c4033;
     }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 4px rgba(212,175,55,0.4);
+    }
+
     .error {
       color: red;
       font-size: 14px;
       margin-top: 4px;
     }
+
+    /* BUTTON */
     .btn-black {
       margin: 25px auto 0 auto;
       display: block;
-      background-color: #000;
-      color: #ffd700;
+      background-color: #6f4e37;
+      color: #f4d06f;
       font-size: 16px;
       border: none;
       padding: 12px 25px;
@@ -143,18 +180,23 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    .btn-black:hover { background-color: #222; }
 
-    /* Footer */
+    .btn-black:hover {
+      background-color: #8b5e3c;
+    }
+
+    /* FOOTER */
     footer {
-      background-color: #000;
-      color: #ffd700;
+      background-color: #6f4e37;
+      color: #f4d06f;
       text-align: center;
       padding: 15px 0;
       margin-top: auto;
     }
 
+    /* MOBILE */
     @media (max-width: 768px) {
+
       .sidebar {
         position: relative;
         width: 100%;
@@ -163,122 +205,208 @@
         padding: 10px;
         height: auto;
         border-right: none;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid #8b5e3c;
       }
-      .main-wrapper { margin-left: 0; }
-      .form-section { width: 90%; padding: 20px; }
+
+      .main-wrapper {
+        margin-left: 0;
+      }
+
+      .form-section {
+        width: 90%;
+        padding: 20px;
+      }
     }
   </style>
 </head>
+
 <body>
-  <!-- Header Section -->
+
+  <!-- HEADER -->
   <div class="header">
     <a href="{% url 'logout' %}" class="logout-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           stroke="currentColor"
            viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
               d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
       </svg>
       Logout
     </a>
   </div>
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
+
     <img src="{% static 'images/logo2.jpg' %}" alt="Logo" />
-    <!-- Add this in your <head> if not already included -->
 
+    <nav>
+      <a href="/dashboard">
+        <i class="fa-solid fa-gauge"></i> Dashboard
+      </a>
 
-<div class="h-screen w-64 bg-black text-yellow-400 flex flex-col">
-  <nav class="flex flex-col flex-1 p-4 gap-2 overflow-y-auto">
-    <a href="/dashboard" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-gauge"></i> Dashboard
-    </a>
+      <a href="/stock/">
+        <i class="fa-solid fa-boxes-stacked"></i> Add Stock
+      </a>
 
-    <a href="/stock/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-boxes-stacked"></i> Add Stock
-    </a>
+      <a href="/sales/">
+        <i class="fa-solid fa-cart-plus"></i> Add Sale
+      </a>
 
-    <a href="/sales/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-cart-plus"></i> Add Sale
-    </a>
+      <a href="/register/">
+        <i class="fa-solid fa-user-plus"></i> Add Staff
+      </a>
 
-    <a href="/register/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-user-plus"></i> Add Staff
-    </a>
+      <a href="/allstock/">
+        <i class="fa-solid fa-box"></i> All Stock
+      </a>
 
-    <a href="/allstock/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-box"></i> All Stock
-    </a>
+      <a href="/allsales/">
+        <i class="fa-solid fa-money-bill-wave"></i> All Sales
+      </a>
 
-    <a href="/allsales/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-money-bill-wave"></i> All Sales
-    </a>
+      <a href="/allusers/">
+        <i class="fa-solid fa-users"></i> All Staffs
+      </a>
+    </nav>
 
-    <a href="/allusers/" class="flex items-center gap-2 hover:bg-gray-700 rounded-lg p-2">
-      <i class="fa-solid fa-users"></i> All Staffs
-    </a>
-  </nav>
-</div>
+  </div>
 
-
-  
-
-  <!-- Main content -->
+  <!-- MAIN -->
   <div class="main-wrapper">
+
     <div class="main-content">
+
       <div class="form-section">
+
         <h1>Registration Form</h1>
 
         <form action="/register/" method="post">
+
           {% csrf_token %}
+
+          <!-- USERNAME -->
           <label for="username">Username</label>
-          <input type="text" name="username" id="username" value="{{ form_data.username|default:'' }}" placeholder="Enter username" />
-          {% if errors.username %}<p class="error">{{ errors.username }}</p>{% endif %}
 
+          <input type="text"
+                 name="username"
+                 id="username"
+                 value="{{ form_data.username|default:'' }}"
+                 placeholder="Enter username" />
+
+          {% if errors.username %}
+            <p class="error">{{ errors.username }}</p>
+          {% endif %}
+
+          <!-- EMAIL -->
           <label for="email">Email</label>
-          <input type="email" name="email" id="email" value="{{ form_data.email|default:'' }}" placeholder="Enter email" />
-          {% if errors.email %}<p class="error">{{ errors.email }}</p>{% endif %}
 
+          <input type="email"
+                 name="email"
+                 id="email"
+                 value="{{ form_data.email|default:'' }}"
+                 placeholder="Enter email" />
+
+          {% if errors.email %}
+            <p class="error">{{ errors.email }}</p>
+          {% endif %}
+
+          <!-- PASSWORD -->
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" placeholder="Enter password" />
-          {% if errors.password %}<p class="error">{{ errors.password }}</p>{% endif %}
 
+          <input type="password"
+                 name="password"
+                 id="password"
+                 placeholder="Enter password" />
+
+          {% if errors.password %}
+            <p class="error">{{ errors.password }}</p>
+          {% endif %}
+
+          <!-- CONFIRM PASSWORD -->
           <label for="repeat_password">Confirm Password</label>
-          <input type="password" name="repeat_password" id="repeat_password" placeholder="Confirm password" />
-          {% if errors.repeat_password %}<p class="error">{{ errors.repeat_password }}</p>{% endif %}
 
-          <div class="flex items-center justify-start mb-6">
-            <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
-              <input type="checkbox" id="show-password" class="w-4 h-4"> Show Password
+          <input type="password"
+                 name="repeat_password"
+                 id="repeat_password"
+                 placeholder="Confirm password" />
+
+          {% if errors.repeat_password %}
+            <p class="error">{{ errors.repeat_password }}</p>
+          {% endif %}
+
+          <!-- SHOW PASSWORD -->
+          <div class="flex items-center justify-start mb-6 mt-4">
+            <label for="show-password"
+                   class="flex items-center gap-2 text-[#6f4e37] cursor-pointer">
+
+              <input type="checkbox"
+                     id="show-password"
+                     class="w-4 h-4">
+
+              Show Password
             </label>
           </div>
 
+          <!-- ROLE -->
           <label for="role">Role</label>
-          <select name="role" id="role">
-            <option value="">Select Role</option>
-            <option value="manager" {% if form_data.role == 'manager' %}selected{% endif %}>Manager</option>
-            <option value="salesagent" {% if form_data.role == 'salesagent' %}selected{% endif %}>Sales Agent</option>
-          </select>
-          {% if errors.role %}<p class="error">{{ errors.role }}</p>{% endif %}
 
-          <button type="submit" class="btn-black">Sign Up</button>
+          <select name="role" id="role">
+
+            <option value="">Select Role</option>
+
+            <option value="manager"
+              {% if form_data.role == 'manager' %}selected{% endif %}>
+              Manager
+            </option>
+
+            <option value="salesagent"
+              {% if form_data.role == 'salesagent' %}selected{% endif %}>
+              Sales Agent
+            </option>
+
+          </select>
+
+          {% if errors.role %}
+            <p class="error">{{ errors.role }}</p>
+          {% endif %}
+
+          <!-- BUTTON -->
+          <button type="submit" class="btn-black">
+            Sign Up
+          </button>
+
         </form>
+
       </div>
+
     </div>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <footer>
-      © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
+      © 2025 - 2027 Mayondo Wood and Furniture.
+      All Rights Reserved. Designed by Racheal Acio.
     </footer>
+
   </div>
 
+  <!-- PASSWORD TOGGLE -->
   <script>
     const showPassword = document.getElementById("show-password");
     const passwordField = document.getElementById("password");
+    const confirmField = document.getElementById("repeat_password");
+
     showPassword.addEventListener("change", function () {
-      passwordField.type = this.checked ? "text" : "password";
+
+      const type = this.checked ? "text" : "password";
+
+      passwordField.type = type;
+      confirmField.type = type;
     });
   </script>
+
 </body>
 </html>

@@ -4,88 +4,279 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>Login</title>
+
+  <title>Login | Mayondo Wood & Furniture</title>
+
   <style>
-    /* Make checkbox hover/checked black */
-    input[type="checkbox"] {
-      accent-color: black;
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    input[type="checkbox"]:hover {
-      filter: brightness(0.8);
+    body{
+      font-family:'Poppins', sans-serif;
+      background:#f5f1e8;
     }
 
-    /* Input fields match form background and remove all focus effect */
-    input[type="text"],
-    input[type="password"] {
-      background-color: #ffffff; /* same as form */
-      border: 1px solid #ccc;
-      outline: none;
-      box-shadow: none;
+    /* LEFT SECTION */
+
+    .left-section{
+      background:linear-gradient(
+        rgba(92,61,46,0.75),
+        rgba(92,61,46,0.75)
+      ),
+      url('/static/images/furniture-bg.jpg');
+
+      background-size:cover;
+      background-position:center;
     }
 
-    input[type="text"]:focus,
-    input[type="password"]:focus {
-      outline: none;
-      box-shadow: none;
+    /* FORM */
+
+    .login-card{
+      background:white;
+      border-radius:24px;
+      padding:45px;
+      box-shadow:0 10px 35px rgba(0,0,0,0.12);
+      border-top:6px solid #d4af37;
     }
+
+    .input-field{
+      width:100%;
+      padding:14px 16px;
+      border:1px solid #d7d7d7;
+      border-radius:12px;
+      outline:none;
+      transition:0.3s;
+      background:#fafafa;
+      color:#5c3d2e;
+    }
+
+    .input-field:focus{
+      border:1px solid #d4af37;
+      background:white;
+      box-shadow:0 0 0 4px rgba(212,175,55,0.15);
+    }
+
+    /* CHECKBOX */
+
+    input[type="checkbox"]{
+      accent-color:#6f4e37;
+      cursor:pointer;
+    }
+
+    /* LOGIN BUTTON */
+
+    .login-btn{
+      width:100%;
+      background:#6f4e37;
+      color:#fff3c4;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      font-size:16px;
+      font-weight:600;
+      transition:0.3s;
+    }
+
+    .login-btn:hover{
+      background:#d4af37;
+      color:#5c3d2e;
+      transform:translateY(-2px);
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:#6f4e37;
+      color:#f8e7b0;
+      text-align:center;
+      padding:18px;
+      border-top:3px solid #d4af37;
+      font-size:14px;
+    }
+
   </style>
+
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-  <div class="flex-grow flex justify-center items-center">
-    <form action="/login/" method="post" class="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md text-center">
-      {% csrf_token %}
-      <h3 class="text-2xl font-semibold mb-6" style="color: black;">Sign In</h3>
+  <!-- MAIN CONTENT -->
 
-      <!-- username -->
-      <div class="mb-5 text-left">
-        <label for="username" class="block text-gray-700 font-medium mb-2">Username</label>
-        <input type="text" id="username" name="username" class="w-full rounded-lg px-3 py-2" required />
+  <div class="flex flex-1">
+
+    <!-- LEFT SIDE -->
+
+    <div class="hidden lg:flex lg:w-1/2 left-section items-center justify-center p-10">
+
+      <div class="text-center text-white">
+
+        <h1 class="text-5xl font-bold mb-6 tracking-wide">
+          MAYONDO
+        </h1>
+
+        <h2 class="text-3xl font-semibold mb-4 text-yellow-300">
+          Wood & Furniture System
+        </h2>
+
+        <p class="text-lg leading-relaxed max-w-md mx-auto text-gray-100">
+          Manage furniture stock, sales, staff, and inventory efficiently
+          with a modern and professional management system.
+        </p>
+
       </div>
 
-      <!-- password -->
-      <div class="mb-5 text-left">
-        <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
-        <input type="password" id="password" name="password" class="w-full rounded-lg px-3 py-2" />
+    </div>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-10">
+
+      <div class="login-card w-full max-w-md">
+
+        <!-- LOGO -->
+
+        <div class="flex justify-center mb-5">
+
+          <img src="{% static 'images/logo2.jpg' %}"
+               alt="Logo"
+               class="w-24 h-24 rounded-full object-cover border-4 border-yellow-500 shadow-lg">
+
+        </div>
+
+        <!-- TITLE -->
+
+        <h3 class="text-3xl font-bold text-center mb-2 text-[#5c3d2e]">
+          Welcome Back
+        </h3>
+
+        <p class="text-center text-gray-500 mb-8">
+          Sign in to continue to your dashboard
+        </p>
+
+        <!-- FORM -->
+
+        <form action="/login/" method="post">
+
+          {% csrf_token %}
+
+          <!-- USERNAME -->
+
+          <div class="mb-5">
+
+            <label for="username"
+                   class="block mb-2 font-medium text-[#6f4e37]">
+
+              Username
+
+            </label>
+
+            <input type="text"
+                   id="username"
+                   name="username"
+                   class="input-field"
+                   placeholder="Enter your username"
+                   required>
+
+          </div>
+
+          <!-- PASSWORD -->
+
+          <div class="mb-5">
+
+            <label for="password"
+                   class="block mb-2 font-medium text-[#6f4e37]">
+
+              Password
+
+            </label>
+
+            <input type="password"
+                   id="password"
+                   name="password"
+                   class="input-field"
+                   placeholder="Enter your password"
+                   required>
+
+          </div>
+
+          <!-- SHOW PASSWORD -->
+
+          <div class="flex items-center mb-6">
+
+            <input type="checkbox"
+                   id="show-password"
+                   class="w-4 h-4 mr-2">
+
+            <label for="show-password"
+                   class="text-sm text-gray-600 cursor-pointer">
+
+              Show Password
+
+            </label>
+
+          </div>
+
+          <!-- LOGIN BUTTON -->
+
+          <button type="submit"
+                  class="login-btn">
+
+            Login
+
+          </button>
+
+          <!-- ERROR -->
+
+          {% if error %}
+
+          <p class="text-red-500 text-sm mt-4 text-center">
+            {{ error }}
+          </p>
+
+          {% endif %}
+
+        </form>
+
       </div>
 
-      <!-- show password -->
-      <div class="flex items-center justify-start mb-6">
-        <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
-          <input type="checkbox" id="show-password" class="w-4 h-4">
-          Show Password
-        </label>
-      </div>
+    </div>
 
-      <!-- submit button -->
-      <button type="submit"
-        class="w-full bg-black text-yellow-400 py-2 rounded-full hover:bg-gray-800 transition duration-300 font-semibold">
-        Login
-      </button>
-
-      <!-- error message -->
-      {% if error %}
-      <p class="text-red-500 text-sm mt-3">{{ error }}</p>
-      {% endif %}
-    </form>
   </div>
 
-  <!-- footer -->
-  <footer class="bg-black text-center py-4 mt-auto" style="color: gold;">
-    <p>© 2025 Mayondo Wood and Furniture. All Rights Reserved. Designed by Racheal Acio.</p>
+  <!-- FOOTER -->
+
+  <footer>
+
+    © 2025 - 2027 Mayondo Wood & Furniture System.
+    All Rights Reserved.
+    Designed by Racheal Acio.
+
   </footer>
 
-  <!--show password -->
-  <script>
-    const showPassword = document.getElementById("show-password");
-    const passwordField = document.getElementById("password");
+  <!-- SHOW PASSWORD -->
 
-    showPassword.addEventListener("change", function () {
-      passwordField.type = this.checked ? "text" : "password";
+  <script>
+
+    const showPassword =
+      document.getElementById("show-password");
+
+    const passwordField =
+      document.getElementById("password");
+
+    showPassword.addEventListener("change", function(){
+
+      passwordField.type =
+        this.checked ? "text" : "password";
+
     });
+
   </script>
 
 </body>

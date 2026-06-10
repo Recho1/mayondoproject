@@ -31,7 +31,8 @@ class Stock(models.Model):
     date = models.DateField(null=True)
     warehouse = models.TextField()
     def __str__(self):
-        return self.productname 
+        return  self.productname 
+        
     
 
 class Sales(models.Model):

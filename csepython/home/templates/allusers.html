@@ -1,249 +1,504 @@
 {% load static %}
 {% load math_filters %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  <title>All Users</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <title>All Staff | Mayondo Wood & Furniture</title>
+
   <style>
-    html, body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-      min-h-screen; /* full height */
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    /* Header */
-    .header {
-      background-color: #000;
-      color: #ffd700;
-      padding: 0.5rem 1rem;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .logout-btn {
-      display: flex;
-      align-items: center;
-      color: #ffd700;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .logout-btn svg {
-      width: 20px;
-      height: 20px;
-      margin-right: 6px;
-    }
-    .logout-btn:hover {
-      color: #e6c200;
+    body{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      font-family:'Poppins', sans-serif;
+      background:#f5f1e8;
+      color:#5c3d2e;
     }
 
-    /* Main content wrapper */
-    .content-wrapper {
-      flex: 1;
-      display: flex;
-      min-height: 0;
+    /* HEADER */
+
+    .header{
+      height:70px;
+      background:#6f4e37;
+      border-bottom:3px solid #d4af37;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 30px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
     }
 
-    /* Sidebar */
-    .sidebar {
-      background-color: #000000;
-      color: #ffd700;
-      width: 200px;
-      flex-shrink: 0;
-    }
-    .sidebar a {
-      color: #ffd700;
-      display: block;
-      padding: 10px 15px;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
-      background-color: #1a1a1a;
-    }
-    .sidebar img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 10px auto;
-      display: block;
+    .header-title{
+      color:#fff3c4;
+      font-size:24px;
+      font-weight:bold;
+      letter-spacing:1px;
     }
 
-    /* Table container */
-    .table-container {
-      flex: 1;
-      overflow-x: auto;
-      padding: 20px;
+    .logout-btn{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#d4af37;
+      color:#5c3d2e;
+      padding:10px 18px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s;
     }
 
-    table {
-      width: 90%;
-      margin: auto;
-      border-collapse: collapse;
-      font-size: 14px;
-      background-color: #fdfdff;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    .logout-btn:hover{
+      background:white;
+      color:#6f4e37;
     }
-    thead {
-      background-color: #000000;
-      color: #ffd700;
-    }
-    th, td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #dcdcdc;
-      text-align: left;
-    }
-    tbody tr:nth-child(even) { background-color: whitesmoke; }
-    tbody tr:nth-child(odd) { background-color: #ffffff; }
-    tbody tr:hover { background-color: #f0f8ff; }
 
-    /* Action buttons */
-    .action-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px;
-      border-radius: 4px;
-      text-decoration: none;
-    }
-    .action-btn svg { width: 16px; height: 16px; }
-    .text-green-500 { color: #2e8b57; }
-    .text-green-500:hover { background-color: #e0f2e9; }
-    .text-red-500 { color: #b22222; }
-    .text-red-500:hover { background-color: #fbeaea; }
-    .text-gray-700 { color: #4b4b4b; }
-    .text-gray-700:hover { background-color: #f2f2f2; }
+    /* MAIN LAYOUT */
 
-    /* Add User button */
-    .btn-gold {
-      margin: 10px 0 15px 0;
-      padding: 6px 12px;
-      background-color: #ffd700;
-      color: #000;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    .content-wrapper{
+      flex:1;
+      display:flex;
     }
-    .btn-gold:hover { background-color: #e6c200; }
 
-    /* Footer */
-    footer {
-      background-color: #000000;
-      color: #ffffff;
-      text-align: center;
-      padding: 15px 0;
-      flex-shrink: 0;
+    /* SIDEBAR */
+
+    .sidebar{
+      width:250px;
+      background:#8b6b4a;
+      padding:25px 15px;
+      border-right:3px solid #d4af37;
     }
+
+    .logo-box{
+      text-align:center;
+      margin-bottom:35px;
+    }
+
+    .logo-box img{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      object-fit:cover;
+      border:4px solid #d4af37;
+      background:white;
+      box-shadow:0 0 15px rgba(212,175,55,0.4);
+    }
+
+    .company-name{
+      margin-top:15px;
+      color:#fff4cc;
+      font-weight:bold;
+      font-size:17px;
+    }
+
+    .sidebar nav{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .sidebar a{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#fff8dc;
+      text-decoration:none;
+      padding:14px 16px;
+      border-radius:12px;
+      transition:0.3s;
+      font-weight:500;
+    }
+
+    .sidebar a:hover{
+      background:#d4af37;
+      color:#5c3d2e;
+      transform:translateX(5px);
+    }
+
+    /* MAIN CONTENT */
+
+    .table-container{
+      flex:1;
+      padding:30px;
+      overflow-x:auto;
+    }
+
+    .page-title{
+      font-size:30px;
+      font-weight:bold;
+      color:#6f4e37;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      color:#8b6b4a;
+      margin-bottom:25px;
+    }
+
+    /* TOP BUTTON */
+
+    .top-actions{
+      margin-bottom:20px;
+    }
+
+    .btn-gold{
+      background:#d4af37;
+      color:#5c3d2e;
+      padding:11px 20px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.3s;
+      display:inline-block;
+      border:none;
+    }
+
+    .btn-gold:hover{
+      background:#6f4e37;
+      color:white;
+    }
+
+    /* TABLE */
+
+    .table-wrapper{
+      background:white;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    thead{
+      background:#6f4e37;
+      color:#fff3c4;
+    }
+
+    th{
+      padding:16px;
+      text-align:left;
+      font-size:14px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    td{
+      padding:15px 16px;
+      border-bottom:1px solid #eee;
+      font-size:14px;
+      white-space:nowrap;
+    }
+
+    tbody tr:nth-child(even){
+      background:#faf7f2;
+    }
+
+    tbody tr:hover{
+      background:#f3eadc;
+    }
+
+    /* ACTION BUTTONS */
+
+    .actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .action-btn{
+      width:34px;
+      height:34px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      transition:0.3s;
+    }
+
+    .view-btn{
+      background:#dff5e3;
+      color:#2e8b57;
+    }
+
+    .view-btn:hover{
+      background:#2e8b57;
+      color:white;
+    }
+
+    .edit-btn{
+      background:#dcecff;
+      color:#1565c0;
+    }
+
+    .edit-btn:hover{
+      background:#1565c0;
+      color:white;
+    }
+
+    /* FOOTER */
+
+    footer{
+      background:#6f4e37;
+      color:#f8e7b0;
+      text-align:center;
+      padding:18px;
+      border-top:3px solid #d4af37;
+      font-size:14px;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:768px){
+
+      .content-wrapper{
+        flex-direction:column;
+      }
+
+      .sidebar{
+        width:100%;
+        border-right:none;
+        border-bottom:3px solid #d4af37;
+      }
+
+      .table-container{
+        padding:15px;
+      }
+
+      .page-title{
+        font-size:24px;
+      }
+
+      .header{
+        padding:0 15px;
+      }
+
+      .header-title{
+        font-size:18px;
+      }
+    }
+
   </style>
+
 </head>
-<body class="flex flex-col min-h-screen">
-  <!-- Header Section -->
+
+<body>
+
+  <!-- HEADER -->
+
   <div class="header">
+
+    <div class="header-title">
+      All Staff
+    </div>
+
     <a href="{% url 'logout' %}" class="logout-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
-           viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+           fill="none"
+           stroke="currentColor"
+           viewBox="0 0 24 24"
+           width="20">
+
+        <path stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
       </svg>
+
       Logout
+
     </a>
+
   </div>
+
+  <!-- CONTENT -->
 
   <div class="content-wrapper">
-    <!-- Sidebar -->
-    <div class="sidebar flex-shrink-0">
-      <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-      <!-- Make sure you include Font Awesome in your head -->
 
+    <!-- SIDEBAR -->
 
-<nav class="flex flex-col gap-2 p-2">
-  <a href="/dashboard" class="flex items-center gap-2">
-    <i class="fa-solid fa-gauge"></i> Dashboard
-  </a>
-  <a href="/stock/" class="flex items-center gap-2">
-    <i class="fa-solid fa-boxes-stacked"></i> Add Stock
-  </a>
-  <a href="/sales/" class="flex items-center gap-2">
-    <i class="fa-solid fa-cart-plus"></i> Add Sale
-  </a>
-  <a href="/register/" class="flex items-center gap-2">
-    <i class="fa-solid fa-user-plus"></i> Add Staff
-  </a>
-  <a href="/allstock/" class="flex items-center gap-2">
-    <i class="fa-solid fa-box"></i> All Stock
-  </a>
-  <a href="/allsales/" class="flex items-center gap-2">
-    <i class="fa-solid fa-receipt"></i> All Sales
-  </a>
-  <a href="/allusers/" class="flex items-center gap-2">
-    <i class="fa-solid fa-users"></i> All Staff
-  </a>
-</nav>
+    <div class="sidebar">
+
+      <div class="logo-box">
+
+        <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
+
+        <div class="company-name">
+          MAYONDO WOOD & FURNITURE
+        </div>
+
+      </div>
+
+      <nav>
+
+        <a href="/dashboard">
+          <i class="fa-solid fa-gauge"></i>
+          Dashboard
+        </a>
+
+        <a href="/stock/">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          Add Stock
+        </a>
+
+        <a href="/sales/">
+          <i class="fa-solid fa-cart-plus"></i>
+          Add Sale
+        </a>
+
+        <a href="/register/">
+          <i class="fa-solid fa-user-plus"></i>
+          Add Staff
+        </a>
+
+        <a href="/allstock/">
+          <i class="fa-solid fa-box"></i>
+          All Stock
+        </a>
+
+        <a href="/allsales/">
+          <i class="fa-solid fa-receipt"></i>
+          All Sales
+        </a>
+
+        <a href="/allusers/">
+          <i class="fa-solid fa-users"></i>
+          All Staff
+        </a>
+
+      </nav>
 
     </div>
 
-    <!-- Table Container -->
+    <!-- MAIN CONTENT -->
+
     <div class="table-container">
-      <a href="/register/">
-        <button class="btn-gold">Add Staff</button>
-      </a>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for user in all_users_details %}
-          <tr>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.password }}</td>
-            <td>{{ user.role }}</td>
-            <td class="flex gap-1">
-              <!-- view -->
-              <!-- View -->
-<a href="/view/user/{{user.id}}" class="action-btn text-green-500" title="View">
-  <i class="fa-solid fa-eye"></i>
-</a>
+      <h2 class="page-title">
+        Staff Management
+      </h2>
 
-<!-- Edit -->
-<a href="{% url 'update_user' user.id %}" class="action-btn text-blue-500" title="Edit">
-  <i class="fa-solid fa-pen-to-square"></i>
-</a>
+      <p class="page-subtitle">
+        Manage system users and staff accounts for Mayondo Wood & Furniture.
+      </p>
 
-<!-- Delete -->
-{% comment %} <a href="{% url 'delete_user' user.id %}" class="action-btn text-red-500" title="Delete">
-  <i class="fa-solid fa-trash"></i>
-</a> {% endcomment %}
+      <!-- ADD BUTTON -->
 
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="top-actions">
+
+        <a href="/register/" class="btn-gold">
+          Add Staff
+        </a>
+
+      </div>
+
+      <!-- TABLE -->
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            {% for user in all_users_details %}
+
+            <tr>
+
+              <td>{{ user.username }}</td>
+
+              <td>{{ user.email }}</td>
+
+              <td>{{ user.password }}</td>
+
+              <td>{{ user.role }}</td>
+
+              <td>
+
+                <div class="actions">
+
+                  <!-- VIEW -->
+
+                  <a href="/view/user/{{user.id}}"
+                     class="action-btn view-btn"
+                     title="View">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                  </a>
+
+                  <!-- EDIT -->
+
+                  <a href="{% url 'update_user' user.id %}"
+                     class="action-btn edit-btn"
+                     title="Edit">
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                  </a>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+            {% endfor %}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
+
   </div>
 
-  <footer class="text-yellow-500 bg-black mt-auto">
-    © 2025 - 2027 Mayondo. All Rights Reserved. Designed by Racheal Acio.
+  <!-- FOOTER -->
+
+  <footer>
+
+    © 2025 - 2027 Mayondo Wood & Furniture System.
+    All Rights Reserved.
+    Designed by Racheal Acio.
+
   </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

@@ -421,16 +421,16 @@ def updatesale(request,sale_id):
         sent_customername = form_data.get('customername')
         sent_producttype = form_data.get('producttype')
         form_productname = sale_to_update.productname
-        sent_productname = sent_productname = sale_to_update.productname  
+        sent_productname = form_data.get('productname')  
         sent_quantity = form_data.get('quantity')
         sent_unitcost = form_data.get('sellingprice_unitcost')
         sent_sellingprice = float(sent_quantity) * float(sent_unitcost)
         sent_transport_offered = form_data.get('transport_offered')
         sent_transportfare = form_data.get('transportfare')
         sent_is_paid = form_data.get('is_paid')
+        print("sent_transport_offered")
         
-        
-        if sent_transport_offered == '1':
+        if sent_transport_offered == 'True':
             sent_transportfare = int(0.05 * sent_sellingprice)
         else:
             sent_transport_offered = False
@@ -442,7 +442,7 @@ def updatesale(request,sale_id):
         sent_date = form_data.get('date')
         form_salesagentname = int(form_data.get('salesagentname'))
         sent_salesagentname = SignUp.objects.get(id=form_salesagentname)
-        sent_productname = Stock.objects.get(productname=form_productname)
+        sent_productname = Stock.objects.get(id=sent_productname)
        
 
 
@@ -546,10 +546,18 @@ def updateuser(request,user_id):
         user_to_update.role=role
         user_to_update.repeat_password=repeat_password
         user_to_update.save()
-        return redirect('/allusers')
+        return redirect('/allusers/')
         
         
     return render (request,"updateuser.html",context)
+
+
+
+
+
+
+
+
 
 # def deleteuser(request,user_id):
 #     user_to_delete = SignUp.objects.get(id=user_id)

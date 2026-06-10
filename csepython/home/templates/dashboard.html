@@ -2,214 +2,451 @@
 {% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Dashboard</title>
-  <style>
-    body {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-      margin: 0;
-    }
-    .header {
-      background-color: #000;
-      color: #ffd700;
-      height: 50px;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 0 1rem;
-      z-index: 10;
-    }
-    .logout-btn {
-      display: flex;
-      align-items: center;
-      color: #ffd700;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .logout-btn svg {
-      width: 20px;
-      height: 20px;
-      margin-right: 6px;
-    }
-    .logout-btn:hover { color: #e6c200; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .sidebar {
-      width: 200px; /* reduced from 256px */
-      background-color: #000;
-      color: #ffd700;
-      flex-shrink: 0;
-    }
-    main {
-      padding: 2rem;
-      flex: 1;
-      overflow-y: auto;
-    }
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
-    .dash-card {
-      background-color: #000;
-      color: #ffd700;
-      text-align: center;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .dash-card h1 {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .dash-card p {
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
-    }
-  </style>
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+    <title>Mayondo Wood & Furniture Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            min-height:100vh;
+            background:#f5f1e8;
+            font-family:Arial, Helvetica, sans-serif;
+            overflow-x:hidden;
+            color:#4a3428;
+        }
+
+        /* HEADER */
+
+        .header{
+            height:70px;
+            background:#6f4e37; /* walnut brown */
+            display:flex;
+            justify-content:flex-end;
+            align-items:center;
+            padding:0 30px;
+            border-bottom:3px solid #d4af37;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logout-btn{
+            color:#f8e7b0;
+            text-decoration:none;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-weight:600;
+            transition:0.3s;
+            font-size:15px;
+        }
+
+        .logout-btn:hover{
+            color:white;
+        }
+
+        /* WRAPPER */
+
+        .wrapper{
+            display:flex;
+            min-height:calc(100vh - 70px);
+        }
+
+        /* SIDEBAR */
+
+        .sidebar{
+            width:260px;
+            background:#8b6b4a; /* wood color */
+            padding:25px 18px;
+            border-right:3px solid #d4af37;
+        }
+
+        .logo-box{
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .logo-box img{
+            width:130px;
+            height:130px;
+            border-radius:50%;
+            object-fit:cover;
+            border:4px solid #d4af37;
+            box-shadow:0 0 15px rgba(212,175,55,0.4);
+            background:white;
+        }
+
+        .company-name{
+            text-align:center;
+            margin-top:15px;
+            color:#fff4cc;
+            font-weight:bold;
+            font-size:18px;
+            letter-spacing:1px;
+        }
+
+        .sidebar a{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            padding:14px 18px;
+            margin-bottom:14px;
+            text-decoration:none;
+            color:#fff8dc;
+            border-radius:12px;
+            transition:0.3s;
+            font-weight:600;
+            font-size:15px;
+        }
+
+        .sidebar a:hover{
+            background:#d4af37;
+            color:#5c3d2e;
+            transform:translateX(5px);
+        }
+
+        /* MAIN CONTENT */
+
+        main{
+            flex:1;
+            padding:35px;
+        }
+
+        .page-title{
+            font-size:32px;
+            font-weight:bold;
+            margin-bottom:10px;
+            color:#6f4e37;
+        }
+
+        .subtitle{
+            color:#8b6b4a;
+            margin-bottom:35px;
+            font-size:16px;
+        }
+
+        /* CARD GRID */
+
+        .card-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+            gap:25px;
+        }
+
+        .dash-card{
+            background:white;
+            padding:28px;
+            border-radius:20px;
+            text-align:center;
+            box-shadow:0 6px 18px rgba(0,0,0,0.08);
+            transition:0.3s;
+            border-top:5px solid #d4af37;
+        }
+
+        .dash-card:hover{
+            transform:translateY(-6px);
+            box-shadow:0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        .dash-card h1{
+            font-size:2.1rem;
+            margin-bottom:12px;
+            font-weight:bold;
+            color:#6f4e37;
+        }
+
+        .dash-card p{
+            margin:0;
+            font-size:1rem;
+            color:#7a5c4d;
+            font-weight:500;
+        }
+
+        .dash-card h5{
+            margin-bottom:16px;
+            color:#6f4e37;
+            font-weight:bold;
+        }
+
+        /* BUTTON */
+
+        .btn-custom{
+            background:#d4af37;
+            color:#5c3d2e;
+            border:none;
+            padding:11px 20px;
+            border-radius:10px;
+            font-weight:700;
+            text-decoration:none;
+            transition:0.3s;
+            display:inline-block;
+        }
+
+        .btn-custom:hover{
+            background:#6f4e37;
+            color:white;
+        }
+
+        /* FOOTER */
+
+        footer{
+            background:#6f4e37;
+            color:#f8e7b0;
+            text-align:center;
+            padding:18px;
+            border-top:3px solid #d4af37;
+            font-size:14px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:768px){
+
+            .wrapper{
+                flex-direction:column;
+            }
+
+            .sidebar{
+                width:100%;
+                border-right:none;
+                border-bottom:3px solid #d4af37;
+            }
+
+            .card-grid{
+                grid-template-columns:1fr;
+            }
+
+            main{
+                padding:20px;
+            }
+
+            .page-title{
+                font-size:25px;
+            }
+        }
+
+    </style>
 </head>
 
-<body class="flex flex-col min-h-screen bg-gray-100">
-  
-  <!-- Header -->
-  <div class="header">
-    <a href="{% url 'logout' %}" class="logout-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" 
-           viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
-      </svg>
-      Logout
-    </a>
-  </div>
+<body>
 
-  <div class="flex flex-1">
+    <!-- HEADER -->
 
-    <!-- Sidebar -->
-    <div class="hidden md:flex flex-col sidebar">
-      <nav class="flex flex-col flex-1 p-4 text-yellow-400">
-        <div class="flex justify-center mb-8">
-          <img src="{% static 'images/logo2.jpg' %}" alt="Logo" class="w-28 h-28 rounded-full object-cover shadow-lg">
-        </div>
+    <div class="header">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+        <a href="{% url 'logout' %}" class="logout-btn">
 
-        <a href="/dashboard" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yello-500">
-          <i class="fa-solid fa-gauge"></i> Dashboard
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24"
+                 width="22">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
+            </svg>
+
+            Logout
         </a>
-        <a href="/stock/" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yellow-500">
-          <i class="fa-solid fa-boxes-stacked"></i> Add Stock
-        </a>
-        <a href="/sales/" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yellow-500">
-          <i class="fa-solid fa-cart-plus"></i> Add Sale
-        </a>
-        <a href="/register/" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-700 rounded-lg text-yellow-500">
-          <i class="fa-solid fa-user-plus"></i> Add Staff
-        </a>
-      </nav>
+
     </div>
 
-    <!-- Dashboard Cards -->
-    <main>
-      <div class="card-grid">
+    <!-- MAIN WRAPPER -->
 
-        <div class="dash-card">
-          <h1>{{ total_stock|intcomma }}</h1>
-          <p>Total Stock</p>
+    <div class="wrapper">
+
+        <!-- SIDEBAR -->
+
+        <div class="sidebar">
+
+            <div class="logo-box">
+
+                <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
+
+                <div class="company-name">
+                    MAYONDO WOOD & FURNITURE
+                </div>
+
+            </div>
+
+            <nav>
+
+                <a href="/dashboard">
+                    <i class="fa-solid fa-gauge"></i>
+                    Dashboard
+                </a>
+
+                <a href="/stock/">
+                    <i class="fa-solid fa-boxes-stacked"></i>
+                    Manage Stock
+                </a>
+
+                <a href="/sales/">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Record Sales
+                </a>
+
+                <a href="/register/">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Add Staff
+                </a>
+
+            </nav>
+
         </div>
 
-        <div class="dash-card">
-          <h1>{{ total_sales|intcomma }}</h1>
-          <p>Total Sales</p>
-        </div>
+        <!-- MAIN CONTENT -->
 
-        <div class="dash-card">
-          <h1>{{ daily_sales|intcomma }}</h1>
-          <p>Daily Sales</p>
-        </div>
+        <main>
 
-        <div class="dash-card">
-          <h1>{{ top_selling_product }}</h1>
-          <p>Top Selling Product</p>
-        </div>
+            <h2 class="page-title">
+                Furniture Business Dashboard
+            </h2>
 
-        <div class="dash-card">
-          <h1>{{ low_selling_product }}</h1>
-          <p>Low Selling Product</p>
-        </div>
+            <p class="subtitle">
+                Monitor inventory, sales, profits and staff activities for Mayondo Wood & Furniture.
+            </p>
 
-        <div class="dash-card">
-          {% for stock in stock_threshold %}
-          <h1>{{ stock.productname }}</h1>
-          {% endfor %}
-          <p>Stock Threshold</p>
-        </div>
+            <div class="card-grid">
 
-        <div class="dash-card">
-          <h1>{{ total_profit|intcomma }}</h1>
-          <p>{% if total_profit > 0 %}Profit{% else %}Loss{% endif %}</p>
-        </div>
+                <div class="dash-card">
+                    <h1>{{ total_stock|intcomma }}</h1>
+                    <p>Total Stock</p>
+                </div>
 
-        <div class="dash-card">
-          <h1>{{ total_users }}</h1>
-          <p>Total Staff</p>
-        </div>
+                <div class="dash-card">
+                    <h1>{{ total_sales|intcomma }}</h1>
+                    <p>Total Sales</p>
+                </div>
 
-        <div class="dash-card">
-          <h1>{{ pending_sales }}</h1>
-          <p>Pending</p>
-        </div>
+                <div class="dash-card">
+                    <h1>{{ daily_sales|intcomma }}</h1>
+                    <p>Daily Sales</p>
+                </div>
 
-        <div class="dash-card">
-          <h1>{{ completed_sales }}</h1>
-          <p>Completed</p>
-        </div>
+                <div class="dash-card">
+                    <h1>{{ top_selling_product }}</h1>
+                    <p>Top Selling Furniture</p>
+                </div>
 
-        <div class="dash-card">
-          <h5 class="font-semibold mb-2">View All Stock</h5>
-          <a href="/allstock" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">Check Out</a>
-        </div>
+                <div class="dash-card">
+                    <h1>{{ low_selling_product }}</h1>
+                    <p>Low Selling Product</p>
+                </div>
 
-        <div class="dash-card">
-          <h5 class="font-semibold mb-2">View All Sales</h5>
-          <a href="/allsales" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">Check Out</a>
-        </div>
+                <div class="dash-card">
 
-        <div class="dash-card">
-          <h5 class="font-semibold mb-2">View All Staff</h5>
-          <a href="/allusers" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">Check Out</a>
-        </div>
+                    {% for stock in stock_threshold %}
+                        <h1>{{ stock.productname }}</h1>
+                    {% endfor %}
 
-        <div class="dash-card">
-          <h5 class="font-semibold mb-2">Monthly Sales Report</h5>
-          <a href="/salesreport" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">View</a>
-        </div>
+                    <p>Low Stock Alert</p>
 
-        <div class="dash-card">
-          <h5 class="font-semibold mb-2">Monthly Stock Report</h5>
-          <a href="/monthlyreport" class="btn bg-yellow-500 hover:bg-yellow-600 text-white font-semibold">View</a>
-        </div>
+                </div>
 
-      </div>
-    </main>
-  </div>
+                <div class="dash-card">
+                    <h1>{{ total_profit|intcomma }}</h1>
 
-  <!-- Footer -->
-  <footer class="bg-black py-4 mt-auto">
-    <div class="container mx-auto text-center text-sm px-4 text-yellow-400">
-      <p>© 2025 Mayondo Wood and Furniture. All Rights Reserved. Designed by Racheal Acio.</p>
+                    <p>
+                        {% if total_profit > 0 %}
+                            Total Profit
+                        {% else %}
+                            Total Loss
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="dash-card">
+                    <h1>{{ total_users }}</h1>
+                    <p>Total Staff</p>
+                </div>
+
+                <div class="dash-card">
+                    <h1>{{ pending_sales }}</h1>
+                    <p>Pending Orders</p>
+                </div>
+
+                <div class="dash-card">
+                    <h1>{{ completed_sales }}</h1>
+                    <p>Completed Orders</p>
+                </div>
+
+                <!-- ACTION CARDS -->
+
+                <div class="dash-card">
+                    <h5>View All Stock</h5>
+
+                    <a href="/allstock" class="btn-custom">
+                        Open
+                    </a>
+                </div>
+
+                <div class="dash-card">
+                    <h5>View All Sales</h5>
+
+                    <a href="/allsales" class="btn-custom">
+                        Open
+                    </a>
+                </div>
+
+                <div class="dash-card">
+                    <h5>View All Staff</h5>
+
+                    <a href="/allusers" class="btn-custom">
+                        Open
+                    </a>
+                </div>
+
+                <div class="dash-card">
+                    <h5>Monthly Sales Report</h5>
+
+                    <a href="/salesreport" class="btn-custom">
+                        View Report
+                    </a>
+                </div>
+
+                <div class="dash-card">
+                    <h5>Monthly Stock Report</h5>
+
+                    <a href="/monthlyreport" class="btn-custom">
+                        View Report
+                    </a>
+                </div>
+
+            </div>
+
+        </main>
+
     </div>
-  </footer>    
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FOOTER -->
+
+    <footer>
+        © 2025 Mayondo Wood & Furniture System.
+        All Rights Reserved.
+        Designed by Racheal Acio.
+    </footer>
+
+    <!-- Bootstrap -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
