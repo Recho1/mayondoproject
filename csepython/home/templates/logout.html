@@ -1,83 +1,58 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logout</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"/>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f3f4f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      flex-direction: column;
-    }
-
-    .logout-container {
-      background-color: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 400px;
-      width: 100%;
-    }
-
-    .logout-container h2 {
-      color: black; /* purple-700 */
-      font-size: 1.75rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .logout-container p {
-      margin: 0.5rem 0;
-      color: #4b5563;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.5rem 1.5rem;
-      margin-top: 1rem;
-      background-color: black; /* purple-700 */
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn:hover {
-      background-color: #1f2937; /* black-700 */
-    }
-
-    footer {
-      background-color: #1f2937;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      width: 100%;
-      position: fixed;
-      bottom: 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged Out - Mayondo Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+            <!-- Logout Icon -->
+            <div class="mb-6">
+                <svg class="w-20 h-20 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Logged Out Successfully</h2>
+            <p class="text-gray-600 mb-6">You have been logged out of your account.</p>
+            
+            <div class="space-y-3">
+                <a href="/login/" 
+                   class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                    Login Again
+                </a>
+                <a href="/" 
+                   class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-4 rounded-lg transition duration-200">
+                    Return to Home
+                </a>
+            </div>
+            
+            <!-- Redirect timer -->
+            <p class="text-sm text-gray-500 mt-6">
+                You will be redirected to the login page in <span id="countdown" class="font-bold">5</span> seconds.
+            </p>
+        </div>
+    </div>
 
-  <div class="logout-container">
-    <h2>You have been logged out</h2>
-    <p>Thank you for using our application.</p>
-    <p>Click below to return to the home page.</p>
-    <a href="{% url 'login' %}" class="btn">Return to Home Page</a>
-  </div>
-
-  <footer>
-    <p>&copy; 2025 Racheal Acio. | All Rights Reserved.</p>
-  </footer>
-
+    <!-- Auto-redirect script -->
+    <script>
+        let seconds = 5;
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            seconds--;
+            if (seconds >= 0) {
+                countdownElement.textContent = seconds;
+            }
+            if (seconds === 0) {
+                clearInterval(timer);
+                window.location.href = '/login/';
+            }
+        }, 1000);
+    </script>
 </body>
 </html>

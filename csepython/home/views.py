@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import SignUp, Stock, Sales
@@ -54,6 +54,8 @@ def registerpage(request):
     return render(request, "register.html", {"errors": errors})
 
 def logoutpage(request):
+    logout(request)
+    return render(request, "logout.html")
     logout(request)
     return redirect('/login/')
 
