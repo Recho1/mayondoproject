@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from .models import SignUp, Stock, Sales
-from django.db.models import Sum, Q
+from django.db.models import Sum
 from datetime import datetime
 import calendar
 from django.http import HttpResponse
@@ -11,8 +10,6 @@ from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 import json
 from decimal import Decimal
-
-# Create your views here.
 
 def indexpage(request):
     return render(request, "index.html")
@@ -22,16 +19,12 @@ def loginpage(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
-        # Use Django's built-in authentication
         user = authenticate(request, username=username, password=password)
-        
         if user is not None:
             login(request, user)
             return redirect('/dashboard')
         else:
             error = "Invalid username or password"
-    
     return render(request, "login.html", {"error": error})
 
 def registerpage(request):
@@ -41,37 +34,26 @@ def registerpage(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         repeat_password = request.POST.get('repeat_password')
-        
         if password != repeat_password:
             errors['password'] = "Passwords do not match"
         elif User.objects.filter(username=username).exists():
             errors['username'] = "Username already exists"
         else:
-            # Create user with Django's built-in User model
             user = User.objects.create_user(username=username, email=email, password=password)
             return redirect('/login/')
-    
     return render(request, "register.html", {"errors": errors})
 
 def logoutpage(request):
-    logout(request)
-    return render(request, "logout.html")
     logout(request)
     return redirect('/login/')
 
 def dashboardpage(request):
     if not request.user.is_authenticated:
         return redirect('/login/')
-    
-    # Get dashboard data
-    total_stock = Stock.objects.count()
-    total_sales = Sales.objects.count()
-    total_users = User.objects.count()
-    
     context = {
-        'total_stock': total_stock,
-        'total_sales': total_sales,
-        'total_users': total_users,
+        'total_stock': Stock.objects.count(),
+        'total_sales': Sales.objects.count(),
+        'total_users': User.objects.count(),
         'user': request.user
     }
     return render(request, "dashboard.html", context)
@@ -84,7 +66,9 @@ def stockpage(request):
 def salespage(request):
     if not request.user.is_authenticated:
         return redirect('/login/')
-    return render(request, "sales.html")
+    stocks = Stock.objects.all()
+    agents = SignUp.objects.all()
+    return render(request, "sales.html", {"stocks": stocks, "agents": agents})
 
 def allsalespage(request):
     if not request.user.is_authenticated:
