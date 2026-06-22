@@ -1,700 +1,83 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <title>Sales Form | Mayondo Wood & Furniture</title>
-
-  <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    body{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      font-family:'Poppins', sans-serif;
-      background:#f5f1e8;
-      color:#5c3d2e;
-    }
-
-    /* HEADER */
-
-    .header{
-      height:70px;
-      background:#6f4e37;
-      border-bottom:3px solid #d4af37;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:0 30px;
-      position:sticky;
-      top:0;
-      z-index:100;
-      box-shadow:0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .header-title{
-      color:#fff3c4;
-      font-size:24px;
-      font-weight:bold;
-      letter-spacing:1px;
-    }
-
-    .logout-btn{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      background:#d4af37;
-      color:#5c3d2e;
-      padding:10px 18px;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:600;
-      transition:0.3s;
-    }
-
-    .logout-btn:hover{
-      background:white;
-      color:#6f4e37;
-    }
-
-    /* MAIN LAYOUT */
-
-    .main-layout{
-      flex:1;
-      display:flex;
-    }
-
-    /* SIDEBAR */
-
-    .sidebar{
-      width:250px;
-      background:#8b6b4a;
-      padding:25px 15px;
-      border-right:3px solid #d4af37;
-      min-height:calc(100vh - 70px);
-    }
-
-    .logo-box{
-      text-align:center;
-      margin-bottom:35px;
-    }
-
-    .logo-box img{
-      width:120px;
-      height:120px;
-      border-radius:50%;
-      object-fit:cover;
-      border:4px solid #d4af37;
-      background:white;
-      box-shadow:0 0 15px rgba(212,175,55,0.4);
-    }
-
-    .company-name{
-      margin-top:15px;
-      color:#fff4cc;
-      font-weight:bold;
-      font-size:17px;
-    }
-
-    .sidebar nav{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .sidebar a{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      color:#fff8dc;
-      text-decoration:none;
-      padding:14px 16px;
-      border-radius:12px;
-      transition:0.3s;
-      font-weight:500;
-    }
-
-    .sidebar a:hover{
-      background:#d4af37;
-      color:#5c3d2e;
-      transform:translateX(5px);
-    }
-
-    /* CONTENT */
-
-    .content-wrapper{
-      flex:1;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:40px 20px;
-    }
-
-    /* FORM CARD */
-
-    .form-section{
-      width:100%;
-      max-width:700px;
-      background:white;
-      padding:40px;
-      border-radius:24px;
-      border-top:6px solid #d4af37;
-      box-shadow:0 10px 35px rgba(0,0,0,0.10);
-    }
-
-    .form-section h2{
-      text-align:center;
-      font-size:34px;
-      font-weight:bold;
-      color:#6f4e37;
-      margin-bottom:10px;
-    }
-
-    .form-subtitle{
-      text-align:center;
-      color:#8b6b4a;
-      margin-bottom:35px;
-    }
-
-    /* FORM */
-
-    .form-group{
-      margin-bottom:20px;
-    }
-
-    label{
-      display:block;
-      margin-bottom:8px;
-      color:#6f4e37;
-      font-weight:600;
-    }
-
-    input,
-    select,
-    textarea{
-      width:100%;
-      padding:14px 16px;
-      border-radius:12px;
-      border:1px solid #ddd;
-      background:#fafafa;
-      font-size:15px;
-      outline:none;
-      transition:0.3s;
-      color:#5c3d2e;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus{
-      border:1px solid #d4af37;
-      background:white;
-      box-shadow:0 0 0 4px rgba(212,175,55,0.15);
-    }
-
-    .checkbox-wrapper{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-top:20px;
-      margin-bottom:20px;
-    }
-
-    .checkbox-wrapper input{
-      width:18px;
-      height:18px;
-      accent-color:#d4af37;
-      cursor:pointer;
-    }
-
-    .checkbox-wrapper label{
-      margin:0;
-    }
-
-    .submit-btn{
-      width:100%;
-      background:#6f4e37;
-      color:#fff3c4;
-      border:none;
-      padding:15px;
-      border-radius:14px;
-      font-size:16px;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.3s;
-      margin-top:10px;
-    }
-
-    .submit-btn:hover{
-      background:#d4af37;
-      color:#5c3d2e;
-      transform:translateY(-2px);
-    }
-
-    .error{
-      color:#dc2626;
-      font-size:13px;
-      margin-top:6px;
-    }
-
-    /* FOOTER */
-
-    footer{
-      background:#6f4e37;
-      color:#f8e7b0;
-      text-align:center;
-      padding:18px;
-      border-top:3px solid #d4af37;
-      font-size:14px;
-    }
-
-    /* MOBILE */
-
-    @media(max-width:768px){
-
-      .main-layout{
-        flex-direction:column;
-      }
-
-      .sidebar{
-        width:100%;
-        min-height:auto;
-        border-right:none;
-        border-bottom:3px solid #d4af37;
-      }
-
-      .content-wrapper{
-        padding:20px;
-      }
-
-      .form-section{
-        padding:25px;
-      }
-
-      .header{
-        padding:0 15px;
-      }
-
-      .header-title{
-        font-size:18px;
-      }
-
-      .form-section h2{
-        font-size:28px;
-      }
-    }
-
-  </style>
-
-</head>
-
-<body>
-
-  <!-- HEADER -->
-
-  <div class="header">
-
-    <div class="header-title">
-      Sales Records
-    </div>
-
-    <a href="{% url 'logout' %}" class="logout-btn">
-
-      <svg xmlns="http://www.w3.org/2000/svg"
-           fill="none"
-           stroke="currentColor"
-           viewBox="0 0 24 24"
-           width="20">
-
-        <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-      </svg>
-
-      Logout
-
-    </a>
-
-  </div>
-
-  <!-- MAIN -->
-
-  <div class="main-layout">
-
-    <!-- SIDEBAR -->
-
-    <div class="sidebar">
-
-      <div class="logo-box">
-
-        <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-
-        <div class="company-name">
-          MAYONDO WOOD & FURNITURE
-        </div>
-
-      </div>
-
-      {% if role == "manager" %}
-
-      <nav>
-
-        <a href="/dashboard">
-          <i class="fa-solid fa-gauge"></i>
-          Dashboard
-        </a>
-
-        <a href="/stock/">
-          <i class="fa-solid fa-boxes-stacked"></i>
-          Add Stock
-        </a>
-
-        <a href="/sales/">
-          <i class="fa-solid fa-cart-plus"></i>
-          Add Sale
-        </a>
-
-        <a href="/register/">
-          <i class="fa-solid fa-user-plus"></i>
-          Add Staff
-        </a>
-
-        <a href="/allstock/">
-          <i class="fa-solid fa-box"></i>
-          All Stock
-        </a>
-
-        <a href="/allsales/">
-          <i class="fa-solid fa-receipt"></i>
-          All Sales
-        </a>
-
-        <a href="/allusers/">
-          <i class="fa-solid fa-users"></i>
-          All Staff
-        </a>
-
-      </nav>
-
-      {% endif %}
-
-      {% if role == "salesagent" %}
-
-      <nav>
-
-        <a href="/sales/">
-          <i class="fa-solid fa-cart-plus"></i>
-          Add Sale
-        </a>
-
-        <a href="/allsales/">
-          <i class="fa-solid fa-list"></i>
-          All Sales
-        </a>
-
-      </nav>
-
-      {% endif %}
-
-    </div>
-
-    <!-- FORM CONTENT -->
-
-    <div class="content-wrapper">
-
-      <div class="form-section">
-
-        <h2>Transaction Records</h2>
-
-        <p class="form-subtitle">
-          Record and manage furniture and wood sales transactions.
-        </p>
-
-        <form action="/sales/" method="post">
-
-          {% csrf_token %}
-
-          <!-- CUSTOMER -->
-
-          <div class="form-group">
-
-            <label for="customername">
-              Customer Name
-            </label>
-
-            <input type="text"
-                   id="customername"
-                   name="customername"
-                   value="{{ form_data.customername|default:'' }}"
-                   placeholder="Enter customer name">
-
-            {% if errors.customername %}
-              <div class="error">{{ errors.customername }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- PRODUCT TYPE -->
-
-          <div class="form-group">
-
-            <label for="producttype">
-              Product Type
-            </label>
-
-            <input type="text"
-                   id="producttype"
-                   name="producttype"
-                   value="{{ form_data.producttype|default:'' }}"
-                   placeholder="Enter product type">
-
-            {% if errors.producttype %}
-              <div class="error">{{ errors.producttype }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- PRODUCT -->
-
-          <div class="form-group">
-
-            <label for="productname">
-              Product Name
-            </label>
-
-            <select name="productname">
-
-              <option value="">
-                Select a product
-              </option>
-
-              {% for product in all_products %}
-
-              <option value="{{ product.id }}"
-                {% if form_data.productname == product.id|stringformat:"s" %}
-                  selected
-                {% endif %}>
-
-                {{ product.productname }}
-
-              </option>
-
-              {% endfor %}
-
-            </select>
-
-            {% if errors.productname %}
-              <div class="error">{{ errors.productname }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- QUANTITY -->
-
-          <div class="form-group">
-
-            <label for="quantity">
-              Quantity
-            </label>
-
-            <input type="number"
-                   id="quantity"
-                   min="1"
-                   name="quantity"
-                   value="{{ form_data.quantity|default:'' }}"
-                   placeholder="Enter quantity">
-
-            {% if errors.quantity %}
-              <div class="error">{{ errors.quantity }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- UNIT COST -->
-
-          <div class="form-group">
-
-            <label for="sellingprice_unitcost">
-              Unit Cost
-            </label>
-
-            <input type="number"
-                   id="sellingprice_unitcost"
-                   name="sellingprice_unitcost"
-                   value="{{ form_data.sellingprice_unitcost|default:'' }}"
-                   placeholder="Enter unit cost">
-
-            {% if errors.sellingprice_unitcost %}
-              <div class="error">{{ errors.sellingprice_unitcost }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- PAYMENT -->
-
-          <div class="form-group">
-
-            <label for="paymentmethod">
-              Payment Method
-            </label>
-
-            <input type="text"
-                   id="paymentmethod"
-                   name="paymentmethod"
-                   value="{{ form_data.paymentmethod|default:'' }}"
-                   placeholder="Enter payment method">
-
-            {% if errors.paymentmethod %}
-              <div class="error">{{ errors.paymentmethod }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- PAYMENT STATUS -->
-
-          <div class="form-group">
-
-            <label for="is_paid">
-              Payment Status
-            </label>
-
-            <select name="is_paid">
-
-              <option value="True"
-                {% if form_data.is_paid == "True" %}
-                  selected
-                {% endif %}>
-                Completed
-              </option>
-
-              <option value="False"
-                {% if form_data.is_paid == "False" %}
-                  selected
-                {% endif %}>
-                Pending
-              </option>
-
-            </select>
-
-            {% if errors.is_paid %}
-              <div class="error">{{ errors.is_paid }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- TRANSPORT -->
-
-          <div class="checkbox-wrapper">
-
-            <input type="checkbox"
-                   id="transport_offered"
-                   name="transport_offered"
-                   value="1"
-                   {% if form_data.transport_offered %}checked{% endif %}>
-
-            <label for="transport_offered">
-              Transport Offered
-            </label>
-
-          </div>
-
-          {% if errors.transport_offered %}
-            <div class="error">{{ errors.transport_offered }}</div>
-          {% endif %}
-
-          <!-- DATE -->
-
-          <div class="form-group">
-
-            <label for="date">
-              Date
-            </label>
-
-            <input type="date"
-                   id="date"
-                   name="date"
-                   value="{{ form_data.date|default:'' }}">
-
-            {% if errors.date %}
-              <div class="error">{{ errors.date }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- SALES AGENT -->
-
-          <div class="form-group">
-
-            <label for="salesagentname">
-              Sales Agent
-            </label>
-
-            <select name="salesagentname">
-
-              <option value="">
-                Select an agent
-              </option>
-
-              {% for agent in all_agents %}
-
-              <option value="{{ agent.id }}"
-                {% if form_data.salesagentname == agent.id|stringformat:"s" %}
-                  selected
-                {% endif %}>
-
-                {{ agent.username }}
-
-              </option>
-
-              {% endfor %}
-
-            </select>
-
-            {% if errors.salesagentname %}
-              <div class="error">{{ errors.salesagentname }}</div>
-            {% endif %}
-
-          </div>
-
-          <!-- BUTTON -->
-
-          <button type="submit" class="submit-btn">
-            Submit Sale
-          </button>
-
+{% block title %}Add Sales - Mayondo Project{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Add New Sale</h1>
+        
+        <!-- Sales Form -->
+        <form method="POST" action="/sales/" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Customer Name</label>
+                    <input type="text" name="customername" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Product Type</label>
+                    <input type="text" name="producttype" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Product Name</label>
+                    <select name="productname" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                        <option value="">Select Product</option>
+                        {% for stock in stocks %}
+                        <option value="{{ stock.id }}">{{ stock.productname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Quantity</label>
+                    <input type="number" name="quantity" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Selling Price</label>
+                    <input type="number" step="0.01" name="sellingprice" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Transport Fare</label>
+                    <input type="number" step="0.01" name="transportfare" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Payment Method</label>
+                    <select name="paymentmethod" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                        <option value="Cash">Cash</option>
+                        <option value="Mobile Money">Mobile Money</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Credit">Credit</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">Sales Agent</label>
+                    <select name="salesagentname" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500">
+                        <option value="">Select Agent</option>
+                        {% for agent in agents %}
+                        <option value="{{ agent.id }}">{{ agent.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-6">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
+                    Save Sale
+                </button>
+                <a href="/allsales/" class="ml-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
+                    Cancel
+                </a>
+            </div>
         </form>
-
-      </div>
-
     </div>
-
-  </div>
-
-  <!-- FOOTER -->
-
-  <footer>
-
-    © 2025 - 2027 Mayondo Wood & Furniture System.
-    All Rights Reserved.
-    Designed by Racheal Acio.
-
-  </footer>
-
-</body>
-</html>
+</div>
+{% endblock %}
