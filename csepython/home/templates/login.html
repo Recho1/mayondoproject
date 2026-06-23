@@ -1,295 +1,61 @@
 {% load static %}
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
-{% load static %}
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <title>Login | Mayondo Wood & Furniture</title>
-
-  <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
-
-    body{
-      font-family:'Poppins', sans-serif;
-      background:#f5f1e8;
-    }
-
-    /* LEFT SECTION */
-
-    .left-section{
-      background:linear-gradient(
-        rgba(92,61,46,0.75),
-        rgba(92,61,46,0.75)
-      ),
-      url('/static/images/furniture-bg.jpg');
-
-      background-size:cover;
-      background-position:center;
-    }
-
-    /* FORM */
-
-    .login-card{
-      background:white;
-      border-radius:24px;
-      padding:45px;
-      box-shadow:0 10px 35px rgba(0,0,0,0.12);
-      border-top:6px solid #d4af37;
-    }
-
-    .input-field{
-      width:100%;
-      padding:14px 16px;
-      border:1px solid #d7d7d7;
-      border-radius:12px;
-      outline:none;
-      transition:0.3s;
-      background:#fafafa;
-      color:#5c3d2e;
-    }
-
-    .input-field:focus{
-      border:1px solid #d4af37;
-      background:white;
-      box-shadow:0 0 0 4px rgba(212,175,55,0.15);
-    }
-
-    /* CHECKBOX */
-
-    input[type="checkbox"]{
-      accent-color:#6f4e37;
-      cursor:pointer;
-    }
-
-    /* LOGIN BUTTON */
-
-    .login-btn{
-      width:100%;
-      background:#6f4e37;
-      color:#fff3c4;
-      padding:14px;
-      border:none;
-      border-radius:14px;
-      font-size:16px;
-      font-weight:600;
-      transition:0.3s;
-    }
-
-    .login-btn:hover{
-      background:#d4af37;
-      color:#5c3d2e;
-      transform:translateY(-2px);
-    }
-
-    /* FOOTER */
-
-    footer{
-      background:#6f4e37;
-      color:#f8e7b0;
-      text-align:center;
-      padding:18px;
-      border-top:3px solid #d4af37;
-      font-size:14px;
-    }
-
-  </style>
-
+    <title>Login - Mayondo Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-
-<body class="min-h-screen flex flex-col">
-
-  <!-- MAIN CONTENT -->
-
-  <div class="flex flex-1">
-
-    <!-- LEFT SIDE -->
-
-    <div class="hidden lg:flex lg:w-1/2 left-section items-center justify-center p-10">
-
-      <div class="text-center text-white">
-
-        <h1 class="text-5xl font-bold mb-6 tracking-wide">
-          MAYONDO
-        </h1>
-
-        <h2 class="text-3xl font-semibold mb-4 text-yellow-300">
-          Wood & Furniture System
-        </h2>
-
-        <p class="text-lg leading-relaxed max-w-md mx-auto text-gray-100">
-          Manage furniture stock, sales, staff, and inventory efficiently
-          with a modern and professional management system.
-        </p>
-
-      </div>
-
-    </div>
-
-    <!-- RIGHT SIDE -->
-
-    <div class="w-full lg:w-1/2 flex items-center justify-center px-6 py-10">
-
-      <div class="login-card w-full max-w-md">
-
-        <!-- LOGO -->
-
-        <div class="flex justify-center mb-5">
-
-          <img src="{% static 'images/logo2.jpg' %}"
-               alt="Logo"
-               class="w-24 h-24 rounded-full object-cover border-4 border-yellow-500 shadow-lg">
-
+<body class="bg-gray-100">
+    {% include "public_navbar.html" %}
+    
+    <div class="min-h-screen flex items-center justify-center py-12">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <div class="text-center mb-8">
+                <i class="fas fa-user-circle text-6xl text-blue-500 mb-4"></i>
+                <h1 class="text-3xl font-bold text-gray-800">Welcome Back</h1>
+                <p class="text-gray-600 mt-2">Sign in to your account</p>
+            </div>
+            
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                        <i class="fas fa-user mr-2"></i>Username
+                    </label>
+                    <input type="text" name="username" id="username" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                        <i class="fas fa-lock mr-2"></i>Password
+                    </label>
+                    <input type="password" name="password" id="password" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                {% if error %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                    <i class="fas fa-exclamation-circle mr-2"></i>{{ error }}
+                </div>
+                {% endif %}
+                
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                </button>
+            </form>
+            
+            <div class="text-center mt-6">
+                <p class="text-gray-600">
+                    Don't have an account? 
+                    <a href="{% url 'register' %}" class="text-blue-500 hover:text-blue-700 font-bold">
+                        Register here
+                    </a>
+                </p>
+            </div>
         </div>
-
-        <!-- TITLE -->
-
-        <h3 class="text-3xl font-bold text-center mb-2 text-[#5c3d2e]">
-          Welcome Back
-        </h3>
-
-        <p class="text-center text-gray-500 mb-8">
-          Sign in to continue to your dashboard
-        </p>
-
-        <!-- FORM -->
-
-        <form action="/login/" method="post">
-
-          {% csrf_token %}
-
-          <!-- USERNAME -->
-
-          <div class="mb-5">
-
-            <label for="username"
-                   class="block mb-2 font-medium text-[#6f4e37]">
-
-              Username
-
-            </label>
-
-            <input type="text"
-                   id="username"
-                   name="username"
-                   class="input-field"
-                   placeholder="Enter your username"
-                   required>
-
-          </div>
-
-          <!-- PASSWORD -->
-
-          <div class="mb-5">
-
-            <label for="password"
-                   class="block mb-2 font-medium text-[#6f4e37]">
-
-              Password
-
-            </label>
-
-            <input type="password"
-                   id="password"
-                   name="password"
-                   class="input-field"
-                   placeholder="Enter your password"
-                   required>
-
-          </div>
-
-          <!-- SHOW PASSWORD -->
-
-          <div class="flex items-center mb-6">
-
-            <input type="checkbox"
-                   id="show-password"
-                   class="w-4 h-4 mr-2">
-
-            <label for="show-password"
-                   class="text-sm text-gray-600 cursor-pointer">
-
-              Show Password
-
-            </label>
-
-          </div>
-
-          <!-- LOGIN BUTTON -->
-
-          <button type="submit"
-                  class="login-btn">
-
-            Login
-
-          </button>
-
-          <!-- ERROR -->
-
-          {% if error %}
-
-          <p class="text-red-500 text-sm mt-4 text-center">
-            {{ error }}
-          </p>
-
-          {% endif %}
-
-        </form>
-
-      </div>
-
     </div>
-
-  </div>
-
-  <!-- FOOTER -->
-
-  <footer>
-
-    © 2025 - 2027 Mayondo Wood & Furniture System.
-    All Rights Reserved.
-    Designed by Racheal Acio.
-
-  </footer>
-
-  <!-- SHOW PASSWORD -->
-
-  <script>
-
-    const showPassword =
-      document.getElementById("show-password");
-
-    const passwordField =
-      document.getElementById("password");
-
-    showPassword.addEventListener("change", function(){
-
-      passwordField.type =
-        this.checked ? "text" : "password";
-
-    });
-
-  </script>
-
 </body>
-</html>{% endblock %}
-{% endblock %}
+</html>

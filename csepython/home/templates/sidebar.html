@@ -1,61 +1,124 @@
 {% load static %}
 <!-- Sidebar Navigation -->
-<div class="w-64 bg-gray-800 text-white min-h-screen p-4">
+<aside class="w-64 bg-gray-800 text-white min-h-screen p-4 fixed left-0 top-0 overflow-y-auto">
     <div class="mb-8">
-        <h2 class="text-2xl font-bold text-yellow-400">Mayondo</h2>
-        <p class="text-sm text-gray-400">Inventory Management</p>
+        <h2 class="text-2xl font-bold text-center">Mayondo</h2>
+        <p class="text-sm text-gray-400 text-center">Inventory System</p>
     </div>
     
-    <nav class="space-y-2">
-        <a href="/" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 transition duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-            </svg>
-            <span>Dashboard</span>
-        </a>
-        
-        <a href="/stock/" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 transition duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-            </svg>
-            <span>Add Stock</span>
-        </a>
-        
-        <a href="/allstock/" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 transition duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
-            </svg>
-            <span>All Stock</span>
-        </a>
-        
-        <a href="/sales/" class="flex items-center space-x-2 p-3 rounded-lg bg-yellow-600 hover:bg-yellow-700 transition duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>Add Sales</span>
-        </a>
-        
-        <a href="/allsales/" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 transition duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
-            </svg>
-            <span>All Sales</span>
-        </a>
-        
-        <a href="/allusers/" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-700 transition duration-200">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-            </svg>
-            <span>All Users</span>
-        </a>
-        
-        <div class="border-t border-gray-700 my-4"></div>
-        
-        <a href="/logout/" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-red-600 transition duration-200 text-red-400 hover:text-white">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-            </svg>
-            <span>Logout</span>
-        </a>
+    <nav>
+        <ul class="space-y-2">
+            <!-- Dashboard - Manager Only -->
+            {% if is_manager %}
+            <li>
+                <a href="{% url 'dashboard' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/dashboard/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-home w-6"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            <!-- Stock Management - Manager Only -->
+            {% if is_manager %}
+            <li>
+                <a href="{% url 'stock' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/stock/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-boxes w-6"></i>
+                    <span>Stock</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'add_stock' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/stock/add/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-plus-circle w-6"></i>
+                    <span>Add Stock</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'allstock' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/allstock/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-list w-6"></i>
+                    <span>All Stock</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            <!-- Sales Management - Everyone -->
+            <li class="mt-4">
+                <span class="text-xs text-gray-400 uppercase px-4">Sales</span>
+            </li>
+            <li>
+                <a href="{% url 'sales' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/sales/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-shopping-cart w-6"></i>
+                    <span>Sales</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'add_sales' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/sales/add/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-plus-circle w-6"></i>
+                    <span>Add Sale</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'allsales' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/allsales/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-list w-6"></i>
+                    <span>All Sales</span>
+                </a>
+            </li>
+            
+            <!-- Reports - Manager Only -->
+            {% if is_manager %}
+            <li class="mt-4">
+                <span class="text-xs text-gray-400 uppercase px-4">Reports</span>
+            </li>
+            <li>
+                <a href="{% url 'monthly_stock_report' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/monthlyreport/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-file-alt w-6"></i>
+                    <span>Stock Report</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'allsales' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/salesreport/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-chart-bar w-6"></i>
+                    <span>Sales Report</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            <!-- Users - Manager Only -->
+            {% if is_manager %}
+            <li class="mt-4">
+                <span class="text-xs text-gray-400 uppercase px-4">Administration</span>
+            </li>
+            <li>
+                <a href="{% url 'allusers' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/allusers/' %}bg-gray-700{% endif %}">
+                    <i class="fas fa-users w-6"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/" target="_blank" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition">
+                    <i class="fas fa-cog w-6"></i>
+                    <span>Admin Panel</span>
+                </a>
+            </li>
+            {% endif %}
+            
+            <!-- Logout - Everyone -->
+            <li class="mt-8 border-t border-gray-700 pt-4">
+                <a href="{% url 'logout' %}" class="flex items-center px-4 py-3 rounded hover:bg-red-600 transition">
+                    <i class="fas fa-sign-out-alt w-6"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
     </nav>
-</div>
+    
+    <div class="absolute bottom-4 left-0 right-0 text-center text-xs text-gray-500">
+        <p>Logged in as: <span class="text-gray-300">{{ user.username }}</span></p>
+        <p class="mt-1">
+            {% if is_manager %}
+            <span class="text-blue-400">● Manager</span>
+            {% else %}
+            <span class="text-green-400">● Sales Agent</span>
+            {% endif %}
+        </p>
+    </div>
+</aside>

@@ -1,22 +1,82 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mayondo Project{% endblock %}</title>
+    <title>Mayondo Project</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .main-content {
+            margin-left: 256px;
+            min-height: 100vh;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar-mobile {
+                display: block !important;
+            }
+        }
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-    <div class="flex">
-        <!-- Sidebar -->
-        {% include 'sidebar.html' %}
+    {% if user.is_authenticated %}
+        <!-- Desktop Sidebar -->
+        <div class="sidebar fixed left-0 top-0 h-full z-50">
+            {% include "sidebar.html" %}
+        </div>
+        
+        <!-- Mobile Header -->
+        <div class="lg:hidden bg-gray-800 text-white p-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">Mayondo</h1>
+            <button onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Sidebar -->
+        <div id="mobileSidebar" class="sidebar-mobile hidden fixed inset-0 z-50">
+            <div class="bg-gray-800 text-white w-64 h-full overflow-y-auto p-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Mayondo</h2>
+                    <button onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                {% include "sidebar.html" %}
+            </div>
+            <div class="fixed inset-0 bg-black opacity-50" onclick="toggleMobileMenu()"></div>
+        </div>
         
         <!-- Main Content -->
-        <div class="flex-1 p-8 bg-gray-100 min-h-screen">
+        <main class="main-content bg-gray-100 p-6">
+            <div class="container mx-auto">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    {% else %}
+        <!-- Public pages (login, register) - no sidebar -->
+        <main class="min-h-screen bg-gray-100">
             {% block content %}
             {% endblock %}
-        </div>
-    </div>
+        </main>
+    {% endif %}
+    
+    <script>
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobileSidebar');
+            sidebar.classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>
