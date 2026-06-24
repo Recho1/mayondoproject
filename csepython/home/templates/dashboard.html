@@ -1,452 +1,213 @@
+{% extends "base_auth.html" %}
 {% load static %}
-{% load humanize %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
-    <title>Mayondo Wood & Furniture Dashboard</title>
-
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-
-        body{
-            min-height:100vh;
-            background:#f5f1e8;
-            font-family:Arial, Helvetica, sans-serif;
-            overflow-x:hidden;
-            color:#4a3428;
-        }
-
-        /* HEADER */
-
-        .header{
-            height:70px;
-            background:#6f4e37; /* walnut brown */
-            display:flex;
-            justify-content:flex-end;
-            align-items:center;
-            padding:0 30px;
-            border-bottom:3px solid #d4af37;
-            box-shadow:0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .logout-btn{
-            color:#f8e7b0;
-            text-decoration:none;
-            display:flex;
-            align-items:center;
-            gap:10px;
-            font-weight:600;
-            transition:0.3s;
-            font-size:15px;
-        }
-
-        .logout-btn:hover{
-            color:white;
-        }
-
-        /* WRAPPER */
-
-        .wrapper{
-            display:flex;
-            min-height:calc(100vh - 70px);
-        }
-
-        /* SIDEBAR */
-
-        .sidebar{
-            width:260px;
-            background:#8b6b4a; /* wood color */
-            padding:25px 18px;
-            border-right:3px solid #d4af37;
-        }
-
-        .logo-box{
-            text-align:center;
-            margin-bottom:35px;
-        }
-
-        .logo-box img{
-            width:130px;
-            height:130px;
-            border-radius:50%;
-            object-fit:cover;
-            border:4px solid #d4af37;
-            box-shadow:0 0 15px rgba(212,175,55,0.4);
-            background:white;
-        }
-
-        .company-name{
-            text-align:center;
-            margin-top:15px;
-            color:#fff4cc;
-            font-weight:bold;
-            font-size:18px;
-            letter-spacing:1px;
-        }
-
-        .sidebar a{
-            display:flex;
-            align-items:center;
-            gap:14px;
-            padding:14px 18px;
-            margin-bottom:14px;
-            text-decoration:none;
-            color:#fff8dc;
-            border-radius:12px;
-            transition:0.3s;
-            font-weight:600;
-            font-size:15px;
-        }
-
-        .sidebar a:hover{
-            background:#d4af37;
-            color:#5c3d2e;
-            transform:translateX(5px);
-        }
-
-        /* MAIN CONTENT */
-
-        main{
-            flex:1;
-            padding:35px;
-        }
-
-        .page-title{
-            font-size:32px;
-            font-weight:bold;
-            margin-bottom:10px;
-            color:#6f4e37;
-        }
-
-        .subtitle{
-            color:#8b6b4a;
-            margin-bottom:35px;
-            font-size:16px;
-        }
-
-        /* CARD GRID */
-
-        .card-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
-            gap:25px;
-        }
-
-        .dash-card{
-            background:white;
-            padding:28px;
-            border-radius:20px;
-            text-align:center;
-            box-shadow:0 6px 18px rgba(0,0,0,0.08);
-            transition:0.3s;
-            border-top:5px solid #d4af37;
-        }
-
-        .dash-card:hover{
-            transform:translateY(-6px);
-            box-shadow:0 10px 25px rgba(0,0,0,0.12);
-        }
-
-        .dash-card h1{
-            font-size:2.1rem;
-            margin-bottom:12px;
-            font-weight:bold;
-            color:#6f4e37;
-        }
-
-        .dash-card p{
-            margin:0;
-            font-size:1rem;
-            color:#7a5c4d;
-            font-weight:500;
-        }
-
-        .dash-card h5{
-            margin-bottom:16px;
-            color:#6f4e37;
-            font-weight:bold;
-        }
-
-        /* BUTTON */
-
-        .btn-custom{
-            background:#d4af37;
-            color:#5c3d2e;
-            border:none;
-            padding:11px 20px;
-            border-radius:10px;
-            font-weight:700;
-            text-decoration:none;
-            transition:0.3s;
-            display:inline-block;
-        }
-
-        .btn-custom:hover{
-            background:#6f4e37;
-            color:white;
-        }
-
-        /* FOOTER */
-
-        footer{
-            background:#6f4e37;
-            color:#f8e7b0;
-            text-align:center;
-            padding:18px;
-            border-top:3px solid #d4af37;
-            font-size:14px;
-        }
-
-        /* MOBILE */
-
-        @media(max-width:768px){
-
-            .wrapper{
-                flex-direction:column;
-            }
-
-            .sidebar{
-                width:100%;
-                border-right:none;
-                border-bottom:3px solid #d4af37;
-            }
-
-            .card-grid{
-                grid-template-columns:1fr;
-            }
-
-            main{
-                padding:20px;
-            }
-
-            .page-title{
-                font-size:25px;
-            }
-        }
-
-    </style>
-</head>
-
-<body>
-
-    <!-- HEADER -->
-
-    <div class="header">
-
-        <a href="{% url 'logout' %}" class="logout-btn">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 fill="none"
-                 stroke="currentColor"
-                 viewBox="0 0 24 24"
-                 width="22">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1"/>
-            </svg>
-
-            Logout
-        </a>
-
-    </div>
-
-    <!-- MAIN WRAPPER -->
-
-    <div class="wrapper">
-
-        <!-- SIDEBAR -->
-
-        <div class="sidebar">
-
-            <div class="logo-box">
-
-                <img src="{% static 'images/logo2.jpg' %}" alt="Logo">
-
-                <div class="company-name">
-                    MAYONDO WOOD & FURNITURE
-                </div>
-
+{% block content %}
+<div class="space-y-6">
+    <!-- Welcome Section -->
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-6 text-white">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold">Welcome back, {{ user.username }}!</h1>
+                <p class="text-blue-100 mt-2">Here's what's happening with your business today</p>
             </div>
-
-            <nav>
-
-                <a href="/dashboard">
-                    <i class="fa-solid fa-gauge"></i>
-                    Dashboard
-                </a>
-
-                <a href="/stock/">
-                    <i class="fa-solid fa-boxes-stacked"></i>
-                    Manage Stock
-                </a>
-
-                <a href="/sales/">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    Record Sales
-                </a>
-
-                <a href="/register/">
-                    <i class="fa-solid fa-user-plus"></i>
-                    Add Staff
-                </a>
-
-            </nav>
-
+            <div class="text-right">
+                <span class="text-sm text-blue-200">Today's Date</span>
+                <p class="text-lg font-bold">{{ today|date:"F j, Y" }}</p>
+            </div>
         </div>
-
-        <!-- MAIN CONTENT -->
-
-        <main>
-
-            <h2 class="page-title">
-                Furniture Business Dashboard
-            </h2>
-
-            <p class="subtitle">
-                Monitor inventory, sales, profits and staff activities for Mayondo Wood & Furniture.
-            </p>
-
-            <div class="card-grid">
-
-                <div class="dash-card">
-                    <h1>{{ total_stock|intcomma }}</h1>
-                    <p>Total Stock</p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ total_sales|intcomma }}</h1>
-                    <p>Total Sales</p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ daily_sales|intcomma }}</h1>
-                    <p>Daily Sales</p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ top_selling_product }}</h1>
-                    <p>Top Selling Furniture</p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ low_selling_product }}</h1>
-                    <p>Low Selling Product</p>
-                </div>
-
-                <div class="dash-card">
-
-                    {% for stock in stock_threshold %}
-                        <h1>{{ stock.productname }}</h1>
-                    {% endfor %}
-
-                    <p>Low Stock Alert</p>
-
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ total_profit|intcomma }}</h1>
-
-                    <p>
-                        {% if total_profit > 0 %}
-                            Total Profit
-                        {% else %}
-                            Total Loss
-                        {% endif %}
-                    </p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ total_users }}</h1>
-                    <p>Total Staff</p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ pending_sales }}</h1>
-                    <p>Pending Orders</p>
-                </div>
-
-                <div class="dash-card">
-                    <h1>{{ completed_sales }}</h1>
-                    <p>Completed Orders</p>
-                </div>
-
-                <!-- ACTION CARDS -->
-
-                <div class="dash-card">
-                    <h5>View All Stock</h5>
-
-                    <a href="/allstock" class="btn-custom">
-                        Open
-                    </a>
-                </div>
-
-                <div class="dash-card">
-                    <h5>View All Sales</h5>
-
-                    <a href="/allsales" class="btn-custom">
-                        Open
-                    </a>
-                </div>
-
-                <div class="dash-card">
-                    <h5>View All Staff</h5>
-
-                    <a href="/allusers" class="btn-custom">
-                        Open
-                    </a>
-                </div>
-
-                <div class="dash-card">
-                    <h5>Monthly Sales Report</h5>
-
-                    <a href="/salesreport" class="btn-custom">
-                        View Report
-                    </a>
-                </div>
-
-                <div class="dash-card">
-                    <h5>Monthly Stock Report</h5>
-
-                    <a href="/monthlyreport" class="btn-custom">
-                        View Report
-                    </a>
-                </div>
-
-            </div>
-
-        </main>
-
     </div>
-
-    <!-- FOOTER -->
-
-    <footer>
-        © 2025 Mayondo Wood & Furniture System.
-        All Rights Reserved.
-        Designed by Racheal Acio.
-    </footer>
-
-    <!-- Bootstrap -->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+    
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+            <p class="text-sm text-gray-500">Total Stock</p>
+            <p class="text-2xl font-bold text-gray-800">{{ total_stock_items }}</p>
+            <p class="text-xs text-gray-500">Value: ${{ total_stock_value|floatformat:2 }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+            <p class="text-sm text-gray-500">Total Sales</p>
+            <p class="text-2xl font-bold text-gray-800">{{ total_sales }}</p>
+            <p class="text-xs text-gray-500">Revenue: ${{ total_revenue|floatformat:2 }}</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+            <p class="text-sm text-gray-500">Low Stock Alert</p>
+            <p class="text-2xl font-bold text-red-600">{{ low_stock_count }}</p>
+            <p class="text-xs text-gray-500">Items below 10 units</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+            <p class="text-sm text-gray-500">Active Users</p>
+            <p class="text-2xl font-bold text-gray-800">{{ active_users }}</p>
+            <p class="text-xs text-gray-500">Total: {{ total_users }}</p>
+        </div>
+    </div>
+    
+    <!-- Sales Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Sales Overview</h3>
+            <div class="space-y-2">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Today's Sales</span>
+                    <span class="font-bold text-green-600">$0.00</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Last 7 Days</span>
+                    <span class="font-bold text-green-600">${{ revenue_7_days|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Last 30 Days</span>
+                    <span class="font-bold text-green-600">${{ revenue_30_days|floatformat:2 }}</span>
+                </div>
+                <div class="flex justify-between border-t pt-2">
+                    <span class="text-gray-600 font-bold">This Month</span>
+                    <span class="font-bold text-blue-600">${{ revenue_this_month|floatformat:2 }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Payment Status</h3>
+            <div class="space-y-2">
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Paid</span>
+                    <span class="font-bold text-green-600">{{ paid_sales }} sales (${{ paid_revenue|floatformat:2 }})</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Unpaid</span>
+                    <span class="font-bold text-red-600">{{ unpaid_sales }} sales (${{ unpaid_revenue|floatformat:2 }})</span>
+                </div>
+                <div class="flex justify-between border-t pt-2">
+                    <span class="text-gray-600 font-bold">Collection Rate</span>
+                    {% if total_revenue > 0 %}
+                    <span class="font-bold text-blue-600">{{ paid_revenue|floatformat:0 }}%</span>
+                    {% else %}
+                    <span class="font-bold text-blue-600">0%</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stock & Sales Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Recent Stock -->
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Recent Stock Additions</h3>
+            <div class="max-h-64 overflow-y-auto">
+                {% if recent_stock %}
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left px-2 py-1">Product</th>
+                            <th class="text-left px-2 py-1">Qty</th>
+                            <th class="text-left px-2 py-1">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in recent_stock %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-2 py-1">{{ item.productname }}</td>
+                            <td class="px-2 py-1">{{ item.quantity }}</td>
+                            <td class="px-2 py-1">{{ item.date|date:"M d" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-gray-500 text-center py-4">No recent stock additions</p>
+                {% endif %}
+            </div>
+            <div class="mt-2 text-right">
+                <a href="{% url 'add_stock' %}" class="text-blue-500 hover:text-blue-700 text-sm">+ Add Stock</a>
+            </div>
+        </div>
+        
+        <!-- Recent Sales -->
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Recent Sales</h3>
+            <div class="max-h-64 overflow-y-auto">
+                {% if recent_sales %}
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left px-2 py-1">Customer</th>
+                            <th class="text-left px-2 py-1">Amount</th>
+                            <th class="text-left px-2 py-1">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in recent_sales %}
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-2 py-1">{{ sale.customername }}</td>
+                            <td class="px-2 py-1 font-bold text-green-600">${{ sale.totalprice|floatformat:2 }}</td>
+                            <td class="px-2 py-1">
+                                {% if sale.is_paid %}
+                                <span class="text-green-600 text-xs">Paid</span>
+                                {% else %}
+                                <span class="text-red-600 text-xs">Unpaid</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-gray-500 text-center py-4">No recent sales</p>
+                {% endif %}
+            </div>
+            <div class="mt-2 text-right">
+                <a href="{% url 'add_sales' %}" class="text-blue-500 hover:text-blue-700 text-sm">+ Record Sale</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Low Stock & Top Products -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">⚠️ Low Stock Items</h3>
+            <div class="max-h-48 overflow-y-auto">
+                {% if low_stock_items %}
+                <table class="w-full text-sm">
+                    <thead class="bg-red-50">
+                        <tr>
+                            <th class="text-left px-2 py-1">Product</th>
+                            <th class="text-left px-2 py-1">Qty</th>
+                            <th class="text-left px-2 py-1">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in low_stock_items %}
+                        <tr class="border-b hover:bg-red-50">
+                            <td class="px-2 py-1">{{ item.productname }}</td>
+                            <td class="px-2 py-1 font-bold text-red-600">{{ item.quantity }}</td>
+                            <td class="px-2 py-1">
+                                <a href="{% url 'update_stock' item.id %}" class="text-blue-500 hover:text-blue-700 text-xs">Restock</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-gray-500 text-center py-4 text-green-600">✅ All stock levels are healthy</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow p-4">
+            <h3 class="text-lg font-bold text-gray-800 mb-3">🏆 Top Selling Products</h3>
+            <div class="space-y-2">
+                {% if top_products %}
+                {% for product in top_products %}
+                <div class="flex justify-between items-center border-b pb-1">
+                    <span class="text-gray-700">{{ product.productname__productname }}</span>
+                    <span class="font-bold text-blue-600">{{ product.total_sold }} units</span>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-gray-500 text-center py-4">No sales data available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
