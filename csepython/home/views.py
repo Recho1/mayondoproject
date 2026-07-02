@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Sum, Count, Q, Avg
+from django.db.models import Sum, Count, Q
 from django.core.paginator import Paginator
 from .models import Stock, Sales, Profile
 from datetime import datetime, date, timedelta
@@ -31,10 +31,7 @@ def indexpage(request):
         'total_sales': Sales.objects.count(),
         'total_users': User.objects.count(),
     }
-    if request.user.is_authenticated:
-        return render(request, "index_auth.html", context)
-    else:
-        return render(request, "index_public.html", context)
+    return render(request, "index_public.html", context)
 
 def loginpage(request):
     error = None
@@ -42,6 +39,7 @@ def loginpage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
             try:
@@ -72,16 +70,19 @@ def registerpage(request):
         elif User.objects.filter(email=email).exists():
             errors['email'] = "Email already exists"
         else:
+            # Create user
             user = User.objects.create_user(username=username, email=email, password=password)
+            # Create profile with role (manager or salesagent)
             Profile.objects.create(user=user, role=role)
             return redirect('/login/')
+    
     return render(request, "register.html", {"errors": errors})
 
 def logoutpage(request):
     logout(request)
     return redirect('/login/')
 
-# ============ DASHBOARD - FULL DATA ============
+# ============ DASHBOARD - MANAGER ONLY ============
 
 @login_required(login_url='/login/')
 def dashboardpage(request):
@@ -92,102 +93,36 @@ def dashboardpage(request):
     today = date.today()
     first_day_of_month = today.replace(day=1)
     last_30_days = today - timedelta(days=30)
-    last_7_days = today - timedelta(days=7)
     
-    # ===== STOCK STATISTICS =====
+    # Stock stats
     total_stock_items = Stock.objects.count()
     total_stock_value = Stock.objects.aggregate(Sum('costprice'))['costprice__sum'] or 0
     low_stock_items = Stock.objects.filter(quantity__lt=10)
     low_stock_count = low_stock_items.count()
     
-    # Stock by grade
-    grade_a = Stock.objects.filter(quality='A').count()
-    grade_b = Stock.objects.filter(quality='B').count()
-    grade_c = Stock.objects.filter(quality='C').count()
-    
-    # Recent stock additions (last 30 days)
-    recent_stock = Stock.objects.filter(date__gte=last_30_days).order_by('-date')[:10]
-    stock_added_30_days = Stock.objects.filter(date__gte=last_30_days).count()
-    
-    # ===== SALES STATISTICS =====
+    # Sales stats
     total_sales = Sales.objects.count()
     total_revenue = Sales.objects.aggregate(Sum('totalprice'))['totalprice__sum'] or 0
-    
-    # Sales in last 30 days
     sales_30_days = Sales.objects.filter(date__gte=last_30_days)
-    sales_30_days_count = sales_30_days.count()
     revenue_30_days = sales_30_days.aggregate(Sum('totalprice'))['totalprice__sum'] or 0
     
-    # Sales in last 7 days
-    sales_7_days = Sales.objects.filter(date__gte=last_7_days)
-    sales_7_days_count = sales_7_days.count()
-    revenue_7_days = sales_7_days.aggregate(Sum('totalprice'))['totalprice__sum'] or 0
-    
-    # Sales this month
-    sales_this_month = Sales.objects.filter(date__gte=first_day_of_month)
-    sales_this_month_count = sales_this_month.count()
-    revenue_this_month = sales_this_month.aggregate(Sum('totalprice'))['totalprice__sum'] or 0
-    
-    # Paid vs Unpaid
-    paid_sales = Sales.objects.filter(is_paid=True).count()
-    unpaid_sales = Sales.objects.filter(is_paid=False).count()
-    paid_revenue = Sales.objects.filter(is_paid=True).aggregate(Sum('totalprice'))['totalprice__sum'] or 0
-    unpaid_revenue = Sales.objects.filter(is_paid=False).aggregate(Sum('totalprice'))['totalprice__sum'] or 0
-    
-    # Recent sales
+    # Recent
+    recent_stock = Stock.objects.all().order_by('-date')[:10]
     recent_sales = Sales.objects.all().order_by('-date')[:10]
     
-    # Top selling products
-    top_products = Sales.objects.values('productname__productname').annotate(
-        total_sold=Sum('quantity'),
-        total_revenue=Sum('totalprice')
-    ).order_by('-total_sold')[:5]
-    
-    # ===== USER STATISTICS =====
-    total_users = User.objects.count()
-    managers = Profile.objects.filter(role='manager').count()
-    sales_agents = Profile.objects.filter(role='salesagent').count()
-    
-    # Active users (users who have logged in recently - based on last_login)
-    active_users = User.objects.filter(last_login__gte=last_30_days).count()
-    
-    # ===== CONTEXT =====
     context = {
         'user': request.user,
         'is_manager': True,
-        
-        # Stock stats
         'total_stock_items': total_stock_items,
         'total_stock_value': total_stock_value,
         'low_stock_count': low_stock_count,
         'low_stock_items': low_stock_items,
-        'grade_a': grade_a,
-        'grade_b': grade_b,
-        'grade_c': grade_c,
         'recent_stock': recent_stock,
-        'stock_added_30_days': stock_added_30_days,
-        
-        # Sales stats
         'total_sales': total_sales,
         'total_revenue': total_revenue,
-        'sales_30_days_count': sales_30_days_count,
         'revenue_30_days': revenue_30_days,
-        'sales_7_days_count': sales_7_days_count,
-        'revenue_7_days': revenue_7_days,
-        'sales_this_month_count': sales_this_month_count,
-        'revenue_this_month': revenue_this_month,
-        'paid_sales': paid_sales,
-        'unpaid_sales': unpaid_sales,
-        'paid_revenue': paid_revenue,
-        'unpaid_revenue': unpaid_revenue,
         'recent_sales': recent_sales,
-        'top_products': top_products,
-        
-        # User stats
-        'total_users': total_users,
-        'managers': managers,
-        'sales_agents': sales_agents,
-        'active_users': active_users,
+        'total_users': User.objects.count(),
     }
     
     return render(request, "dashboard.html", context)
@@ -277,7 +212,7 @@ def allsalesreport(request):
     }
     return render(request, "salesreport.html", context)
 
-# ============ SHARED VIEWS ============
+# ============ SALES AGENT VIEWS ============
 
 @login_required(login_url='/login/')
 def salespage(request):
