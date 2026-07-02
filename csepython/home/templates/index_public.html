@@ -22,7 +22,7 @@
         }
         
         .gradient-bg {
-            background: linear-gradient(135deg, #000000dc 0%, #000000dc 30%, #000000dc 90%);
+            background: linear-gradient(135deg, #000 0%, #000 50%, #000 100%);
             position: relative;
             overflow: hidden;
             min-height: 100vh;
@@ -97,6 +97,24 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(201, 168, 76, 0.3);
+        }
+        
+        .nav-link {
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #c9a84c;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
         }
         
         .hero-title {
@@ -180,7 +198,7 @@
                         <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-800 font-medium text-sm transition">Logout</a>
                     {% else %}
                         <a href="{% url 'login' %}" class="text-gray-700 hover:text-gray-900 font-medium text-sm transition">Sign In</a>
-                        <a href="{% provider_login_url 'google' method='oauth2' %}" class="btn-primary text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition">Get Started</a>
+                        <a href="{% url 'register' %}" class="btn-primary text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition">Get Started</a>
                     {% endif %}
                 </div>
 
@@ -200,7 +218,7 @@
                         <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-800 font-medium">Logout</a>
                     {% else %}
                         <a href="{% url 'login' %}" class="text-gray-700 hover:text-gray-900 font-medium">Sign In</a>
-                        <a href="{% provider_login_url 'google' method='oauth2' %}" class="btn-primary text-white px-6 py-2 rounded-lg font-semibold">Get Started</a>
+                        <a href="{% url 'register' %}" class="btn-primary text-white px-6 py-2 rounded-lg font-semibold">Get Started</a>
                     {% endif %}
                 </div>
             </div>
@@ -300,7 +318,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center text-center">
                 
-                <!-- Brand -->
                 <div class="flex items-center space-x-3 mb-3">
                     <div class="logo-container">
                         <img src="{% static 'images/Adobelogo.png' %}" alt="Mayondo" />
@@ -310,7 +327,7 @@
                         <span class="text-[10px] text-[#c9a84c] font-semibold uppercase tracking-wider">Wood & Furniture System</span>
                     </div>
                 </div>
-                <p class="text-gray-200 text-sm max-w-md">
+                <p class="text-gray-400 text-sm max-w-md">
                     Premium wood and furniture management solutions for modern businesses.
                 </p>
                 
