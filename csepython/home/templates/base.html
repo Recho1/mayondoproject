@@ -16,66 +16,56 @@
             .main-content {
                 margin-left: 0;
             }
-            .sidebar {
-                display: none;
-            }
-            .sidebar-mobile {
-                display: block !important;
-            }
-        }
-        .sidebar {
-            transition: transform 0.3s ease;
         }
     </style>
 </head>
 <body>
+    <!-- Sidebar for authenticated users -->
     {% if user.is_authenticated %}
-        <!-- Desktop Sidebar -->
-        <div class="sidebar fixed left-0 top-0 h-full z-50">
+        <div class="fixed left-0 top-0 h-full z-50 w-64">
             {% include "sidebar.html" %}
         </div>
         
-        <!-- Mobile Header -->
+        <!-- Mobile menu toggle -->
         <div class="lg:hidden bg-gray-800 text-white p-4 flex justify-between items-center">
             <h1 class="text-xl font-bold">Mayondo</h1>
-            <button onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+            <button onclick="toggleSidebar()" class="text-white focus:outline-none">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
         
-        <!-- Mobile Sidebar -->
-        <div id="mobileSidebar" class="sidebar-mobile hidden fixed inset-0 z-50">
+        <!-- Mobile sidebar overlay -->
+        <div id="mobileSidebar" class="hidden fixed inset-0 z-50">
             <div class="bg-gray-800 text-white w-64 h-full overflow-y-auto p-4">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold">Mayondo</h2>
-                    <button onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+                    <button onclick="toggleSidebar()" class="text-white focus:outline-none">
                         <i class="fas fa-times text-2xl"></i>
                     </button>
                 </div>
                 {% include "sidebar.html" %}
             </div>
-            <div class="fixed inset-0 bg-black opacity-50" onclick="toggleMobileMenu()"></div>
+            <div class="fixed inset-0 bg-black opacity-50" onclick="toggleSidebar()"></div>
         </div>
         
-        <!-- Main Content -->
-        <main class="main-content bg-gray-100 p-6">
+        <!-- Main content area -->
+        <div class="main-content bg-gray-100 p-6">
             <div class="container mx-auto">
                 {% block content %}
                 {% endblock %}
             </div>
-        </main>
+        </div>
     {% else %}
-        <!-- Public pages (login, register) - no sidebar -->
-        <main class="min-h-screen bg-gray-100">
+        <!-- Public pages (login, register) - full width -->
+        <div class="min-h-screen bg-gray-100">
             {% block content %}
             {% endblock %}
-        </main>
+        </div>
     {% endif %}
-    
+
     <script>
-        function toggleMobileMenu() {
-            const sidebar = document.getElementById('mobileSidebar');
-            sidebar.classList.toggle('hidden');
+        function toggleSidebar() {
+            document.getElementById('mobileSidebar').classList.toggle('hidden');
         }
     </script>
 </body>

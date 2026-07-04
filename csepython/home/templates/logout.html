@@ -1,13 +1,11 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logged Out - Mayondo Project</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
             <!-- Logout Icon -->
@@ -16,10 +14,10 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            
+
             <h2 class="text-3xl font-bold text-gray-800 mb-2">Logged Out Successfully</h2>
             <p class="text-gray-600 mb-6">You have been logged out of your account.</p>
-            
+
             <div class="space-y-3">
                 <a href="/login/" 
                    class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
@@ -30,7 +28,7 @@
                     Return to Home
                 </a>
             </div>
-            
+
             <!-- Redirect timer -->
             <p class="text-sm text-gray-500 mt-6">
                 You will be redirected to the login page in <span id="countdown" class="font-bold">5</span> seconds.
@@ -42,7 +40,7 @@
     <script>
         let seconds = 5;
         const countdownElement = document.getElementById('countdown');
-        
+
         const timer = setInterval(() => {
             seconds--;
             if (seconds >= 0) {
@@ -54,5 +52,4 @@
             }
         }, 1000);
     </script>
-</body>
-</html>
+

@@ -1,7 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -25,8 +27,6 @@
       }
     }
   </style>
-</head>
-<body class="bg-gray-100 p-4">
 
   <!-- Print Button -->
   <div class="flex justify-end items-start gap-3 mb-6">
@@ -47,10 +47,9 @@
   </form>
 </div>
 
-
   <!-- Receipt -->
   <div id="receipt" class="mx-auto max-w-[400px] p-6 shadow-lg bg-white border border-gray-300">
-    
+
     <!-- Company Info -->
     <div class="text-center mb-4">
       <img src="{% static 'images/logo2.jpg' %}" alt="Company Logo" class="mx-auto h-12 mb-2">
@@ -142,9 +141,6 @@
       Contact mayondo11@gmail.com for inquiries.
     </div>
 
-    
-
   </div>
 
-</body>
-</html>
+{% endblock %}

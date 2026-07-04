@@ -1,0 +1,252 @@
+import json
+import logging
+from datetime import datetime
+from typing import Dict, List, Any, Optional
+from django.utils import timezone
+from .tools import BusinessTools
+
+logger = logging.getLogger(__name__)
+
+class AgentOrchestrator:
+    """
+    Production-ready AI Assistant for Mayondo Wood and Furniture System.
+    Uses direct OpenAI API calls for clean, reliable operation.
+    """
+    
+    def __init__(self, user=None):
+        self.user = user
+        self.tools = BusinessTools(user=user)
+        self.conversation_history = []
+    
+    def process_query(self, query: str, conversation_id: int = None) -> Dict[str, Any]:
+        """Process a user query and return a response"""
+        
+        # Get conversation context
+        if conversation_id:
+            from .models import Conversation, Message
+            try:
+                conv = Conversation.objects.get(id=conversation_id, user=self.user)
+                history = [
+                    {'role': msg.role, 'content': msg.content}
+                    for msg in conv.messages.all()[:20]
+                ]
+                self.conversation_history = history
+            except:
+                pass
+        
+        # Analyze query and get data
+        query_lower = query.lower()
+        data = {}
+        query_type = "general"
+        
+        # Detect query type
+        if any(word in query_lower for word in ['sale', 'revenue', 'sell', 'order', 'today', 'daily', 'weekly', 'monthly']):
+            query_type = "sales"
+            data = self._get_sales_data(query_lower)
+        elif any(word in query_lower for word in ['stock', 'inventory', 'product', 'restock', 'supplier', 'warehouse']):
+            query_type = "inventory"
+            data = self._get_inventory_data(query_lower)
+        elif any(word in query_lower for word in ['user', 'employee', 'staff', 'role', 'permission']):
+            query_type = "users"
+            data = self._get_user_data(query_lower)
+        else:
+            query_type = "summary"
+            data = self._get_summary_data()
+        
+        # Generate response using OpenAI
+        response = self._generate_response(query, data, query_type)
+        
+        # Save conversation
+        self._save_conversation(query, response, conversation_id)
+        
+        return {
+            'response': response,
+            'tool_results': data,
+            'agent_used': f'ai_assistant_{query_type}'
+        }
+    
+    def _get_sales_data(self, query: str) -> Dict:
+        data = {}
+        if 'today' in query or 'daily' in query:
+            data['today'] = self.tools.get_today_sales()
+        if 'week' in query or 'weekly' in query:
+            data['weekly'] = self.tools.get_weekly_sales()
+        if 'month' in query or 'monthly' in query:
+            data['monthly'] = self.tools.get_monthly_sales()
+        if 'revenue' in query or 'total' in query:
+            data['total'] = self.tools.get_total_revenue()
+        if 'top' in query or 'best' in query:
+            data['top'] = self.tools.get_top_selling_products()
+        if not data:
+            data['today'] = self.tools.get_today_sales()
+            data['top'] = self.tools.get_top_selling_products()
+        return data
+    
+    def _get_inventory_data(self, query: str) -> Dict:
+        data = {}
+        if 'status' in query or 'overview' in query:
+            data['status'] = self.tools.get_inventory_status()
+        if 'low' in query or 'alert' in query:
+            data['low_stock'] = self.tools.get_low_stock_products()
+        if 'restock' in query or 'reorder' in query:
+            data['recommendations'] = self.tools.get_restocking_recommendations()
+        if not data:
+            data['status'] = self.tools.get_inventory_status()
+            data['low_stock'] = self.tools.get_low_stock_products()
+        return data
+    
+    def _get_user_data(self, query: str) -> Dict:
+        data = {}
+        if 'total' in query or 'count' in query:
+            data['total'] = self.tools.get_total_users()
+        if 'role' in query:
+            data['roles'] = self.tools.get_users_by_role()
+        if 'activity' in query:
+            data['activity'] = self.tools.get_user_activity_summary()
+        if not data:
+            data['total'] = self.tools.get_total_users()
+            data['roles'] = self.tools.get_users_by_role()
+        return data
+    
+    def _get_summary_data(self) -> Dict:
+        return self.tools.generate_business_summary()
+    
+    def _generate_response(self, query: str, data: Dict, query_type: str) -> str:
+        """Generate a response using OpenAI API"""
+        
+        try:
+            import openai
+            from django.conf import settings
+            
+            # Get API key
+            api_key = getattr(settings, 'OPENAI_API_KEY', None)
+            
+            if not api_key:
+                # Fallback to formatted response
+                return self._format_fallback_response(data, query_type)
+            
+            # Format data for the prompt
+            data_str = json.dumps(data, default=str, indent=2)
+            
+            # Build the prompt
+            system_prompt = """You are Mayondo AI, an intelligent assistant for the Mayondo Wood and Furniture System.
+You help managers understand their business performance, sales, inventory, and users.
+
+Be professional, concise, and helpful. Use the data provided to answer questions.
+Format responses with clear sections, bullet points, and emojis where appropriate.
+Always provide actionable insights.
+
+If the data shows low stock, recommend restocking.
+If sales are trending up or down, mention it.
+Be friendly but professional."""
+            
+            user_prompt = f"""User Question: {query}
+
+Business Data:
+{data_str}
+
+Please provide a helpful, professional response based on this data."""
+
+            # Call OpenAI
+            client = openai.OpenAI(api_key=api_key)
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.3,
+                max_tokens=500
+            )
+            
+            return response.choices[0].message.content
+            
+        except Exception as e:
+            logger.error(f"OpenAI API error: {e}")
+            return self._format_fallback_response(data, query_type)
+    
+    def _format_fallback_response(self, data: Dict, query_type: str) -> str:
+        """Fallback response when OpenAI is unavailable"""
+        
+        lines = []
+        
+        if query_type == "sales":
+            lines.append("📊 **Sales Report**\n")
+            if 'today' in data:
+                today = data['today']
+                lines.append(f"**Today's Sales:**")
+                lines.append(f"• Revenue: UGX {today.get('total_revenue', 0):,.2f}")
+                lines.append(f"• Sales: {today.get('total_sales', 0)}")
+                lines.append("")
+            if 'top' in data and data['top']:
+                lines.append("**Top Products:**")
+                for p in data['top'][:3]:
+                    lines.append(f"• {p.get('productname__productname', 'Unknown')}")
+        
+        elif query_type == "inventory":
+            lines.append("📦 **Inventory Report**\n")
+            if 'status' in data:
+                status = data['status']
+                lines.append(f"**Inventory Overview:**")
+                lines.append(f"• Products: {status.get('total_products', 0)}")
+                lines.append(f"• Total Value: UGX {status.get('total_value', 0):,.2f}")
+                lines.append("")
+            if 'low_stock' in data:
+                low = data['low_stock']
+                if low:
+                    lines.append(f"**⚠️ Low Stock Alert ({len(low)} items):**")
+                    for item in low[:5]:
+                        lines.append(f"• {item.get('product', 'Unknown')}: {item.get('quantity', 0)} units")
+        
+        elif query_type == "users":
+            lines.append("👥 **User Report**\n")
+            if 'total' in data:
+                lines.append(f"**Total Users:** {data['total'].get('total_users', 0)}")
+            if 'roles' in data:
+                lines.append("\n**Users by Role:**")
+                for role, count in data['roles'].items():
+                    lines.append(f"• {role.title()}: {count}")
+        
+        else:  # summary
+            lines.append("📈 **Business Summary**\n")
+            if 'summary' in data:
+                s = data['summary']
+                lines.append(f"• Today's Revenue: UGX {s.get('total_revenue_today', 0):,.2f}")
+                lines.append(f"• Monthly Revenue: UGX {s.get('monthly_revenue', 0):,.2f}")
+                lines.append(f"• Inventory Value: UGX {s.get('total_inventory_value', 0):,.2f}")
+        
+        lines.append("\n---")
+        lines.append("💡 _AI Assistant is running in offline mode._")
+        
+        return "\n".join(lines)
+    
+    def _save_conversation(self, query: str, response: str, conversation_id: int = None):
+        from .models import Conversation, Message
+        
+        try:
+            if conversation_id:
+                conversation = Conversation.objects.get(id=conversation_id, user=self.user)
+            else:
+                conversation = Conversation.objects.create(
+                    user=self.user,
+                    title=query[:50] + ('...' if len(query) > 50 else '')
+                )
+            
+            Message.objects.create(
+                conversation=conversation,
+                role='user',
+                content=query
+            )
+            Message.objects.create(
+                conversation=conversation,
+                role='assistant',
+                content=response
+            )
+            
+            from .models import UserPreference
+            pref, _ = UserPreference.objects.get_or_create(user=self.user)
+            pref.last_interaction = timezone.now()
+            pref.save()
+            
+        except Exception as e:
+            logger.error(f"Error saving conversation: {e}")

@@ -1,0 +1,177 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex h-full">
+    <!-- Sidebar - Conversations -->
+    <div class="w-80 bg-white border-r border-gray-200 flex flex-col">
+        <div class="p-4 border-b border-gray-200">
+            <h2 class="text-lg font-bold text-gray-800">AI Assistant</h2>
+            <p class="text-sm text-gray-500">Ask me anything about your business</p>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4">
+            <div class="mb-4">
+                <button onclick="newConversation()" class="w-full bg-[#c9a84c] hover:bg-[#b8943e] text-white font-bold py-2 px-4 rounded-lg transition">
+                    <i class="fas fa-plus mr-2"></i>New Conversation
+                </button>
+            </div>
+            
+            <div class="space-y-2">
+                {% for conv in conversations %}
+                <div onclick="loadConversation({{ conv.id }})" 
+                     class="p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition {% if forloop.first %}bg-gray-100{% endif %}">
+                    <div class="font-medium text-gray-800 text-sm">{{ conv.title }}</div>
+                    <div class="text-xs text-gray-500">{{ conv.updated_at|timesince }} ago</div>
+                </div>
+                {% empty %}
+                <div class="text-center text-gray-500 py-8">
+                    <i class="fas fa-comments text-4xl mb-3 text-gray-300"></i>
+                    <p>No conversations yet</p>
+                    <p class="text-sm">Start a new conversation to get insights</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chat Area -->
+    <div class="flex-1 flex flex-col bg-gray-50">
+        <!-- Chat Messages -->
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <div class="text-center text-gray-500 py-12">
+                <i class="fas fa-robot text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold">Mayondo AI Assistant</h3>
+                <p class="text-sm">Ask me about sales, inventory, users, or business insights</p>
+            </div>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="border-t border-gray-200 p-4 bg-white">
+            <form id="chatForm" class="flex gap-3">
+                <input type="text" id="chatInput" 
+                       placeholder="Ask about your business..." 
+                       class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]">
+                <button type="submit" class="bg-[#c9a84c] hover:bg-[#b8943e] text-white px-6 py-3 rounded-lg font-bold transition">
+                    <i class="fas fa-paper-plane mr-2"></i>Send
+                </button>
+            </form>
+            <div class="mt-2 text-xs text-gray-400 flex gap-4 flex-wrap">
+                <span class="cursor-pointer hover:text-gray-600" onclick="quickPrompt('What are today\'s sales?')">📊 Today's Sales</span>
+                <span class="cursor-pointer hover:text-gray-600" onclick="quickPrompt('Which products are low in stock?')">📦 Low Stock</span>
+                <span class="cursor-pointer hover:text-gray-600" onclick="quickPrompt('Give me a business summary')">📈 Business Summary</span>
+                <span class="cursor-pointer hover:text-gray-600" onclick="quickPrompt('How many users are registered?')">👥 Users</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentConversationId = null;
+    
+    function newConversation() {
+        currentConversationId = null;
+        document.getElementById('chatMessages').innerHTML = `
+            <div class="text-center text-gray-500 py-12">
+                <i class="fas fa-robot text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-semibold">Mayondo AI Assistant</h3>
+                <p class="text-sm">Ask me about sales, inventory, users, or business insights</p>
+            </div>
+        `;
+        document.getElementById('chatInput').focus();
+    }
+    
+    function loadConversation(id) {
+        currentConversationId = id;
+        fetch(`/ai-assistant/api/conversations/${id}/messages/`)
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('chatMessages');
+                container.innerHTML = '';
+                data.messages.forEach(msg => {
+                    if (msg.role === 'user') {
+                        addMessage('user', msg.content);
+                    } else {
+                        addMessage('assistant', msg.content);
+                    }
+                });
+                scrollToBottom();
+            });
+    }
+    
+    function addMessage(role, content) {
+        const container = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'}`;
+        
+        const bubbleClass = role === 'user' 
+            ? 'bg-[#c9a84c] text-white' 
+            : 'bg-white border border-gray-200 text-gray-800';
+        
+        messageDiv.innerHTML = `
+            <div class="max-w-3xl ${bubbleClass} rounded-lg px-4 py-3 shadow-sm">
+                ${role === 'user' ? '' : '<div class="text-xs text-gray-500 mb-1">🤖 Mayondo AI</div>'}
+                <div class="whitespace-pre-wrap">${content}</div>
+            </div>
+        `;
+        
+        container.appendChild(messageDiv);
+        scrollToBottom();
+    }
+    
+    function scrollToBottom() {
+        const container = document.getElementById('chatMessages');
+        container.scrollTop = container.scrollHeight;
+    }
+    
+    function quickPrompt(text) {
+        document.getElementById('chatInput').value = text;
+        document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+    }
+    
+    document.getElementById('chatForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+        
+        input.value = '';
+        addMessage('user', message);
+        addMessage('assistant', '🤔 Thinking...');
+        
+        try {
+            const response = await fetch('/ai-assistant/api/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    message: message,
+                    conversation_id: currentConversationId
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Remove thinking message
+            const container = document.getElementById('chatMessages');
+            container.removeChild(container.lastChild);
+            
+            addMessage('assistant', data.response);
+            
+            if (data.conversation_id && !currentConversationId) {
+                currentConversationId = data.conversation_id;
+                // Reload conversations sidebar
+                location.reload();
+            }
+            
+        } catch (error) {
+            const container = document.getElementById('chatMessages');
+            container.removeChild(container.lastChild);
+            addMessage('assistant', '❌ Sorry, I encountered an error. Please try again.');
+        }
+    });
+</script>
+{% endblock %}

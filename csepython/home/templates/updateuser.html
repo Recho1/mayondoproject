@@ -1,7 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Update Registration</title>
@@ -70,8 +72,6 @@
       background-color: #111; /* slightly lighter on hover */
     }
   </style>
-</head>
-<body>
 
   <div class="form-section">
     <form action="/register/update/{{ selected.id }}" method="post">
@@ -110,5 +110,5 @@
       passwordField.type = this.checked ? "text" : "password";
     });
   </script>
-</body>
-</html>
+
+{% endblock %}

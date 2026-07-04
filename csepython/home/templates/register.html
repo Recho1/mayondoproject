@@ -17,24 +17,35 @@
             font-family: 'Playfair Display', serif;
         }
         
-        /* Screen Background - rgba(255, 255, 255, 0.5) */
         body {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(117, 113, 113, 0.5);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
         
         .glass-container {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(161, 155, 155, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             border-radius: 24px;
+            padding: 24px 32px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        
+        .glass-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .glass-container::-webkit-scrollbar-thumb {
+            background: #c9a84c;
+            border-radius: 10px;
         }
         
         .glass-input {
@@ -42,6 +53,8 @@
             border: 1px solid rgba(0, 0, 0, 0.08);
             color: #1a1a2e;
             transition: all 0.3s ease;
+            padding: 10px 14px;
+            font-size: 14px;
         }
         
         .glass-input:focus {
@@ -62,6 +75,8 @@
             background: linear-gradient(135deg, #c9a84c, #b8943e);
             transition: all 0.3s ease;
             color: white;
+            padding: 10px;
+            font-size: 14px;
         }
         
         .glass-button:hover {
@@ -74,110 +89,168 @@
         }
         
         .glass-link {
-            color: #c9a84c;
+            color: #f2f0ed;
             transition: color 0.3s ease;
         }
         
         .glass-link:hover {
             color: #b8943e;
         }
+        
+        /* Reduced spacing */
+        .form-group {
+            margin-bottom: 10px;
+        }
+        
+        .logo-container {
+            margin-bottom: 16px;
+        }
+        
+        .logo-container img {
+            width: 56px;
+            height: 56px;
+        }
+        
+        .form-title {
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+        
+        .form-subtitle {
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        
+        .google-btn {
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .divider-container {
+            margin-bottom: 12px;
+        }
+        
+        .divider-container span {
+            font-size: 12px;
+        }
+        
+        .btn-submit {
+            padding: 10px;
+            font-size: 14px;
+        }
+        
+        .footer-link {
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        
+        label {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+        
+        .error-msg {
+            font-size: 13px;
+            padding: 8px 12px;
+        }
     </style>
 </head>
 <body>
-    <div class="glass-container p-8 w-full max-w-md mx-4">
+    <div class="glass-container w-full max-w-md">
         
         <!-- Logo -->
-        <div class="text-center mb-8">
-            <div class="flex justify-center mb-4">
-                <img src="{% static 'images/Adobelogo.png' %}" alt="Mayondo" class="w-20 h-20 object-contain" />
+        <div class="text-center logo-container">
+            <div class="flex justify-center mb-2">
+                <img src="{% static 'images/Adobelogo.png' %}" alt="Mayondo" class="object-contain" />
             </div>
-            <h1 class="text-3xl font-bold text-gray-900 playfair">Create Account</h1>
-            <p class="text-gray-500 mt-2">Join Mayondo Wood & Furniture System</p>
+            <h1 class="text-2xl font-bold text-gray-900 playfair form-title">Create Account</h1>
+            <p class="text-gray-500 text-sm form-subtitle">Join Mayondo Wood & Furniture System</p>
         </div>
         
         <!-- Google Sign Up Button -->
-        <div class="mb-6">
+        <div class="mb-3">
             <a href="{% provider_login_url 'google' method='oauth2' %}" 
-               class="w-full flex items-center justify-center gap-3 bg-white/60 hover:bg-white/80 border border-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl transition duration-300">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-6 h-6">
+               class="w-full flex items-center justify-center gap-3 bg-white/60 hover:bg-white/80 border border-gray-200 text-gray-700 font-medium py-2.5 px-4 rounded-xl transition duration-300 text-sm google-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-5 h-5">
                 Continue with Google
             </a>
         </div>
         
         <!-- Divider -->
-        <div class="flex items-center mb-6">
+        <div class="flex items-center mb-3 divider-container">
             <hr class="flex-1 glass-divider">
-            <span class="px-4 text-sm text-gray-400">OR</span>
+            <span class="px-3 text-xs text-gray-400">OR</span>
             <hr class="flex-1 glass-divider">
         </div>
         
         <!-- Email/Password Registration -->
-        <form method="POST" class="space-y-4">
+        <form method="POST" class="space-y-2.5">
             {% csrf_token %}
             
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-                    <i class="fas fa-user mr-2"></i>Username *
+            <div class="form-group">
+                <label class="block text-gray-700 font-medium" for="username">
+                    <i class="fas fa-user mr-1 text-xs"></i>Username
                 </label>
                 <input type="text" name="username" id="username" required
-                       class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                       class="glass-input w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Choose a username">
             </div>
             
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
-                    <i class="fas fa-envelope mr-2"></i>Email *
+            <div class="form-group">
+                <label class="block text-gray-700 font-medium" for="email">
+                    <i class="fas fa-envelope mr-1 text-xs"></i>Email
                 </label>
                 <input type="email" name="email" id="email" required
-                       class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
-                       placeholder="Enter your email address">
+                       class="glass-input w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                       placeholder="Enter your email">
             </div>
             
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                    <i class="fas fa-lock mr-2"></i>Password *
+            <div class="form-group">
+                <label class="block text-gray-700 font-medium" for="password">
+                    <i class="fas fa-lock mr-1 text-xs"></i>Password
                 </label>
                 <input type="password" name="password" id="password" required
-                       class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                       class="glass-input w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Create a password">
             </div>
             
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="repeat_password">
-                    <i class="fas fa-check-circle mr-2"></i>Confirm Password *
+            <div class="form-group">
+                <label class="block text-gray-700 font-medium" for="repeat_password">
+                    <i class="fas fa-check-circle mr-1 text-xs"></i>Confirm Password
                 </label>
                 <input type="password" name="repeat_password" id="repeat_password" required
-                       class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
+                       class="glass-input w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Confirm your password">
             </div>
             
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="role">
-                    <i class="fas fa-user-tag mr-2"></i>Role *
+            <div class="form-group">
+                <label class="block text-gray-700 font-medium" for="role">
+                    <i class="fas fa-user-tag mr-1 text-xs"></i>Role
                 </label>
                 <select name="role" id="role" required
-                        class="glass-input w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]">
+                        class="glass-input w-full rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]">
                     <option value="salesagent" class="text-gray-900">Sales Agent</option>
                     <option value="manager" class="text-gray-900">Manager</option>
                 </select>
             </div>
             
             {% if errors %}
-            <div class="bg-red-500/10 border border-red-500/20 text-red-600 px-4 py-3 rounded-xl text-sm">
-                <i class="fas fa-exclamation-circle mr-2"></i>
+            <div class="bg-red-500/10 border border-red-500/20 text-red-600 px-3 py-2 rounded-xl text-sm error-msg">
+                <i class="fas fa-exclamation-circle mr-1"></i>
                 {% for error in errors.values %}
-                    <p>{{ error }}</p>
+                    <p class="text-xs">{{ error }}</p>
                 {% endfor %}
             </div>
             {% endif %}
             
-            <button type="submit" class="glass-button w-full font-bold py-3 rounded-xl transition duration-300">
+            <button type="submit" class="glass-button w-full font-bold rounded-xl transition duration-300 btn-submit">
                 <i class="fas fa-user-plus mr-2"></i>Create Account
             </button>
         </form>
         
-        <div class="text-center mt-6">
-            <p class="text-gray-500">
+        <div class="text-center mt-3 footer-link">
+            <p class="text-gray-500 text-xs">
                 Already have an account? 
                 <a href="{% url 'login' %}" class="glass-link font-bold">
                     Sign in here

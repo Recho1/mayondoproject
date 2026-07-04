@@ -1,0 +1,12 @@
+def salespage(request):
+    if not request.user.is_authenticated:
+        return redirect('/login/')
+    
+    # Get all stocks and agents for the dropdowns
+    stocks = Stock.objects.all()
+    agents = SignUp.objects.all()
+    
+    return render(request, "sales.html", {
+        "stocks": stocks,
+        "agents": agents
+    })

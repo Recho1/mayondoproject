@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayondo Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            overflow-x: hidden;
+            background: #f3f4f6;
+        }
+        
+        /* Sidebar */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 50;
+            overflow: hidden;
+            background: #1f2937;
+            width: 256px;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #sidebar:hover {
+            overflow-y: auto;
+        }
+        #sidebar.collapsed {
+            width: 64px;
+        }
+        
+        /* Main Content */
+        #mainContent {
+            margin-left: 256px;
+            min-height: 100vh;
+            background: #f3f4f6;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: auto;
+        }
+        #mainContent.expanded {
+            margin-left: 64px;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                width: 280px !important;
+            }
+            #sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            #mainContent {
+                margin-left: 0 !important;
+            }
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 40;
+            }
+            .mobile-overlay.show {
+                display: block;
+            }
+        }
+        
+        .container-custom {
+            max-width: 100%;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        {% include "sidebar.html" %}
+    </div>
+    
+    <!-- Mobile overlay -->
+    <div id="mobileOverlay" class="mobile-overlay" onclick="closeMobileSidebar()"></div>
+    
+    <!-- Mobile menu toggle -->
+    <div class="lg:hidden bg-gray-800 text-white p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Mayondo</h1>
+        <button onclick="toggleMobileSidebar()" class="text-white focus:outline-none">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+    </div>
+    
+    <!-- Main Content -->
+    <div id="mainContent">
+        <div class="container-custom mx-auto">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- CHAT WIDGET - MOVED OUTSIDE CONTENT BLOCK -->
+    {% include "chat_widget.html" %}
+
+    <script>
+        // Toggle sidebar collapse
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const isCollapsed = sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            
+            localStorage.setItem('sidebarCollapsed', isCollapsed ? 'true' : 'false');
+            
+            const icon = document.getElementById('toggleIcon');
+            if (icon) {
+                icon.className = isCollapsed ? 'fas fa-chevron-right text-xl' : 'fas fa-chevron-left text-xl';
+            }
+            
+            const navTexts = document.querySelectorAll('.nav-text');
+            navTexts.forEach(el => {
+                el.style.display = isCollapsed ? 'none' : 'inline';
+            });
+            
+            const sidebarTitle = document.getElementById('sidebarTitle');
+            if (sidebarTitle) {
+                sidebarTitle.style.display = isCollapsed ? 'none' : 'block';
+            }
+        }
+        
+        function toggleMobileSidebar() {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+            document.getElementById('mobileOverlay').classList.toggle('show');
+        }
+        
+        function closeMobileSidebar() {
+            document.getElementById('sidebar').classList.remove('mobile-open');
+            document.getElementById('mobileOverlay').classList.remove('show');
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (isCollapsed && window.innerWidth > 768) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+                
+                const icon = document.getElementById('toggleIcon');
+                if (icon) {
+                    icon.className = 'fas fa-chevron-right text-xl';
+                }
+                
+                const navTexts = document.querySelectorAll('.nav-text');
+                navTexts.forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                const sidebarTitle = document.getElementById('sidebarTitle');
+                if (sidebarTitle) {
+                    sidebarTitle.style.display = 'none';
+                }
+            }
+        });
+        
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (window.innerWidth > 768) {
+                sidebar.style.transform = '';
+                const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                if (isCollapsed) {
+                    sidebar.classList.add('collapsed');
+                    mainContent.classList.add('expanded');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                    mainContent.classList.remove('expanded');
+                }
+            } else {
+                mainContent.classList.remove('expanded');
+                sidebar.classList.remove('collapsed');
+            }
+        });
+    </script>
+</body>
+</html>

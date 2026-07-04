@@ -1,13 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
-</head>
-<body>
+
     <style>
         html, body {
       height: 100%;
@@ -30,7 +31,6 @@
       align-items: center;
       justify-content: center;
     }
-
 
     .form-section {
       background-color: #ffffff;
@@ -68,10 +68,8 @@
       color: #000;
     }
 
-
     </style>
-</head>
-<body>
+
     <div class="form-section" class="mt-[4rem] mb-[4rem] ml-[32rem]">
     <h2>Stock Records</h2>
     <form action="{% url 'update_stock' selected.id %}" method="post">
@@ -113,5 +111,5 @@
 </div>
     </form>
   </div>
-</body>
-</html>
+
+{% endblock %}

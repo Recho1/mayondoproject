@@ -1,0 +1,126 @@
+{% extends "base_auth.html" %}
+{% load static %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">
+            <i class="fas fa-boxes text-blue-500 mr-2"></i>Add New Stock
+        </h1>
+        <a href="{% url 'allstock' %}" class="text-gray-500 hover:text-gray-700">
+            <i class="fas fa-arrow-left"></i> Back to Stock
+        </a>
+    </div>
+    
+    {% if error %}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4">
+        <i class="fas fa-exclamation-circle mr-2"></i>{{ error }}
+    </div>
+    {% endif %}
+    
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="productname">
+                    <i class="fas fa-tag mr-1"></i> Product Name *
+                </label>
+                <input type="text" name="productname" id="productname" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Enter product name">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="origin">
+                    <i class="fas fa-map-marker-alt mr-1"></i> Origin *
+                </label>
+                <input type="text" name="origin" id="origin" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Country of origin">
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="contact">
+                    <i class="fas fa-phone mr-1"></i> Contact Number *
+                </label>
+                <input type="number" name="contact" id="contact" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Enter contact number">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="quality">
+                    <i class="fas fa-star mr-1"></i> Quality Grade *
+                </label>
+                <select name="quality" id="quality" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="A">Grade A (Premium)</option>
+                    <option value="B">Grade B (Standard)</option>
+                    <option value="C">Grade C (Basic)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="quantity">
+                    <i class="fas fa-hashtag mr-1"></i> Quantity *
+                </label>
+                <input type="number" name="quantity" id="quantity" required min="1"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Enter quantity">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="costprice">
+                    <i class="fas fa-dollar-sign mr-1"></i> Cost Price per Unit *
+                </label>
+                <input type="number" step="0.01" name="costprice" id="costprice" required min="0.01"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="0.00">
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="warehouse">
+                    <i class="fas fa-warehouse mr-1"></i> Warehouse *
+                </label>
+                <input type="text" name="warehouse" id="warehouse" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Enter warehouse location">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
+                    <i class="fas fa-calendar mr-1"></i> Date Added *
+                </label>
+                <input type="date" name="date" id="date" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-end space-x-4 pt-4 border-t border-gray-200">
+            <a href="{% url 'stock' %}" class="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition">
+                Cancel
+            </a>
+            <button type="submit" class="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg transition">
+                <i class="fas fa-save mr-2"></i> Save Stock
+            </button>
+        </div>
+    </form>
+    
+    <div class="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-gray-600">
+        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+        After adding stock, you can view it in the <a href="{% url 'allstock' %}" class="text-blue-500 hover:text-blue-700">All Stock</a> page.
+    </div>
+</div>
+
+<script>
+    // Set default date to today
+    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+</script>
+{% endblock %}
