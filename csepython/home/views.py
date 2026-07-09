@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Sum, Count, Q
+from django.db.models.functions import TruncMonth
 from django.core.paginator import Paginator
 from .models import Stock, Sales, Profile
 from datetime import datetime, date, timedelta
@@ -429,3 +430,47 @@ def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
     return redirect('/allusers/')
+
+
+def analytics_page(request):
+    if not is_manager(request.user):
+        return redirect('/sales/')
+
+    six_months_ago = date.today() - timedelta(days=180)
+    monthly_revenue = (
+        Sales.objects.filter(date__gte=six_months_ago)
+        .annotate(month=TruncMonth('date'))
+        .values('month')
+        .annotate(total=Sum('totalprice'))
+        .order_by('month')
+    )
+    revenue_labels = [m['month'].strftime('%b %Y') for m in monthly_revenue if m['month']]
+    revenue_values = [float(m['total'] or 0) for m in monthly_revenue if m['month']]
+
+    top_products = (
+        Sales.objects.values('productname__productname')
+        .annotate(total_sold=Sum('quantity'), total_revenue=Sum('totalprice'))
+        .order_by('-total_sold')[:5]
+    )
+    product_labels = [p['productname__productname'] or 'Unknown' for p in top_products]
+    product_values = [p['total_sold'] or 0 for p in top_products]
+
+    grade_counts = {}
+    for grade in ['A', 'B', 'C']:
+        grade_counts[grade] = Stock.objects.filter(quality=grade).count()
+
+    low_stock_items = Stock.objects.filter(quantity__lt=10).order_by('quantity')
+
+    context = {
+        'user': request.user,
+        'is_manager': True,
+        'revenue_labels': json.dumps(revenue_labels),
+        'revenue_values': json.dumps(revenue_values),
+        'product_labels': json.dumps(product_labels),
+        'product_values': json.dumps(product_values),
+        'grade_labels': json.dumps(list(grade_counts.keys())),
+        'grade_values': json.dumps(list(grade_counts.values())),
+        'low_stock_items': low_stock_items,
+        'low_stock_count': low_stock_items.count(),
+    }
+    return render(request, 'analytics.html', context)

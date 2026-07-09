@@ -7,7 +7,8 @@ from home.views import (
     dashboardpage, updateuser, sale_receipt, logoutpage,
     monthly_stock_report, allsalesreport,
     add_stock_page, add_sales_page,
-    delete_stock, delete_sale, delete_user
+    delete_stock, delete_sale, delete_user,
+    analytics_page
 )
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path('login/', loginpage, name='login'),
     path('logout/', logoutpage, name='logout'),
     path('dashboard/', dashboardpage, name='dashboard'),
+    path('analytics/', analytics_page, name='analytics'),
     path('stock/', stockpage, name='stock'),
     path('allsales/', allsalespage, name='allsales'),
     path('allstock/', allstockpage, name='allstock'),
