@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Sum, Count, Q
-from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncMonth, TruncDay
 from django.core.paginator import Paginator
 from .models import Stock, Sales, Profile
 from datetime import datetime, date, timedelta
@@ -436,22 +436,60 @@ def analytics_page(request):
     if not is_manager(request.user):
         return redirect('/sales/')
 
-    six_months_ago = date.today() - timedelta(days=180)
-    monthly_revenue = (
-        Sales.objects.filter(date__gte=six_months_ago)
-        .annotate(month=TruncMonth('date'))
-        .values('month')
-        .annotate(total=Sum('totalprice'))
-        .order_by('month')
+    # Build list of months that actually have sales data
+    available_months = (
+        Sales.objects.annotate(m=TruncMonth('date'))
+        .values('m')
+        .distinct()
+        .order_by('-m')
     )
-    revenue_labels = [m['month'].strftime('%b %Y') for m in monthly_revenue if m['month']]
-    revenue_values = [float(m['total'] or 0) for m in monthly_revenue if m['month']]
+    month_options = [
+        {'value': m['m'].strftime('%Y-%m'), 'label': m['m'].strftime('%B %Y')}
+        for m in available_months if m['m']
+    ]
 
-    top_products = (
-        Sales.objects.values('productname__productname')
-        .annotate(total_sold=Sum('quantity'), total_revenue=Sum('totalprice'))
-        .order_by('-total_sold')[:5]
-    )
+    selected_month = request.GET.get('month', '').strip()
+
+    if selected_month:
+        try:
+            year, month = map(int, selected_month.split('-'))
+            daily_sales = (
+                Sales.objects.filter(date__year=year, date__month=month)
+                .annotate(day=TruncDay('date'))
+                .values('day')
+                .annotate(total=Sum('totalprice'))
+                .order_by('day')
+            )
+            revenue_labels = [d['day'].strftime('%b %d') for d in daily_sales if d['day']]
+            revenue_values = [float(d['total'] or 0) for d in daily_sales if d['day']]
+
+            top_products = (
+                Sales.objects.filter(date__year=year, date__month=month)
+                .values('productname__productname')
+                .annotate(total_sold=Sum('quantity'), total_revenue=Sum('totalprice'))
+                .order_by('-total_sold')[:5]
+            )
+        except (ValueError, TypeError):
+            selected_month = ''
+
+    if not selected_month:
+        six_months_ago = date.today() - timedelta(days=180)
+        monthly_revenue = (
+            Sales.objects.filter(date__gte=six_months_ago)
+            .annotate(month=TruncMonth('date'))
+            .values('month')
+            .annotate(total=Sum('totalprice'))
+            .order_by('month')
+        )
+        revenue_labels = [m['month'].strftime('%b %Y') for m in monthly_revenue if m['month']]
+        revenue_values = [float(m['total'] or 0) for m in monthly_revenue if m['month']]
+
+        top_products = (
+            Sales.objects.values('productname__productname')
+            .annotate(total_sold=Sum('quantity'), total_revenue=Sum('totalprice'))
+            .order_by('-total_sold')[:5]
+        )
+
     product_labels = [p['productname__productname'] or 'Unknown' for p in top_products]
     product_values = [p['total_sold'] or 0 for p in top_products]
 
@@ -464,6 +502,8 @@ def analytics_page(request):
     context = {
         'user': request.user,
         'is_manager': True,
+        'month_options': month_options,
+        'selected_month': selected_month,
         'revenue_labels': json.dumps(revenue_labels),
         'revenue_values': json.dumps(revenue_values),
         'product_labels': json.dumps(product_labels),

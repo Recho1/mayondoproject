@@ -10,7 +10,9 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="text-lg font-bold text-gray-800 mb-3">Revenue Trend (Last 6 Months)</h3>
+            <h3 class="text-lg font-bold text-gray-800 mb-3">
+                {% if selected_month %}Daily Revenue — {{ selected_month }}{% else %}Revenue Trend (Last 6 Months){% endif %}
+            </h3>
             <canvas id="revenueChart" height="220"></canvas>
         </div>
 
