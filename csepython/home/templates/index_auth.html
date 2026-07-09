@@ -3,14 +3,14 @@
 
 {% block content %}
 <div class="bg-white rounded-lg shadow-lg p-8 text-center">
-    <h1 class="text-4xl font-bold text-gray-900 playfair mb-4">Welcome to Mayondo</h1>
+    <h1 class="text-4xl font-bold text-[#1a1a2e] playfair mb-4">Welcome to Mayondo</h1>
     <p class="text-xl text-gray-600 mb-6">Your Furniture Management Solution</p>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <div class="bg-blue-50 p-6 rounded-lg">
-            <i class="fas fa-boxes text-4xl text-blue-500 mb-3"></i>
+        <div class="bg-[#faf7f0] p-6 rounded-lg">
+            <i class="fas fa-boxes text-4xl text-[#c9a84c] mb-3"></i>
             <h3 class="text-lg font-semibold text-gray-800">Total Stock</h3>
-            <p class="text-3xl font-bold text-blue-600">{{ total_stock|default:"0" }}</p>
+            <p class="text-3xl font-bold text-[#c9a84c]">{{ total_stock|default:"0" }}</p>
         </div>
         <div class="bg-green-50 p-6 rounded-lg">
             <i class="fas fa-shopping-cart text-4xl text-green-500 mb-3"></i>
@@ -25,10 +25,10 @@
     </div>
     
     <div class="mt-8 flex justify-center space-x-4">
-        <a href="{% url 'dashboard' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition">
+        <a href="{% url 'dashboard' %}" class="bg-[#c9a84c] hover:bg-[#b8943e] text-white font-bold py-3 px-6 rounded-lg transition">
             Go to Dashboard
         </a>
-        <a href="{% url 'stock' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition">
+        <a href="{% url 'stock' %}" class="bg-gray-500 hover:bg-[#2d2d4a] text-white font-bold py-3 px-6 rounded-lg transition">
             Manage Stock
         </a>
     </div>

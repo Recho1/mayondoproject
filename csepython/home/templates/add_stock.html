@@ -5,7 +5,7 @@
 <div class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-gray-800">
-            <i class="fas fa-boxes text-blue-500 mr-2"></i>Add New Stock
+            <i class="fas fa-boxes text-[#c9a84c] mr-2"></i>Add New Stock
         </h1>
         <a href="{% url 'allstock' %}" class="text-gray-500 hover:text-gray-700">
             <i class="fas fa-arrow-left"></i> Back to Stock
@@ -27,7 +27,7 @@
                     <i class="fas fa-tag mr-1"></i> Product Name *
                 </label>
                 <input type="text" name="productname" id="productname" required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Enter product name">
             </div>
             
@@ -36,7 +36,7 @@
                     <i class="fas fa-map-marker-alt mr-1"></i> Origin *
                 </label>
                 <input type="text" name="origin" id="origin" required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Country of origin">
             </div>
         </div>
@@ -47,7 +47,7 @@
                     <i class="fas fa-phone mr-1"></i> Contact Number *
                 </label>
                 <input type="number" name="contact" id="contact" required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Enter contact number">
             </div>
             
@@ -56,7 +56,7 @@
                     <i class="fas fa-star mr-1"></i> Quality Grade *
                 </label>
                 <select name="quality" id="quality" required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]">
                     <option value="A">Grade A (Premium)</option>
                     <option value="B">Grade B (Standard)</option>
                     <option value="C">Grade C (Basic)</option>
@@ -70,7 +70,7 @@
                     <i class="fas fa-hashtag mr-1"></i> Quantity *
                 </label>
                 <input type="number" name="quantity" id="quantity" required min="1"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Enter quantity">
             </div>
             
@@ -79,7 +79,7 @@
                     <i class="fas fa-dollar-sign mr-1"></i> Cost Price per Unit *
                 </label>
                 <input type="number" step="0.01" name="costprice" id="costprice" required min="0.01"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="0.00">
             </div>
         </div>
@@ -90,7 +90,7 @@
                     <i class="fas fa-warehouse mr-1"></i> Warehouse *
                 </label>
                 <input type="text" name="warehouse" id="warehouse" required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]"
                        placeholder="Enter warehouse location">
             </div>
             
@@ -99,7 +99,7 @@
                     <i class="fas fa-calendar mr-1"></i> Date Added *
                 </label>
                 <input type="date" name="date" id="date" required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c9a84c]">
             </div>
         </div>
         
@@ -107,15 +107,15 @@
             <a href="{% url 'stock' %}" class="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition">
                 Cancel
             </a>
-            <button type="submit" class="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-lg transition">
+            <button type="submit" class="px-6 py-2 bg-[#c9a84c] hover:bg-[#b8943e] text-white font-bold rounded-lg transition">
                 <i class="fas fa-save mr-2"></i> Save Stock
             </button>
         </div>
     </form>
     
-    <div class="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-gray-600">
-        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-        After adding stock, you can view it in the <a href="{% url 'allstock' %}" class="text-blue-500 hover:text-blue-700">All Stock</a> page.
+    <div class="mt-6 p-4 bg-[#faf7f0] rounded-lg text-sm text-gray-600">
+        <i class="fas fa-info-circle text-[#c9a84c] mr-2"></i>
+        After adding stock, you can view it in the <a href="{% url 'allstock' %}" class="text-[#c9a84c] hover:text-[#b8943e]">All Stock</a> page.
     </div>
 </div>
 

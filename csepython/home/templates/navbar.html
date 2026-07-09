@@ -1,62 +1,62 @@
 {% load static %}
-<nav class="bg-gray-800 text-white sticky top-0 z-50 shadow-lg">
+<nav class="bg-[#1a1a2e] text-white sticky top-0 z-50 shadow-lg">
     <div class="max-w-full px-4">
         <div class="flex items-center justify-between h-16">
             <div class="flex items-center space-x-3 flex-shrink-0">
-                <i class="fas fa-cubes text-2xl text-blue-400"></i>
+                <i class="fas fa-cubes text-2xl text-[#c9a84c]"></i>
                 <span class="text-xl font-bold whitespace-nowrap">Mayondo</span>
             </div>
 
             <div class="hidden lg:flex items-center space-x-1">
                 {% if is_manager %}
-                <a href="{% url 'dashboard' %}" class="px-4 py-2 rounded hover:bg-gray-700 transition {% if request.path == '/dashboard/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'dashboard' %}" class="px-4 py-2 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/dashboard/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-home mr-1"></i> Dashboard
                 </a>
                 <div class="relative nav-item">
-                    <button onclick="toggleDropdown('stockDropdown')" class="px-4 py-2 rounded hover:bg-gray-700 transition flex items-center">
+                    <button onclick="toggleDropdown('stockDropdown')" class="px-4 py-2 rounded hover:bg-[#2d2d4a] transition flex items-center">
                         <i class="fas fa-boxes mr-1"></i> Stock <i class="fas fa-chevron-down ml-1 text-xs"></i>
                     </button>
                     <div id="stockDropdown" class="nav-dropdown hidden">
-                        <a href="{% url 'stock' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-boxes w-5"></i> Stock</a>
-                        <a href="{% url 'add_stock' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-plus-circle w-5"></i> Add Stock</a>
-                        <a href="{% url 'allstock' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-list w-5"></i> All Stock</a>
+                        <a href="{% url 'stock' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-boxes w-5"></i> Stock</a>
+                        <a href="{% url 'add_stock' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-plus-circle w-5"></i> Add Stock</a>
+                        <a href="{% url 'allstock' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-list w-5"></i> All Stock</a>
                     </div>
                 </div>
                 {% endif %}
 
                 <div class="relative nav-item">
-                    <button onclick="toggleDropdown('salesDropdown')" class="px-4 py-2 rounded hover:bg-gray-700 transition flex items-center">
+                    <button onclick="toggleDropdown('salesDropdown')" class="px-4 py-2 rounded hover:bg-[#2d2d4a] transition flex items-center">
                         <i class="fas fa-shopping-cart mr-1"></i> Sales <i class="fas fa-chevron-down ml-1 text-xs"></i>
                     </button>
                     <div id="salesDropdown" class="nav-dropdown hidden">
-                        <a href="{% url 'sales' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-shopping-cart w-5"></i> Sales</a>
-                        <a href="{% url 'add_sales' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-plus-circle w-5"></i> Add Sale</a>
-                        <a href="{% url 'allsales' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-list w-5"></i> All Sales</a>
+                        <a href="{% url 'sales' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-shopping-cart w-5"></i> Sales</a>
+                        <a href="{% url 'add_sales' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-plus-circle w-5"></i> Add Sale</a>
+                        <a href="{% url 'allsales' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-list w-5"></i> All Sales</a>
                     </div>
                 </div>
 
                 {% if is_manager %}
                 <div class="relative nav-item">
-                    <button onclick="toggleDropdown('reportsDropdown')" class="px-4 py-2 rounded hover:bg-gray-700 transition flex items-center">
+                    <button onclick="toggleDropdown('reportsDropdown')" class="px-4 py-2 rounded hover:bg-[#2d2d4a] transition flex items-center">
                         <i class="fas fa-file-alt mr-1"></i> Reports <i class="fas fa-chevron-down ml-1 text-xs"></i>
                     </button>
                     <div id="reportsDropdown" class="nav-dropdown hidden">
-                        <a href="{% url 'monthly_stock_report' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-file-alt w-5"></i> Stock Report</a>
-                        <a href="{% url 'salesreport' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-chart-bar w-5"></i> Sales Report</a>
+                        <a href="{% url 'monthly_stock_report' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-file-alt w-5"></i> Stock Report</a>
+                        <a href="{% url 'salesreport' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-chart-bar w-5"></i> Sales Report</a>
                     </div>
                 </div>
 
-                <a href="{% url 'analytics' %}" class="px-4 py-2 rounded hover:bg-gray-700 transition {% if request.path == '/analytics/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'analytics' %}" class="px-4 py-2 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/analytics/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-chart-line mr-1"></i> Analytics
                 </a>
 
                 <div class="relative nav-item">
-                    <button onclick="toggleDropdown('adminDropdown')" class="px-4 py-2 rounded hover:bg-gray-700 transition flex items-center">
+                    <button onclick="toggleDropdown('adminDropdown')" class="px-4 py-2 rounded hover:bg-[#2d2d4a] transition flex items-center">
                         <i class="fas fa-cog mr-1"></i> Admin <i class="fas fa-chevron-down ml-1 text-xs"></i>
                     </button>
                     <div id="adminDropdown" class="nav-dropdown hidden">
-                        <a href="{% url 'allusers' %}" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-users w-5"></i> Users</a>
-                        <a href="/admin/" target="_blank" class="block px-4 py-3 hover:bg-gray-700 transition"><i class="fas fa-cog w-5"></i> Admin Panel</a>
+                        <a href="{% url 'allusers' %}" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-users w-5"></i> Users</a>
+                        <a href="/admin/" target="_blank" class="block px-4 py-3 hover:bg-[#2d2d4a] transition"><i class="fas fa-cog w-5"></i> Admin Panel</a>
                     </div>
                 </div>
                 {% endif %}
@@ -67,7 +67,7 @@
                     <p class="text-gray-300">{{ user.username }}</p>
                     <p>
                         {% if is_manager %}
-                        <span class="text-blue-400">● Manager</span>
+                        <span class="text-[#c9a84c]">● Manager</span>
                         {% else %}
                         <span class="text-green-400">● Sales Agent</span>
                         {% endif %}
@@ -84,29 +84,29 @@
         </div>
     </div>
 
-    <div id="mobileNavPanel" class="hidden lg:hidden bg-gray-900 px-4 py-3 space-y-1">
+    <div id="mobileNavPanel" class="hidden lg:hidden bg-[#141420] px-4 py-3 space-y-1">
         {% if is_manager %}
-        <a href="{% url 'dashboard' %}" class="block px-3 py-2 rounded hover:bg-gray-700"><i class="fas fa-home w-5"></i> Dashboard</a>
+        <a href="{% url 'dashboard' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a]"><i class="fas fa-home w-5"></i> Dashboard</a>
         <p class="text-xs text-gray-400 uppercase px-3 pt-2">Stock</p>
-        <a href="{% url 'stock' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-boxes w-5"></i> Stock</a>
-        <a href="{% url 'add_stock' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-plus-circle w-5"></i> Add Stock</a>
-        <a href="{% url 'allstock' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-list w-5"></i> All Stock</a>
+        <a href="{% url 'stock' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-boxes w-5"></i> Stock</a>
+        <a href="{% url 'add_stock' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-plus-circle w-5"></i> Add Stock</a>
+        <a href="{% url 'allstock' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-list w-5"></i> All Stock</a>
         {% endif %}
 
         <p class="text-xs text-gray-400 uppercase px-3 pt-2">Sales</p>
-        <a href="{% url 'sales' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-shopping-cart w-5"></i> Sales</a>
-        <a href="{% url 'add_sales' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-plus-circle w-5"></i> Add Sale</a>
-        <a href="{% url 'allsales' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-list w-5"></i> All Sales</a>
+        <a href="{% url 'sales' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-shopping-cart w-5"></i> Sales</a>
+        <a href="{% url 'add_sales' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-plus-circle w-5"></i> Add Sale</a>
+        <a href="{% url 'allsales' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-list w-5"></i> All Sales</a>
 
         {% if is_manager %}
         <p class="text-xs text-gray-400 uppercase px-3 pt-2">Reports</p>
-        <a href="{% url 'monthly_stock_report' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-file-alt w-5"></i> Stock Report</a>
-        <a href="{% url 'salesreport' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-chart-bar w-5"></i> Sales Report</a>
-        <a href="{% url 'analytics' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
+        <a href="{% url 'monthly_stock_report' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-file-alt w-5"></i> Stock Report</a>
+        <a href="{% url 'salesreport' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-chart-bar w-5"></i> Sales Report</a>
+        <a href="{% url 'analytics' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-chart-line w-5"></i> Analytics</a>
 
         <p class="text-xs text-gray-400 uppercase px-3 pt-2">Admin</p>
-        <a href="{% url 'allusers' %}" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-users w-5"></i> Users</a>
-        <a href="/admin/" target="_blank" class="block px-3 py-2 rounded hover:bg-gray-700 pl-6"><i class="fas fa-cog w-5"></i> Admin Panel</a>
+        <a href="{% url 'allusers' %}" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-users w-5"></i> Users</a>
+        <a href="/admin/" target="_blank" class="block px-3 py-2 rounded hover:bg-[#2d2d4a] pl-6"><i class="fas fa-cog w-5"></i> Admin Panel</a>
         {% endif %}
 
         <div class="border-t border-gray-700 mt-2 pt-2">

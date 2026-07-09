@@ -9,7 +9,7 @@
     <form method="GET" class="mb-4">
         <input type="text" name="search" placeholder="Search stock..." 
                class="border rounded px-4 py-2 w-64">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+        <button type="submit" class="bg-[#c9a84c] text-white px-4 py-2 rounded">Search</button>
     </form>
     
     <!-- Stock Table -->
@@ -32,7 +32,7 @@
                     <td class="px-6 py-4 whitespace-nowrap">{{ item.quantity }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">{{ item.quality }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <a href="{% url 'view_stock' item.id %}" class="text-blue-600 hover:text-blue-900">View</a>
+                        <a href="{% url 'view_stock' item.id %}" class="text-[#c9a84c] hover:text-[#1a1a2e]">View</a>
                         <a href="{% url 'update_stock' item.id %}" class="text-green-600 hover:text-green-900 ml-2">Edit</a>
                         <a href="{% url 'delete_stock' item.id %}" class="text-red-600 hover:text-red-900 ml-2">Delete</a>
                     </td>

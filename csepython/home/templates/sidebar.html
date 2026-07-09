@@ -1,10 +1,10 @@
 {% load static %}
 <!-- Sidebar Navigation -->
-<aside id="sidebar" class="bg-gray-800 text-white h-full overflow-y-auto">
+<aside id="sidebar" class="bg-[#1a1a2e] text-white h-full overflow-y-auto">
     <!-- Sidebar Header with Toggle Button -->
     <div class="flex items-center justify-between p-4 border-b border-gray-700">
         <div class="flex items-center space-x-3 overflow-hidden">
-            <i class="fas fa-cubes text-2xl text-blue-400 flex-shrink-0"></i>
+            <i class="fas fa-cubes text-2xl text-[#c9a84c] flex-shrink-0"></i>
             <span id="sidebarTitle" class="text-xl font-bold whitespace-nowrap">Mayondo</span>
         </div>
         <button onclick="toggleSidebar()" class="text-gray-400 hover:text-white transition flex-shrink-0">
@@ -17,7 +17,7 @@
             <!-- Dashboard - Manager Only -->
             {% if is_manager %}
             <li>
-                <a href="{% url 'dashboard' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/dashboard/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'dashboard' %}" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/dashboard/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-home w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Dashboard</span>
                 </a>
@@ -30,19 +30,19 @@
                 <span class="nav-text text-xs text-gray-400 uppercase px-4 whitespace-nowrap">Stock</span>
             </li>
             <li>
-                <a href="{% url 'stock' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/stock/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'stock' %}" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/stock/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-boxes w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Stock</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'add_stock' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/stock/add/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'add_stock' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-[#2d2d4a] transition {% if request.path == '/stock/add/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-plus-circle w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Add Stock</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'allstock' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/allstock/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'allstock' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-[#2d2d4a] transition {% if request.path == '/allstock/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-list w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">All Stock</span>
                 </a>
@@ -54,19 +54,19 @@
                 <span class="nav-text text-xs text-gray-400 uppercase px-4 whitespace-nowrap">Sales</span>
             </li>
             <li>
-                <a href="{% url 'sales' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/sales/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'sales' %}" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/sales/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-shopping-cart w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Sales</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'add_sales' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/sales/add/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'add_sales' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-[#2d2d4a] transition {% if request.path == '/sales/add/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-plus-circle w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Add Sale</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'allsales' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-gray-700 transition {% if request.path == '/allsales/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'allsales' %}" class="flex items-center px-4 py-3 pl-10 text-sm hover:bg-[#2d2d4a] transition {% if request.path == '/allsales/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-list w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">All Sales</span>
                 </a>
@@ -78,13 +78,13 @@
                 <span class="nav-text text-xs text-gray-400 uppercase px-4 whitespace-nowrap">Reports</span>
             </li>
             <li>
-                <a href="{% url 'monthly_stock_report' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/monthlyreport/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'monthly_stock_report' %}" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/monthlyreport/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-file-alt w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Stock Report</span>
                 </a>
             </li>
             <li>
-                <a href="{% url 'salesreport' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/salesreport/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'salesreport' %}" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/salesreport/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-chart-bar w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Sales Report</span>
                 </a>
@@ -97,13 +97,13 @@
                 <span class="nav-text text-xs text-gray-400 uppercase px-4 whitespace-nowrap">Admin</span>
             </li>
             <li>
-                <a href="{% url 'allusers' %}" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition {% if request.path == '/allusers/' %}bg-gray-700{% endif %}">
+                <a href="{% url 'allusers' %}" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition {% if request.path == '/allusers/' %}bg-[#2d2d4a]{% endif %}">
                     <i class="fas fa-users w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Users</span>
                 </a>
             </li>
             <li>
-                <a href="/admin/" target="_blank" class="flex items-center px-4 py-3 rounded hover:bg-gray-700 transition">
+                <a href="/admin/" target="_blank" class="flex items-center px-4 py-3 rounded hover:bg-[#2d2d4a] transition">
                     <i class="fas fa-cog w-6 text-center flex-shrink-0"></i>
                     <span class="nav-text ml-3 whitespace-nowrap">Admin Panel</span>
                 </a>
@@ -124,7 +124,7 @@
         <p class="nav-text whitespace-nowrap">Logged in as: <span class="text-gray-300">{{ user.username }}</span></p>
         <p class="mt-1 nav-text whitespace-nowrap">
             {% if is_manager %}
-            <span class="text-blue-400">● Manager</span>
+            <span class="text-[#c9a84c]">● Manager</span>
             {% else %}
             <span class="text-green-400">● Sales Agent</span>
             {% endif %}
