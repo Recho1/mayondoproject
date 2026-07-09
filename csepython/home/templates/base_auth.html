@@ -105,8 +105,10 @@
         </div>
     </div>
 
-    <!-- CHAT WIDGET - MOVED OUTSIDE CONTENT BLOCK -->
-    {% include "chat_widget.html" %}
+    <!-- CHAT WIDGET - MANAGERS ONLY -->
+    {% if user.is_authenticated and user.profile.role == "manager" %}
+        {% include "chat_widget.html" %}
+    {% endif %}
 
     <script>
         // Toggle sidebar collapse
