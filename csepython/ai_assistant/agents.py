@@ -33,11 +33,16 @@ class AgentOrchestrator:
                 logger.warning(f"Could not load conversation history for id={conversation_id}: {e}")
                 self.conversation_history = []
 
-        query_lower = query.lower()
+        query_lower = query.lower().strip()
         data = {}
         query_type = "general"
 
-        if any(word in query_lower for word in ['sale', 'revenue', 'sell', 'order', 'today', 'daily', 'weekly', 'monthly']):
+        greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'howdy', 'sup', 'yo']
+        is_greeting = query_lower in greetings or (len(query_lower.split()) <= 3 and any(query_lower.startswith(g) for g in greetings))
+
+        if is_greeting:
+            query_type = "greeting"
+        elif any(word in query_lower for word in ['sale', 'revenue', 'sell', 'order', 'today', 'daily', 'weekly', 'monthly']):
             query_type = "sales"
             data = self._get_sales_data(query_lower)
         elif any(word in query_lower for word in ['stock', 'inventory', 'product', 'restock', 'supplier', 'warehouse']):
@@ -46,6 +51,8 @@ class AgentOrchestrator:
         elif any(word in query_lower for word in ['user', 'employee', 'staff', 'role', 'permission']):
             query_type = "users"
             data = self._get_user_data(query_lower)
+        elif query_type == "greeting":
+            data = {}
         else:
             query_type = "summary"
             data = self._get_summary_data()

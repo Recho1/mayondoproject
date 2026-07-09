@@ -164,7 +164,7 @@
     <!-- Low Stock & Top Products -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="text-lg font-bold text-gray-800 mb-3">⚠️ Low Stock Items</h3>
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Low Stock Items</h3>
             <div class="max-h-48 overflow-y-auto">
                 {% if low_stock_items %}
                 <table class="w-full text-sm">
@@ -188,13 +188,13 @@
                     </tbody>
                 </table>
                 {% else %}
-                <p class="text-gray-500 text-center py-4 text-green-600">✅ All stock levels are healthy</p>
+                <p class="text-gray-500 text-center py-4 text-green-600">All stock levels are healthy</p>
                 {% endif %}
             </div>
         </div>
         
         <div class="bg-white rounded-lg shadow p-4">
-            <h3 class="text-lg font-bold text-gray-800 mb-3">🏆 Top Selling Products</h3>
+            <h3 class="text-lg font-bold text-gray-800 mb-3">Top Selling Products</h3>
             <div class="space-y-2">
                 {% if top_products %}
                 {% for product in top_products %}
