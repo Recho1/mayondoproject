@@ -6,6 +6,9 @@ from .tools import BusinessTools
 
 logger = logging.getLogger(__name__)
 
+GREETINGS = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'howdy', 'sup', 'yo']
+
+
 class AgentOrchestrator:
     """
     Production-ready AI Assistant for Mayondo Wood and Furniture System.
@@ -35,10 +38,10 @@ class AgentOrchestrator:
 
         query_lower = query.lower().strip()
         data = {}
-        query_type = "general"
 
-        greetings = ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'howdy', 'sup', 'yo']
-        is_greeting = query_lower in greetings or (len(query_lower.split()) <= 3 and any(query_lower.startswith(g) for g in greetings))
+        is_greeting = query_lower in GREETINGS or (
+            len(query_lower.split()) <= 3 and any(query_lower.startswith(g) for g in GREETINGS)
+        )
 
         if is_greeting:
             query_type = "greeting"
@@ -51,8 +54,6 @@ class AgentOrchestrator:
         elif any(word in query_lower for word in ['user', 'employee', 'staff', 'role', 'permission']):
             query_type = "users"
             data = self._get_user_data(query_lower)
-        elif query_type == "greeting":
-            data = {}
         else:
             query_type = "summary"
             data = self._get_summary_data()
@@ -124,6 +125,31 @@ class AgentOrchestrator:
             if not api_key:
                 return self._format_fallback_response(data, query_type)
 
+            model = getattr(settings, 'OPENAI_MODEL', 'gpt-3.5-turbo')
+            client = openai.OpenAI(api_key=api_key, timeout=15.0)
+
+            if query_type == "greeting":
+                messages = [
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are Mayondo AI, a friendly assistant for the Mayondo Wood and "
+                            "Furniture System. Respond briefly and warmly to greetings and small talk. "
+                            "Do not include any business data, statistics, or reports unless the user "
+                            "actually asks a business question. Keep it to 1-2 short sentences."
+                        )
+                    }
+                ]
+                for msg in self.conversation_history[-10:]:
+                    if msg.get('role') in ('user', 'assistant'):
+                        messages.append({"role": msg['role'], "content": msg['content']})
+                messages.append({"role": "user", "content": query})
+
+                response = client.chat.completions.create(
+                    model=model, messages=messages, temperature=0.5, max_tokens=100
+                )
+                return response.choices[0].message.content
+
             data_str = json.dumps(data, default=str, indent=2)
             if len(data_str) > 6000:
                 data_str = data_str[:6000] + "\n... (truncated)"
@@ -152,10 +178,6 @@ Please provide a helpful, professional response based on this data."""
                     messages.append({"role": msg['role'], "content": msg['content']})
             messages.append({"role": "user", "content": user_prompt})
 
-            model = getattr(settings, 'OPENAI_MODEL', 'gpt-3.5-turbo')
-
-            client = openai.OpenAI(api_key=api_key, timeout=15.0)
-
             last_error = None
             for attempt in range(2):
                 try:
@@ -178,6 +200,9 @@ Please provide a helpful, professional response based on this data."""
 
     def _format_fallback_response(self, data: Dict, query_type: str) -> str:
         """Fallback response when OpenAI is unavailable"""
+
+        if query_type == "greeting":
+            return "Hello! How can I help you with your business today?"
 
         lines = []
 

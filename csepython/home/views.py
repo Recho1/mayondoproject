@@ -39,7 +39,11 @@ def loginpage(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+
+        actual_user = User.objects.filter(username__iexact=username).first()
+        lookup_username = actual_user.username if actual_user else username
+
+        user = authenticate(request, username=lookup_username, password=password)
         
         if user is not None:
             login(request, user)
