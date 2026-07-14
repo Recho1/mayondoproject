@@ -8,7 +8,7 @@
         background: linear-gradient(135deg, #c9a84c, #b8943e);
         border: none;
         color: white;
-        font-size: 30px;
+        font-size: 26px;
         cursor: pointer;
         box-shadow: 0 4px 20px rgba(201, 168, 76, 0.5);
         transition: all 0.3s ease;
@@ -16,17 +16,20 @@
         align-items: center;
         justify-content: center;
     " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-        🤖
+        <i class="fas fa-comment-dots"></i>
     </button>
-    
+
     <!-- Chat Window -->
     <div id="chatWindow" style="
         display: none;
         position: fixed;
-        bottom: 110px;
+        bottom: 100px;
         right: 30px;
         width: 380px;
-        height: 500px;
+        max-width: calc(100vw - 40px);
+        height: min(500px, calc(100vh - 140px));
+        max-height: calc(100vh - 140px);
+        min-height: 300px;
         background: white;
         border-radius: 20px;
         box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -46,7 +49,7 @@
             border-bottom: 2px solid #c9a84c;
         ">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 20px;">🤖</span>
+                <i class="fas fa-comment-dots" style="font-size: 18px; color: #c9a84c;"></i>
                 <span style="font-weight: 600;">Mayondo AI</span>
             </div>
             <button onclick="toggleChatWidget()" style="
@@ -58,7 +61,7 @@
                 opacity: 0.7;
             ">✕</button>
         </div>
-        
+
         <!-- Messages -->
         <div id="chatMessages" style="
             flex: 1;
@@ -75,11 +78,11 @@
                 border: 1px solid #e5e7eb;
                 font-size: 14px;
             ">
-                <div style="font-size: 12px; color: #c9a84c; margin-bottom: 4px;">🤖 Mayondo AI</div>
+                <div style="font-size: 12px; color: #c9a84c; margin-bottom: 4px;"><i class="fas fa-comment-dots"></i> Mayondo AI</div>
                 Hello! I'm your business assistant. How can I help you?
             </div>
         </div>
-        
+
         <!-- Suggestions -->
         <div style="
             padding: 8px 15px;
@@ -117,7 +120,7 @@
                 cursor: pointer;
             ">📈 Summary</button>
         </div>
-        
+
         <!-- Input -->
         <div style="
             padding: 12px 15px;
@@ -150,21 +153,27 @@
 <script>
     let conversationId = null;
     let isProcessing = false;
-    
+
     function toggleChatWidget() {
-        const window = document.getElementById('chatWindow');
-        if (window.style.display === 'flex') {
-            window.style.display = 'none';
+        const win = document.getElementById('chatWindow');
+        if (win.style.display === 'flex') {
+            win.style.display = 'none';
         } else {
-            window.style.display = 'flex';
+            win.style.display = 'flex';
             document.getElementById('chatInput').focus();
         }
     }
-    
+
+    function formatBotMessage(text) {
+        return text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+    }
+
     function addChatMessage(role, content) {
         const container = document.getElementById('chatMessages');
         const div = document.createElement('div');
-        
+
         if (role === 'user') {
             div.style.cssText = `
                 background: linear-gradient(135deg, #c9a84c, #b8943e);
@@ -189,30 +198,29 @@
                 font-size: 14px;
                 border-bottom-left-radius: 4px;
             `;
-            div.innerHTML = `<div style="font-size: 12px; color: #c9a84c; margin-bottom: 4px;">🤖 Mayondo AI</div>${content}`;
+            div.innerHTML = `<div style="font-size: 12px; color: #c9a84c; margin-bottom: 4px;"><i class="fas fa-comment-dots"></i> Mayondo AI</div>${formatBotMessage(content)}`;
         }
-        
+
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
     }
-    
+
     function sendQuickMsg(text) {
         document.getElementById('chatInput').value = text;
         sendChatMsg();
     }
-    
+
     function sendChatMsg() {
         if (isProcessing) return;
-        
+
         const input = document.getElementById('chatInput');
         const message = input.value.trim();
         if (!message) return;
-        
+
         input.value = '';
         addChatMessage('user', message);
         isProcessing = true;
-        
-        // Show thinking
+
         const container = document.getElementById('chatMessages');
         const thinkingDiv = document.createElement('div');
         thinkingDiv.id = 'thinkingMsg';
@@ -226,10 +234,10 @@
             font-size: 14px;
             border-bottom-left-radius: 4px;
         `;
-        thinkingDiv.innerHTML = `<div style="font-size: 12px; color: #c9a84c; margin-bottom: 4px;">🤖 Mayondo AI</div>🤔 Thinking...`;
+        thinkingDiv.innerHTML = `<div style="font-size: 12px; color: #c9a84c; margin-bottom: 4px;"><i class="fas fa-comment-dots"></i> Mayondo AI</div>Thinking...`;
         container.appendChild(thinkingDiv);
         container.scrollTop = container.scrollHeight;
-        
+
         fetch('/ai-assistant/api/chat/', {
             method: 'POST',
             headers: {
@@ -250,18 +258,18 @@
                     conversationId = data.conversation_id;
                 }
             } else {
-                addChatMessage('assistant', '❌ Sorry, I encountered an error. Please try again.');
+                addChatMessage('assistant', 'Sorry, I encountered an error. Please try again.');
             }
             isProcessing = false;
         })
         .catch(error => {
             const thinking = document.getElementById('thinkingMsg');
             if (thinking) thinking.remove();
-            addChatMessage('assistant', '❌ Sorry, I encountered an error. Please try again.');
+            addChatMessage('assistant', 'Sorry, I encountered an error. Please try again.');
             isProcessing = false;
         });
     }
-    
+
     function getCsrfToken() {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
