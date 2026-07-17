@@ -518,3 +518,108 @@ def analytics_page(request):
         'low_stock_count': low_stock_items.count(),
     }
     return render(request, 'analytics.html', context)
+
+
+def stock_receipt(request, stock_id):
+    stock = get_object_or_404(Stock, id=stock_id)
+    return render(request, "stock_receipt.html", {"stock": stock})
+
+
+def sales_report_pdf(request):
+    if not is_manager(request.user):
+        return redirect('/sales/')
+
+    from reportlab.lib.pagesizes import letter
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+    from reportlab.lib import colors
+    from reportlab.lib.styles import getSampleStyleSheet
+    import io
+
+    all_sales = Sales.objects.all()
+    total_amount = all_sales.aggregate(Sum('totalprice'))['totalprice__sum'] or 0
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = [
+        Paragraph("Mayondo Wood and Furniture - Sales Report", styles['Title']),
+        Spacer(1, 12),
+        Paragraph(f"Total Sales: {all_sales.count()} | Total Amount: UGX {total_amount:,.2f}", styles['Normal']),
+        Spacer(1, 12),
+    ]
+
+    data = [["Customer", "Product", "Qty", "Total", "Date"]]
+    for sale in all_sales:
+        data.append([
+            sale.customername,
+            sale.productname.productname if sale.productname else "-",
+            str(sale.quantity),
+            f"{sale.totalprice}",
+            str(sale.date),
+        ])
+
+    table = Table(data, repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1a1a2e')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f3f4f6')]),
+    ]))
+    elements.append(table)
+    doc.build(elements)
+
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="sales_report.pdf"'
+    return response
+
+
+def stock_report_pdf(request):
+    if not is_manager(request.user):
+        return redirect('/sales/')
+
+    from reportlab.lib.pagesizes import letter
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+    from reportlab.lib import colors
+    from reportlab.lib.styles import getSampleStyleSheet
+    import io
+
+    today = date.today()
+    monthly_stock = Stock.objects.filter(date__month=today.month, date__year=today.year)
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = [
+        Paragraph("Mayondo Wood and Furniture - Stock Report", styles['Title']),
+        Spacer(1, 12),
+        Paragraph(f"Month: {today.strftime('%B %Y')} | Total Items: {monthly_stock.count()}", styles['Normal']),
+        Spacer(1, 12),
+    ]
+
+    data = [["Product", "Origin", "Qty", "Grade", "Date"]]
+    for item in monthly_stock:
+        data.append([
+            item.productname,
+            item.origin,
+            str(item.quantity),
+            item.quality,
+            str(item.date),
+        ])
+
+    table = Table(data, repeatRows=1)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1a1a2e')),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('FONTSIZE', (0, 0), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f3f4f6')]),
+    ]))
+    elements.append(table)
+    doc.build(elements)
+
+    buffer.seek(0)
+    response = HttpResponse(buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="stock_report.pdf"'
+    return response

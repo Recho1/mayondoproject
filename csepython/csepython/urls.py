@@ -8,7 +8,7 @@ from home.views import (
     monthly_stock_report, allsalesreport,
     add_stock_page, add_sales_page,
     delete_stock, delete_sale, delete_user,
-    analytics_page
+    analytics_page, stock_receipt, sales_report_pdf, stock_report_pdf
 )
 
 urlpatterns = [
@@ -46,4 +46,7 @@ urlpatterns = [
     path('stock/update/<int:stock_id>/', updatestock, name='update_stock'),
     path('register/update/<int:user_id>/', updateuser, name='update_user'),
     path('sales/receipt/<int:sale_id>/', sale_receipt, name='sale_receipt'),
+    path('stock/receipt/<int:stock_id>/', stock_receipt, name='stock_receipt'),
+    path('salesreport/pdf/', sales_report_pdf, name='sales_report_pdf'),
+    path('monthlyreport/pdf/', stock_report_pdf, name='stock_report_pdf'),
 ]

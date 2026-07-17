@@ -3,9 +3,20 @@
 
 {% block content %}
 <div class="space-y-6">
-    <div class="bg-[#1a1a2e] rounded-lg shadow-lg p-6 text-white">
-        <h1 class="text-3xl font-bold"><i class="fas fa-chart-line mr-2"></i>Analytics</h1>
-        <p class="text-[#f5ecd9] mt-2">Visual insights into your sales, products, and inventory</p>
+    <div class="bg-[#1a1a2e] rounded-lg shadow-lg p-6 text-white flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold"><i class="fas fa-chart-line mr-2"></i>Analytics</h1>
+            <p class="text-[#f5ecd9] mt-2">Visual insights into your sales, products, and inventory</p>
+        </div>
+        <form method="get" class="flex items-center gap-2">
+            <label for="month" class="text-sm text-[#f5ecd9]">Month:</label>
+            <select name="month" id="month" onchange="this.form.submit()" class="rounded-lg px-3 py-2 text-gray-800 text-sm">
+                <option value="" {% if not selected_month %}selected{% endif %}>All Time (Last 6 Months)</option>
+                {% for m in month_options %}
+                <option value="{{ m.value }}" {% if selected_month == m.value %}selected{% endif %}>{{ m.label }}</option>
+                {% endfor %}
+            </select>
+        </form>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
