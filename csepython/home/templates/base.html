@@ -48,20 +48,13 @@
             <div class="fixed inset-0 bg-black opacity-50" onclick="toggleSidebar()"></div>
         </div>
         
-        <!-- Main content area -->
-        <div class="main-content bg-gray-100 p-6">
-            <div class="container mx-auto">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
-    {% else %}
-        <!-- Public pages (login, register) - full width -->
-        <div class="min-h-screen bg-gray-100">
+    {% endif %}
+    <div class="{% if user.is_authenticated %}main-content bg-gray-100 p-6{% else %}min-h-screen bg-gray-100{% endif %}">
+        <div class="container mx-auto">
             {% block content %}
             {% endblock %}
         </div>
-    {% endif %}
+    </div>
 
     <script>
         function toggleSidebar() {
