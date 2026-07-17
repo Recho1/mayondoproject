@@ -12,59 +12,59 @@
     <div class="flex flex-col gap-2 mx-auto max-w-[400px] p-4 shadow-lg my-8 bg-white">
       <div class="flex gap-2">
 
-         <a href="/sales/receipt/{{ selected.id }}" class="px-2 py-1 bg-yellow-500 text-black rounded ml-[15rem]">Print Receipt</a>
+         <a href="{% url 'sale_receipt' sale.id %}" class="px-2 py-1 bg-yellow-500 text-black rounded ml-[15rem]">Print Receipt</a>
 
       </div>
   <div>
     <p class="text-gray-500 text-xs">Customer Name</p>
-    <h1 class="text-lg font-semibold">{{ selected.customername }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.customername }}</h1>
   </div>
   <div>
     <p class="text-gray-500 text-xs">Product type</p>
-    <h1 class="text-lg font-semibold">{{ selected.producttype }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.producttype }}</h1>
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Product Name</p>
-    <h1 class="text-lg font-semibold">{{ selected.productname }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.productname }}</h1>
   </div> 
   {% comment %} <div>
     <p class="text-gray-500 text-xs">Quality</p>
-    <h1 class="text-lg font-semibold">{{ selected.quality }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.quality }}</h1>
 
   </div>  {% endcomment %}
   <div>
     <p class="text-gray-500 text-xs">Quantity</p>
-    <h1 class="text-lg font-semibold">{{ selected.quantity }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.quantity }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Unitcost</p>
-    <h1 class="text-lg font-semibold">{{ selected.unitcost }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.unitcost }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">SellingPrice</p>
-    <h1 class="text-lg font-semibold">{{ selected.sellingprice }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.sellingprice }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Payment Method</p>
-    <h1 class="text-lg font-semibold">{{ selected.paymentmethod }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.paymentmethod }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Opted for transport(5% for True)</p>
-    <h1 class="text-lg font-semibold">{{ selected.transportfare }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.transportfare }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Date</p>
-    <h1 class="text-lg font-semibold">{{ selected.date }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.date }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Sales Agent Name</p>
-    <h1 class="text-lg font-semibold">{{ selected.salesagentname }}</h1>
+    <h1 class="text-lg font-semibold">{{ sale.salesagentname }}</h1>
 
   </div> 
 

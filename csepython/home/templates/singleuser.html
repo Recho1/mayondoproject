@@ -12,29 +12,29 @@
     <div class="flex flex-col gap-2 mx-auto max-w-[400px] p-4 shadow-lg my-8 bg-white rounded-xl">
       <div class="flex gap-2">
         <a href="/allusers/" class="px-2 py-1 bg-black text-yellow-500 rounded ml-[12rem]">Back to view</a>
-         {% comment %} <a href="/update/{{ selected.id }}" class="px-2 py-1 bg-green-500 text-white rounded">Update</a>
-        <a href="/delete/{{ selected.id }}" class="px-2 py-1 bg-red-500 text-white rounded">Delete</a> {% endcomment %}
+         {% comment %} <a href="/update/{{ user.id }}" class="px-2 py-1 bg-green-500 text-white rounded">Update</a>
+        <a href="/delete/{{ user.id }}" class="px-2 py-1 bg-red-500 text-white rounded">Delete</a> {% endcomment %}
       </div>
   <div>
     <p class="text-gray-500 text-xs">Username</p>
-    <h1 class="text-lg font-semibold">{{ selected.username }}</h1>
+    <h1 class="text-lg font-semibold">{{ user.username }}</h1>
   </div>
   <div>
     <p class="text-gray-500 text-xs">Email</p>
-    <h1 class="text-lg font-semibold">{{ selected.email }}</h1>
+    <h1 class="text-lg font-semibold">{{ user.email }}</h1>
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Password</p>
-    <h1 class="text-lg font-semibold">{{ selected.password }}</h1>
+    <h1 class="text-lg font-semibold">{{ user.password }}</h1>
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Confirm password</p>
-    <h1 class="text-lg font-semibold">{{ selected.repeat_password }}</h1>
+    <h1 class="text-lg font-semibold">{{ user.repeat_password }}</h1>
 
   </div> 
   <div>
     <p class="text-gray-500 text-xs">Role</p>
-    <h1 class="text-lg font-semibold">{{ selected.role }}</h1>
+    <h1 class="text-lg font-semibold">{{ user.role }}</h1>
 
   </div> 
 

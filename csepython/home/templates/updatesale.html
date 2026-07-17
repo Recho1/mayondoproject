@@ -88,17 +88,17 @@
 <div class="form-section">
   <h2>Transaction Records</h2>
 
-  <form action="/sales/update/{{ selected.id }}" method="post">
+  <form action="/sales/update/{{ sale.id }}" method="post">
     {% csrf_token %}
 
     <label for="customername">Customer Name</label>
-    <input id="customername" name="customername" value="{{ form_data.customername|default:selected.customername }}" required>
+    <input id="customername" name="customername" value="{{ form_data.customername|default:sale.customername }}" required>
     {% if errors.customername %}
       <div class="error-text">{{ errors.customername }}</div>
     {% endif %}
 
     <label for="producttype">Product Type</label>
-    <input type="text" id="producttype" name="producttype" value="{{ form_data.producttype|default:selected.producttype }}" required>
+    <input type="text" id="producttype" name="producttype" value="{{ form_data.producttype|default:sale.producttype }}" required>
     {% if errors.producttype %}
       <div class="error-text">{{ errors.producttype }}</div>
     {% endif %}
@@ -109,7 +109,7 @@
         <option value="{{ product.id }}" 
           {% if product.id|stringformat:"s" == form_data.productname|stringformat:"s" %}
             selected
-          {% elif product.id == selected.productname.id %}
+          {% elif product.id == sale.productname.id %}
             selected
           {% endif %}>
           {{ product.productname }}
@@ -121,27 +121,27 @@
     {% endif %}
 
     <label for="quantity">Quantity</label>
-    <input type="number" id="quantity" name="quantity" min="1" value="{{ form_data.quantity|default:selected.quantity }}" required>
+    <input type="number" id="quantity" name="quantity" min="1" value="{{ form_data.quantity|default:sale.quantity }}" required>
     {% if errors.quantity %}
       <div class="error-text">{{ errors.quantity }}</div>
     {% endif %}
 
     <label for="sellingprice_unitcost">Unit Cost</label>
-    <input type="number" id="sellingprice_unitcost" name="sellingprice_unitcost" value="{{ form_data.sellingprice_unitcost|default:selected.sellingprice_unitcost }}" required>
+    <input type="number" id="sellingprice_unitcost" name="sellingprice_unitcost" value="{{ form_data.sellingprice_unitcost|default:sale.sellingprice_unitcost }}" required>
     {% if errors.sellingprice_unitcost %}
       <div class="error-text">{{ errors.sellingprice_unitcost }}</div>
     {% endif %}
 
     <label for="paymentmethod">Payment Method</label>
-    <input type="text" id="paymentmethod" name="paymentmethod" value="{{ form_data.paymentmethod|default:selected.paymentmethod }}">
+    <input type="text" id="paymentmethod" name="paymentmethod" value="{{ form_data.paymentmethod|default:sale.paymentmethod }}">
     {% if errors.paymentmethod %}
       <div class="error-text">{{ errors.paymentmethod }}</div>
     {% endif %}
 
     <label for="is_paid">Payment Received</label>
     <select name="is_paid">      
-      <option value="True" {% if form_data.is_paid|default:selected.is_paid %}selected{% endif %}>Completed</option>
-      <option value="False" {% if not form_data.is_paid|default:selected.is_paid %}selected{% endif %}>Pending</option>
+      <option value="True" {% if form_data.is_paid|default:sale.is_paid %}selected{% endif %}>Completed</option>
+      <option value="False" {% if not form_data.is_paid|default:sale.is_paid %}selected{% endif %}>Pending</option>
     </select>
     {% if errors.is_paid %}
       <div class="error-text">{{ errors.is_paid }}</div>
@@ -150,15 +150,15 @@
     <label for="transportfare">Transport Fare</label>
     <select id="transportfare" name="transportfare">
       <option value="">Select</option>
-      <option value="True" {% if form_data.transportfare|default:selected.transport_offered %}selected{% endif %}>Transport offered</option>
-      <option value="False" {% if not form_data.transportfare|default:selected.transport_offered %}selected{% endif %}>Transport not offered</option>
+      <option value="True" {% if form_data.transportfare|default:sale.transport_offered %}selected{% endif %}>Transport offered</option>
+      <option value="False" {% if not form_data.transportfare|default:sale.transport_offered %}selected{% endif %}>Transport not offered</option>
     </select>
     {% if errors.transportfare %}
       <div class="error-text">{{ errors.transportfare }}</div>
     {% endif %}
 
     <label for="date">Date</label>
-    <input type="date" id="date" name="date" value="{{ form_data.date|default:selected.date|date:'Y-m-d' }}">
+    <input type="date" id="date" name="date" value="{{ form_data.date|default:sale.date|date:'Y-m-d' }}">
     {% if errors.date %}
       <div class="error-text">{{ errors.date }}</div>
     {% endif %}
@@ -169,7 +169,7 @@
         <option value="{{ agent.id }}" 
           {% if agent.id|stringformat:"s" == form_data.salesagentname|stringformat:"s" %}
             selected
-          {% elif agent.id == selected.salesagentname.id %}
+          {% elif agent.id == sale.salesagentname.id %}
             selected
           {% endif %}>
           {{ agent.username }}

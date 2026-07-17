@@ -74,21 +74,21 @@
   </style>
 
   <div class="form-section">
-    <form action="/register/update/{{ selected.id }}" method="post">
+    <form action="/register/update/{{ user.id }}" method="post">
       {% csrf_token %}
       <h1>Registration Form</h1>
 
       <label for="username">Username</label>
-      <input type="text" name="username" id="username" value="{{ selected.username }}" required />
+      <input type="text" name="username" id="username" value="{{ user.username }}" required />
 
       <label for="email">Email address</label>
-      <input type="email" name="email" id="email" value="{{ selected.email }}" required />
+      <input type="email" name="email" id="email" value="{{ user.email }}" required />
 
       <label for="password">Password</label>
-      <input type="password" name="password" id="password" value="{{ selected.password }}" required />
+      <input type="password" name="password" id="password" value="{{ user.password }}" required />
 
       <label for="repeat_password">Confirm Password</label>
-      <input type="password" name="repeat_password" id="repeat_password" value="{{ selected.repeat_password }}" required />
+      <input type="password" name="repeat_password" id="repeat_password" value="{{ user.repeat_password }}" required />
       <div class="flex items-center justify-start mb-6">
             <label for="show-password" class="flex items-center gap-2 text-gray-700 cursor-pointer">
               <input type="checkbox" id="show-password" class="w-4 h-4"> Show Password
@@ -96,8 +96,8 @@
           </div>
       <label for="role">Role</label>
       <select name="role" id="role">
-        <option value="manager" {% if selected.role == "manager" %}selected{% endif %}>Manager</option>
-        <option value="salesagent" {% if selected.role == "salesagent" %}selected{% endif %}>Sales Agent</option>
+        <option value="manager" {% if user.role == "manager" %}selected{% endif %}>Manager</option>
+        <option value="salesagent" {% if user.role == "salesagent" %}selected{% endif %}>Sales Agent</option>
       </select>
 
       <button type="submit" class="btn-black-gold">Update Staff</button>

@@ -118,6 +118,7 @@ def dashboardpage(request):
     context = {
         'user': request.user,
         'is_manager': True,
+        'today': today,
         'total_stock_items': total_stock_items,
         'total_stock_value': total_stock_value,
         'low_stock_count': low_stock_count,
