@@ -120,13 +120,19 @@ class AgentOrchestrator:
             import openai
             from django.conf import settings
 
-            api_key = getattr(settings, 'OPENAI_API_KEY', None)
+            groq_key = getattr(settings, 'GROQ_API_KEY', None)
+            openai_key = getattr(settings, 'OPENAI_API_KEY', None)
 
-            if not api_key:
+            if groq_key:
+                api_key = groq_key
+                model = 'llama-3.3-70b-versatile'
+                client = openai.OpenAI(api_key=api_key, base_url='https://api.groq.com/openai/v1', timeout=15.0)
+            elif openai_key:
+                api_key = openai_key
+                model = getattr(settings, 'OPENAI_MODEL', 'gpt-3.5-turbo')
+                client = openai.OpenAI(api_key=api_key, timeout=15.0)
+            else:
                 return self._format_fallback_response(data, query_type)
-
-            model = getattr(settings, 'OPENAI_MODEL', 'gpt-3.5-turbo')
-            client = openai.OpenAI(api_key=api_key, timeout=15.0)
 
             if query_type == "greeting":
                 messages = [
