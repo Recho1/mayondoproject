@@ -166,8 +166,11 @@
 
     function formatBotMessage(text) {
         return text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\n/g, '<br>');
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/^#{1,6}\s*/gm, '')
+            .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '')
+            .replace(/\n/g, '<br>')
+            .trim();
     }
 
     function addChatMessage(role, content) {

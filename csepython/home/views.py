@@ -440,17 +440,15 @@ def analytics_page(request):
     if not is_manager(request.user):
         return redirect('/sales/')
 
-    # Build list of months that actually have sales data
-    available_months = (
-        Sales.objects.annotate(m=TruncMonth('date'))
-        .values('m')
-        .distinct()
-        .order_by('-m')
-    )
-    month_options = [
-        {'value': m['m'].strftime('%Y-%m'), 'label': m['m'].strftime('%B %Y')}
-        for m in available_months if m['m']
-    ]
+    # Rolling list of the last 12 months (always shown, regardless of data)
+    month_options = []
+    cursor = date.today().replace(day=1)
+    for _ in range(12):
+        month_options.append({'value': cursor.strftime('%Y-%m'), 'label': cursor.strftime('%B %Y')})
+        if cursor.month == 1:
+            cursor = cursor.replace(year=cursor.year - 1, month=12)
+        else:
+            cursor = cursor.replace(month=cursor.month - 1)
 
     selected_month = request.GET.get('month', '').strip()
 
